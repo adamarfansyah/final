@@ -1,0 +1,55 @@
+@import '@styles/base';
+
+.schedules {
+  display: flex;
+  gap: 1rem;
+  overflow-x: scroll;
+}
+
+.schedule {
+  background-color: var(--color-bg);
+  text-align: center;
+  width: 100%;
+  border: 1px solid rgb(166, 166, 166);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--color-text);
+  cursor: pointer;
+  &.active {
+    background-color: var(--color-button);
+    color: white;
+    font-weight: bold;
+    border: none;
+  }
+}
+
+.schedules::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 10px;
+}
+
+.schedules::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+.schedules::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.schedules::-webkit-scrollbar-thumb {
+  background-color: $color-gray;
+  border-right: none;
+  border-left: none;
+}
+
+.schedules::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 10px;
+}
+
+.schedules::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+  margin-top: 10px;
+}

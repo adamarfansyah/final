@@ -1,0 +1,12 @@
+@import '@styles/base';
+
+.transactionUser {
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: var(--color-bg);
+  box-shadow: 1rem 1rem 1rem rgba($color: #000000, $alpha: 0.2);
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,25 @@
+@import '@styles/base';
+
+.fieldCard {
+  height: auto;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  box-shadow: 8px 8px 15px rgba($color: #000000, $alpha: 0.5);
+  .image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .content {
+    padding: 20px;
+    text-align: center;
+    .contentName {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .price {
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+  }
+}

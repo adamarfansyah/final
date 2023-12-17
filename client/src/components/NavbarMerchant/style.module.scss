@@ -1,0 +1,28 @@
+@import '@styles/base';
+
+.navbar {
+  background-color: var(--color-bg);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  .profileNavbar {
+    padding: 50px;
+  }
+  .navbarContent {
+    display: flex;
+    flex-direction: column;
+  }
+  .link {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--color-text);
+    &:hover {
+      background-color: var(--color-button);
+      color: white;
+    }
+  }
+}

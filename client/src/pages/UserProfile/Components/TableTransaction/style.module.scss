@@ -1,0 +1,28 @@
+@import '@styles/base';
+.tableContainer {
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+
+  th,
+  td {
+    text-align: center;
+  }
+
+  th {
+    background-color: transparent;
+    border-bottom: 2px solid var(--color-button);
+  }
+  td {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--color-text);
+  }
+  .venueName {
+    font-weight: bold;
+    color: $color-green-md;
+  }
+}

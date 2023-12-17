@@ -1,0 +1,30 @@
+@import '@styles/base';
+
+.btn {
+  background-color: var(--color-button);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    background-color: $color-green-md;
+  }
+}
+
+.btnSecondary {
+  background-color: transparent;
+  border: 2px solid var(--color-button);
+  color: var(--color-button);
+  &:hover {
+    background-color: var(--color-button);
+    color: white;
+  }
+  &:disabled {
+    background-color: rgb(79, 79, 79);
+    cursor: not-allowed;
+    color: rgb(145, 145, 145);
+    border: none;
+  }
+}

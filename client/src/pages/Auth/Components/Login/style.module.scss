@@ -1,0 +1,32 @@
+@import '@styles/base';
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .title {
+    text-align: center;
+  }
+  .loginContent {
+    width: 100%;
+    padding: 0 20px;
+    color: var(--color-text);
+    border-radius: 1.875rem;
+    transition: 0.4s;
+    @include apply-at-lg-size {
+      @media (min-width: $screen-lg-limit) {
+        padding: 0 50px;
+      }
+    }
+    .btnContainer {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+}

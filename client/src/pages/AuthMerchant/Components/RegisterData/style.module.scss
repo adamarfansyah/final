@@ -1,0 +1,38 @@
+@import '@styles/base';
+
+.registerData {
+  margin: 30px 0;
+  .titleWrapper {
+    text-align: center;
+    .title {
+      font-weight: bold;
+    }
+    .desc {
+      font-weight: 300;
+      font-size: 12px;
+    }
+  }
+  .form {
+    .options {
+      margin: 1rem 0;
+    }
+    .btnContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      .btn {
+        width: 100%;
+      }
+      .link {
+        text-align: center;
+        text-decoration: none;
+        color: var(--color-text);
+        font-size: 16px;
+        &:hover {
+          color: var(--color-button);
+        }
+      }
+    }
+    margin-top: 20px;
+  }
+}

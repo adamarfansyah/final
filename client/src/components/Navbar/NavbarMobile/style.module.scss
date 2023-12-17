@@ -1,0 +1,62 @@
+@import '@styles/base';
+
+.userNav {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  .imgUser {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.toggle {
+  @include directionX;
+}
+
+.link {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+  &:hover {
+    color: var(--color-button);
+  }
+  &.active {
+    border-bottom: 2px solid var(--color-button);
+    color: var(--color-button);
+  }
+}
+
+.theme {
+  @include directionX;
+  align-items: center;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.locale {
+  @include directionX;
+  align-items: center;
+  .avatar {
+    width: 1.2rem;
+    height: 1.2rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    margin-right: 0.5rem;
+  }
+  .lang {
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+  }
+}
+
+.btn {
+  width: 100%;
+}

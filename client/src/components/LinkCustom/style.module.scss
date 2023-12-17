@@ -1,0 +1,14 @@
+@import '@styles/base';
+
+.link {
+  width: fit-content;
+  font-size: 12px;
+  color: var(--color-text);
+  font-style: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    color: var(--color-button);
+  }
+}

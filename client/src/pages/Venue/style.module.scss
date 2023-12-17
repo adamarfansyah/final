@@ -1,0 +1,100 @@
+@import '@styles/base';
+
+.wrapper {
+  background-image: url('../../static/images/bg-venue1.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 20rem;
+  display: flex;
+  align-items: center;
+  background-color: $color-green-light;
+  @include apply-at-md-size {
+    @media (min-width: $screen-md-limit) {
+      height: 30rem;
+    }
+  }
+  .bgImage {
+    width: 100%;
+    @include apply-at-md-size {
+      @media (min-width: $screen-md-limit) {
+        width: 40%;
+      }
+    }
+  }
+  .options {
+    display: flex;
+    gap: 30px;
+  }
+  .wrapperTitle {
+    width: 70%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    text-align: left;
+    color: white;
+    @include apply-at-md-size {
+      @media (min-width: $screen-md-limit) {
+        width: 80%;
+        font-size: 2rem;
+      }
+    }
+    @include apply-at-xl-size {
+      @media (min-width: $screen-xl-limit) {
+        width: 40%;
+      }
+    }
+  }
+}
+
+.tooltip {
+  .imageTooltip {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+  }
+  .textWrapper {
+    display: flex;
+    flex-direction: column;
+    .nameTooltip {
+      font-weight: bold;
+    }
+  }
+  .box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5%;
+    font-size: 12px;
+    font-weight: bold;
+    color: $color-gray;
+  }
+}
+.contentMaps {
+  display: flex;
+  flex-direction: column;
+  @include apply-at-md-size {
+    @media (min-width: $screen-md-limit) {
+      flex-direction: row;
+    }
+  }
+  .contentMapsLeft {
+    position: static;
+    height: fit-content;
+    padding: 2rem;
+    margin: 1rem;
+    background-color: var(--color-bg);
+    box-shadow: 0.3rem 0.3rem 0.6rem rgba($color: #000000, $alpha: 0.2);
+    border-radius: 1rem;
+    @include apply-at-md-size {
+      @media (min-width: $screen-md-limit) {
+        position: sticky;
+        top: 100px;
+        width: 50%;
+      }
+    }
+    .footerOption {
+      font-size: 0.5rem;
+      margin-top: 1.5rem;
+    }
+  }
+}

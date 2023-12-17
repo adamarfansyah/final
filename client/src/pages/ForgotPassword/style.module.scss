@@ -1,0 +1,39 @@
+@import '@styles/base';
+
+.formEmail {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 2rem;
+  border-radius: 1rem;
+  @include apply-at-md-size {
+    @media (min-width: $screen-md-limit) {
+      flex-direction: row;
+    }
+  }
+  background-color: var(--color-bg);
+  padding: 2rem;
+  .image {
+    width: 100%;
+    @include apply-at-md-size {
+      @media (min-width: $screen-md-limit) {
+        width: 30%;
+      }
+    }
+  }
+  .form {
+    width: 100%;
+    @include apply-at-md-size {
+      @media (min-width: $screen-md-limit) {
+        width: 50%;
+      }
+    }
+    .title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+  }
+}

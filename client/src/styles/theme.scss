@@ -1,0 +1,15 @@
+@import './media-mixins.scss';
+
+@mixin light-theme {
+  --color-bg: #fff;
+  --color-bg-secondary: #e8eef1;
+  --color-text: #040d12;
+  --color-button: #183d3d;
+}
+
+@mixin dark-theme {
+  --color-bg: #040d12;
+  --color-bg-secondary: #0f191e;
+  --color-text: #fafafa;
+  --color-button: #183d3d;
+}

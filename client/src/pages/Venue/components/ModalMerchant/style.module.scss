@@ -1,0 +1,69 @@
+@import '@styles/base';
+
+.modal {
+  // margin: 1rem;
+  width: 100%;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.contentWrapper {
+  .box {
+    @include directionX;
+    gap: 20px;
+    margin: 20px 0;
+    .textBox {
+      font-size: 14px;
+    }
+    .icon {
+      font-size: 16px;
+    }
+  }
+}
+
+.links {
+  display: flex;
+  gap: 20px;
+  .link {
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: bold;
+    font-size: 16px;
+    &:hover {
+      color: var(--color-button);
+    }
+  }
+}
+
+.modalImage {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+}
+
+.modalBox {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  width: 90%;
+  background-color: var(--color-bg);
+  @include apply-at-md-size {
+    @media (min-width: $screen-md-limit) {
+      width: 80%;
+    }
+  }
+
+  @include apply-at-lg-size {
+    @media (min-width: $screen-lg-limit) {
+      width: 40%;
+    }
+  }
+}
+
+.test {
+  padding: 2rem;
+}
