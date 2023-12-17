@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 import Input from '@components/Input';
 import Button from '@components/Button';
@@ -29,12 +30,13 @@ const UpdatePasswordUser = () => {
 
   return (
     <div className={classes.forgotPassword}>
+      <img className={classes.image} src="/error.svg" alt="test" />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Input
             type="password"
             name="password"
-            label="Password"
+            label="New Password"
             errors={errors}
             register={register}
             validationSchema={{
@@ -49,7 +51,7 @@ const UpdatePasswordUser = () => {
           <Input
             type="password"
             name="confirmPassword"
-            label="Confirm Password"
+            label="New Confirm Password"
             errors={errors}
             validationSchema={{
               required: 'Confirm Password is required',
@@ -61,7 +63,7 @@ const UpdatePasswordUser = () => {
           />
         </div>
         <Button type="submit" className={classes.btn}>
-          SUbmit
+          <FormattedMessage id="app_submit" />
         </Button>
       </form>
     </div>

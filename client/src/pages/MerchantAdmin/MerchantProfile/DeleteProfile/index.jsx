@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Box, Modal, Typography } from '@mui/material';
 import Button from '@components/Button';
+import { FormattedMessage } from 'react-intl';
 
 const style = {
   position: 'absolute',
@@ -26,12 +27,14 @@ const DeleteProfile = ({ open, setOpen, onDelete }) => {
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="p" component="h2">
-          Apakah anda yakin ingin menghapus Merchant ?
+          <FormattedMessage id="merchant_delete_title" />
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Merchant yang sudah di hapus tidak akan bisa kembali lagi
+          <FormattedMessage id="merchant_delete_desc" />
         </Typography>
-        <Button onClick={onDelete}>Delete</Button>
+        <Button onClick={onDelete}>
+          <FormattedMessage id="app_delete" />
+        </Button>
       </Box>
     </Modal>
   );

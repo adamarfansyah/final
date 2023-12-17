@@ -45,8 +45,10 @@ export default {
   section_update_profile: 'Ubah Profil',
   section_update_password: 'Ubah Sandi',
   venue_add_venue: 'Tambah Venue',
-  venue_delete_venue_title: 'Apakah kamu yakin ingin mengahapus venue ini?',
+  venue_delete_venue_title: 'Apakah kamu yakin ingin menghapus venue ini?',
   venue_delete_venue_desc: 'Jika kamu menghapus venue ini maka akan terhapus secara permanen',
+  merchant_delete_title: 'Apakah kamu yakin ingin menghapus Merchant ini?',
+  merchant_delete_desc: 'Jika kamu menghapus merchant ini maka akan terhapus secara permanen',
 
   // AUTH USER
   resend_otp: 'Kirim Ulang OTP',

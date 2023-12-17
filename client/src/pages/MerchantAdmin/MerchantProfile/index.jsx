@@ -7,7 +7,8 @@ import PlaceIcon from '@mui/icons-material/Place';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Button from '@components/Button';
 
-import { getMerchantProfile, updateMerchantProfile } from '../actions';
+import { logoutMerchant } from '@pages/AuthMerchant/actions';
+import { deleteMerchant, getMerchantProfile, updateMerchantPassword, updateMerchantProfile } from '../actions';
 import classes from './style.module.scss';
 import UpdateProfile from './UpdateProfile';
 import DeleteProfile from './DeleteProfile';
@@ -27,11 +28,19 @@ const MerchantProfile = ({ merchantProfile }) => {
   };
 
   const onUpdatePassword = (data) => {
-    console.log({ data });
+    dispatch(
+      updateMerchantPassword(data, () => {
+        dispatch(getMerchantProfile());
+      })
+    );
   };
 
   const onDelete = () => {
-    console.log(merchantProfile.id);
+    dispatch(
+      deleteMerchant(() => {
+        dispatch(logoutMerchant());
+      })
+    );
   };
 
   const handleUpdateProfile = () => {

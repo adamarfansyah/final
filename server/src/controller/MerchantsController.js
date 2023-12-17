@@ -1,16 +1,9 @@
 const schemas = require("../config/schemas");
-const {
-  Merchants,
-  Users,
-  MerchantCategories,
-  Payment,
-  Venues,
-  Categories,
-} = require("../database/models");
+const { Merchants, Venues, Categories } = require("../database/models");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
-const { GenerateToken } = require("../helpers/GenerateToken");
-const { PasswordCompare, PasswordHashing } = require("../helpers/HashPassword");
+const { PasswordHashing } = require("../helpers/HashPassword");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
+const { validateRequest } = require("../helpers/ValidateRequest");
 
 exports.getMerchants = async (_, res) => {
   try {
@@ -107,7 +100,7 @@ exports.updateMerchantProfile = async (req, res) => {
 exports.updateMerchantPassword = async (req, res) => {
   try {
     const { id } = res.locals;
-    const { password, confirmPassword } = req.body;
+    const { password } = req.body;
     const merchant = await Merchants.findByPk(id);
     if (!merchant) {
       return ResponseError(res, 404, "Merchant Not Found");
@@ -124,6 +117,22 @@ exports.updateMerchantPassword = async (req, res) => {
     await merchant.update({ password: hashedPassword });
 
     return ResponseSuccess(res, 201, "Update Success", "Update Success");
+  } catch (error) {
+    return ResponseError(res, 500, "Internal Server Error", error.message);
+  }
+};
+
+exports.deleteMerchant = async (req, res) => {
+  try {
+    const { id } = res.locals;
+    const merchant = await Merchants.findByPk(id);
+    if (!merchant) {
+      return ResponseError(res, 404, "Merchant Not Found");
+    }
+
+    await merchant.destroy();
+
+    return ResponseSuccess(res, 204, "Success Delete");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }

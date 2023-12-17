@@ -27,7 +27,6 @@ const MerchantAdmin = ({ merchant, merchantPayments, merchantVenues, merchantPro
     if (!merchant) {
       navigate('/');
     }
-
     dispatch(getPaymentsByMerchant());
     dispatch(getMerchantVenues());
     dispatch(getMerchantProfile());

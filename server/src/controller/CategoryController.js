@@ -1,7 +1,7 @@
 const { Categories } = require("../database/models");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 
-exports.getCategories = async (req, res) => {
+exports.getCategories = async (_, res) => {
   try {
     const categories = await Categories.findAll({});
 

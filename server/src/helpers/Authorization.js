@@ -55,7 +55,7 @@ const AuthenticatedMerchant = async (req, res, next) => {
 const AdminMerchantAuth = (req, res, next) => {
   try {
     const userType = res.locals.userType;
-    console.log({ userType });
+
     if (userType !== "merchant") {
       return ResponseError(res, 403, "Forbidden", "AdminMerchant access only");
     }

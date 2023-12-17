@@ -1,14 +1,13 @@
 const { Users, Merchants } = require("../database/models");
 const {
   GenerateToken,
-  GenerateRefreshToken,
   GenerateTokenEmail,
   GenerateResetPasswordToken,
 } = require("../helpers/GenerateToken");
 const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { Op } = require("sequelize");
-const { VerifyRefreshToken, VerifyEmailToken } = require("../helpers/VerifyToken");
+const { VerifyEmailToken } = require("../helpers/VerifyToken");
 const { validateRequest } = require("../helpers/ValidateRequest");
 const schemas = require("../config/schemas");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
@@ -116,7 +115,6 @@ exports.registerUser = async (req, res) => {
 
     return ResponseSuccess(res, 200, "Success", newUser);
   } catch (error) {
-    console.log(error);
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };

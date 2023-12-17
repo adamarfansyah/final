@@ -30,11 +30,6 @@ const LINKS = [
     name: 'navbar_link_venue',
     href: '/venue',
   },
-  {
-    id: 3,
-    name: 'navbar_link_merchant',
-    href: '/merchant',
-  },
 ];
 
 const LINKS_MERCHANT = [

@@ -1,4 +1,4 @@
-const { Merchants, Users, MerchantCategories, Categories } = require("../database/models");
+const { Merchants, Users } = require("../database/models");
 const { Op } = require("sequelize");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
 const { GenerateToken, GenerateTokenEmail } = require("../helpers/GenerateToken");

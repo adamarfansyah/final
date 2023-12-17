@@ -1,19 +1,20 @@
-import { call, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 
 import { updateForgotPasswordUserApi } from '@domain/api';
 
-import { setLoading } from '@containers/App/actions';
+import { setLoading, showPopup } from '@containers/App/actions';
 import { UPDATE_FORGOT_PASSWORD_USER } from './constants';
 
 function* doUpdateForgotPasswordUser({ data, token, cbSuccess }) {
-  yield setLoading(true);
+  yield put(setLoading(true));
   try {
     yield call(updateForgotPasswordUserApi, data, token);
+    yield put(showPopup('Success Change Password!', 'Please login with your new password', true));
     cbSuccess && cbSuccess();
   } catch (error) {
-    console.log({ error });
+    yield put(showPopup('Sorry :(', error.response.data.status));
   }
-  yield setLoading(false);
+  yield put(setLoading(false));
 }
 
 export default function* updatePasswordSaga() {

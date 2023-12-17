@@ -1,5 +1,5 @@
 const { Users } = require("../database/models");
-const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
+const { PasswordHashing } = require("../helpers/HashPassword");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { validateRequest } = require("../helpers/ValidateRequest");
 const schemas = require("../config/schemas");

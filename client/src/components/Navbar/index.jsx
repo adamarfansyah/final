@@ -77,8 +77,8 @@ const Navbar = ({ locale, user, theme, links, handleTheme }) => {
     >
       <div className={classes.contentWrapper}>
         <div className={classes.logoImage} onClick={() => goTo('/')}>
-          <img src="/vite.svg" alt="logo" className={classes.logo} />
-          <div className={classes.title}>Booking Online</div>
+          <img src="/logoPlayZone.png" alt="logo" className={classes.logo} />
+          <div className={classes.title}>PlayZone Pro</div>
         </div>
         {!isMobile ? (
           <div className={classes.rightContent}>

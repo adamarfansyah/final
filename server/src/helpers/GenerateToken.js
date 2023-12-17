@@ -7,14 +7,6 @@ const GenerateToken = (data) => {
   return token;
 };
 
-const GenerateRefreshToken = (data) => {
-  const token = jwt.sign(data, process.env.JWT_REFRESH_TOKEN, {
-    expiresIn: "1d",
-  });
-
-  return token;
-};
-
 const GenerateTokenEmail = (otp, email) => {
   if (!otp || !email) {
     return;
@@ -29,7 +21,6 @@ const GenerateResetPasswordToken = (email) => {
 
 module.exports = {
   GenerateToken,
-  GenerateRefreshToken,
   GenerateTokenEmail,
   GenerateResetPasswordToken,
 };

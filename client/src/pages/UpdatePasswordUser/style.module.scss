@@ -1,6 +1,16 @@
 @import '@styles/base';
 
 .forgotPassword {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: var(--color-bg);
   padding: 1rem;
+  .image {
+    width: 20rem;
+  }
+  form {
+    width: 100%;
+  }
 }
