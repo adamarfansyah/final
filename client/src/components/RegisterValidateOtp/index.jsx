@@ -9,7 +9,7 @@ import Button from '@components/Button';
 import Input from '@components/Input';
 import classes from './style.module.scss';
 
-const RegisterValidateOtp = ({ user, onSubmit, time, resendOtp }) => {
+const RegisterValidateOtp = ({ user, onSubmit, time, resendOtp, blockUrl }) => {
   const navigate = useNavigate();
   const {
     register,
@@ -19,7 +19,7 @@ const RegisterValidateOtp = ({ user, onSubmit, time, resendOtp }) => {
 
   useEffect(() => {
     if (!user) {
-      navigate('/auth');
+      navigate(blockUrl);
     }
   }, [user]);
 
@@ -65,6 +65,7 @@ RegisterValidateOtp.propTypes = {
   onSubmit: PropTypes.func,
   time: PropTypes.string,
   resendOtp: PropTypes.func,
+  blockUrl: PropTypes.string,
 };
 
 export default RegisterValidateOtp;

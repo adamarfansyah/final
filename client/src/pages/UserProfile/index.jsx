@@ -8,14 +8,15 @@ import { selectToken } from '@containers/Client/selectors';
 import { getPaymentByUser } from '@pages/TransactionDetail/actions';
 import { selectPaymentByUser } from '@pages/TransactionDetail/selectors';
 
+import { encryptData } from '@utils/encrypt';
 import TableTransaction from '@components/TableTransaction';
+import UpdatePassword from '@components/UpdatePassword';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PaidIcon from '@mui/icons-material/Paid';
 import CardUser from './Components/CardUser';
 import UpdateProfile from './Components/UpdateProfile';
-import UpdatePassword from './Components/UpdatePassword';
 import classes from './style.module.scss';
-import { getUserProfile } from './actions';
+import { getUserProfile, updateUserPassword } from './actions';
 import { selectUserProfile } from './selectors';
 
 const UserProfile = ({ token, userProfile, transactions }) => {
@@ -45,6 +46,13 @@ const UserProfile = ({ token, userProfile, transactions }) => {
 
   const goToTransactionDetail = (transactionId) => {
     navigate(`/transaction/${transactionId}`);
+  };
+
+  const onSubmit = (data) => {
+    const encryptedPassword = encryptData(data.password);
+    const encryptedConfirmPassword = encryptData(data.confirmPassword);
+
+    dispatch(updateUserPassword({ password: encryptedPassword, confirmPassword: encryptedConfirmPassword }));
   };
 
   return (
@@ -87,7 +95,11 @@ const UserProfile = ({ token, userProfile, transactions }) => {
               </div>
             </div>
             <div className={classes.content}>
-              {isShowUpdateProfile ? <UpdateProfile user={userProfile} /> : <UpdatePassword />}
+              {isShowUpdateProfile ? (
+                <UpdateProfile user={userProfile} />
+              ) : (
+                <UpdatePassword onSubmit={(data) => onSubmit(data)} />
+              )}
             </div>
           </div>
         ) : (

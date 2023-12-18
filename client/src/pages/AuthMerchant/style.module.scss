@@ -82,7 +82,11 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 0 50px;
+      padding: 0 1rem;
+      .links {
+        margin-top: 1rem;
+        text-align: center;
+      }
     }
   }
 }

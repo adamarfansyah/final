@@ -20,18 +20,18 @@ import {
 import { verifyEmailMerchantSuccess } from './actions';
 
 function* doCreateMerchant({ data, cbSuccess }) {
-  yield setLoading(true);
+  yield put(setLoading(true));
   try {
     yield call(createMerchantApi, data);
     cbSuccess && cbSuccess();
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.status));
   }
-  yield setLoading(false);
+  yield put(setLoading(false));
 }
 
 function* doLoginMerchant({ data, cbSuccess }) {
-  yield setLoading(true);
+  yield put(setLoading(true));
   try {
     const response = yield call(loginMerchantApi, data);
     cbSuccess && cbSuccess();
@@ -41,11 +41,11 @@ function* doLoginMerchant({ data, cbSuccess }) {
     yield put(showPopup('Sorry :(', error.response.data.status));
     yield put(setLoginFailure(error.response.data.message));
   }
-  yield setLoading(false);
+  yield put(setLoading(false));
 }
 
 function* doLogoutMerchant() {
-  yield setLoading(true);
+  yield put(setLoading(true));
   try {
     yield call(logoutMerchantApi);
     yield put(setTokenMerchant(null));
@@ -53,11 +53,11 @@ function* doLogoutMerchant() {
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.status));
   }
-  yield setLoading(false);
+  yield put(setLoading(false));
 }
 
 function* doVerifyEmailMerchant({ email, cbSuccess }) {
-  yield setLoading(true);
+  yield put(setLoading(true));
   try {
     const response = yield call(verifyEmailMerchantApi, email);
     cbSuccess && cbSuccess();
@@ -65,18 +65,18 @@ function* doVerifyEmailMerchant({ email, cbSuccess }) {
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.message));
   }
-  yield setLoading(false);
+  yield put(setLoading(false));
 }
 
 function* doValidateEmailMerchant({ data, cbSuccess }) {
-  yield setLoading(true);
+  yield put(setLoading(true));
   try {
     yield call(validateEmailMerchantApi, data);
     cbSuccess && cbSuccess();
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.status));
-    yield setLoading(false);
   }
+  yield put(setLoading(false));
 }
 
 export default function* authMerchantSaga() {

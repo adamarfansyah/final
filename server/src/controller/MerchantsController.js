@@ -100,20 +100,23 @@ exports.updateMerchantProfile = async (req, res) => {
 exports.updateMerchantPassword = async (req, res) => {
   try {
     const { id } = res.locals;
-    const { password } = req.body;
+    const { password, confirmPassword } = req.body;
     const merchant = await Merchants.findByPk(id);
+
     if (!merchant) {
       return ResponseError(res, 404, "Merchant Not Found");
     }
-
-    const errorMessage = validateRequest(req.body, schemas.updatePasswordMerchantSchem);
+    const dcryptPassword = dcryptMessageBody(password);
+    const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
+    const errorMessage = validateRequest(
+      { password: dcryptPassword, confirmPassword: dcryptConfirmPassword },
+      schemas.updatePasswordMerchantSchem
+    );
     if (errorMessage) {
       return ResponseError(res, 400, "Validation Error", errorMessage);
     }
 
-    const dcryptPassword = dcryptMessageBody(password);
     const hashedPassword = await PasswordHashing(dcryptPassword);
-
     await merchant.update({ password: hashedPassword });
 
     return ResponseSuccess(res, 201, "Update Success", "Update Success");

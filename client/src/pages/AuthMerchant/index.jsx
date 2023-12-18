@@ -14,6 +14,9 @@ import { selectCategories } from '@pages/Venue/selectors';
 import { getCategories } from '@pages/Venue/actions';
 
 import { selectLocation } from '@containers/App/selectors';
+import Register from '@components/Register';
+import Login from '@components/Login';
+import RegisterValidateOtp from '@components/RegisterValidateOtp';
 import {
   createMerchant,
   deleteEmailValidateMerchant,
@@ -21,9 +24,6 @@ import {
   validateEmailMerchant,
   verifyEmailMerchant,
 } from './actions';
-import Register from './Components/Register';
-import Login from './Components/Login';
-import RegisterValidateOtp from './Components/RegisterValidateOtp';
 import RegisterData from './Components/RegisterData';
 import classes from './style.module.scss';
 import { selectAuthMerchant } from './selectors';
@@ -107,6 +107,7 @@ const AuthMerchant = ({ authMerchant, error, categories, location }) => {
           user={decoded}
           time={expToken}
           resendOtp={resendOtp}
+          blockUrl="/auth/merchant"
         />
       ),
       3: <RegisterData onSubmit={(data) => onSubmitStep3(data)} categories={categories} location={location} />,

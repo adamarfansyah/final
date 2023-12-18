@@ -23,7 +23,6 @@ const ForgotPassword = () => {
   return (
     <div className={classes.formEmail}>
       <img className={classes.image} src={forgotPasswordImage} alt="test" />
-
       <div className={classes.form}>
         <div className={classes.title}>
           <FormattedMessage id="forgot_password" />

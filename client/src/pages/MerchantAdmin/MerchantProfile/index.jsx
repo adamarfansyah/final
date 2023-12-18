@@ -8,6 +8,7 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Button from '@components/Button';
 
 import { logoutMerchant } from '@pages/AuthMerchant/actions';
+import { encryptData } from '@utils/encrypt';
 import { deleteMerchant, getMerchantProfile, updateMerchantPassword, updateMerchantProfile } from '../actions';
 import classes from './style.module.scss';
 import UpdateProfile from './UpdateProfile';
@@ -28,8 +29,10 @@ const MerchantProfile = ({ merchantProfile }) => {
   };
 
   const onUpdatePassword = (data) => {
+    const encryptedPassword = encryptData(data.password);
+    const encryptedConfirmPassword = encryptData(data.confirmPassword);
     dispatch(
-      updateMerchantPassword(data, () => {
+      updateMerchantPassword({ password: encryptedPassword, confirmPassword: encryptedConfirmPassword }, () => {
         dispatch(getMerchantProfile());
       })
     );
