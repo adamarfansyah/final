@@ -11,6 +11,7 @@ const config = {
   },
   token: {
     tokenCrypto: env.TOKEN_CRYPTO,
+    tokenCryptoForgotPassword: env.TOKEN_CRYPYO_FORGOT_PASSWORD,
   },
   snapClient: {
     snapKey: env.SNAP_CLIENT,

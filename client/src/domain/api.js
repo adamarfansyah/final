@@ -54,6 +54,10 @@ export const loginMerchantApi = (data) => callAPI(`${urls.authMerchant}/login`, 
 export const logoutMerchantApi = () => callAPI(`${urls.authMerchant}/logout`, 'POST', {}, {}, {});
 export const verifyEmailMerchantApi = (data) => callAPI(`${urls.authMerchant}/verify-email`, 'POST', {}, {}, data);
 export const validateEmailMerchantApi = (data) => callAPI(`${urls.authMerchant}/validate-email`, 'POST', {}, {}, data);
+export const forgotPasswordMerchantApi = (email) =>
+  callAPI(`${urls.authMerchant}/forgot-password`, 'POST', {}, {}, email);
+export const updateForgotPasswordMerchantApi = (data, token) =>
+  callAPI(`${urls.authMerchant}/update-forgot-password/${token}`, 'POST', {}, {}, data);
 
 // MERCHANT
 export const getMerchantsApi = () => callAPI(urls.merchant, 'GET');

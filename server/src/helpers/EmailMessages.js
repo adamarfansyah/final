@@ -7,12 +7,22 @@ exports.emailBodyOTP = (email, otp) => {
   `;
 };
 
-exports.emailBodyForgotPassword = (email, token) => {
+exports.emailBodyForgotPasswordUser = (email, token) => {
   return `
     <h1>Hallo ${email}<h1>
     <p>Please don't tell this link to anyone<p>
     <p>Thank you for order!</p>
-    <a href="http://localhost:3000/auth/update-forgot-password/${token}">Receipt Link</a>
+    <a href="http://localhost:3000/update-forgot-password/user/${token}">Receipt Link</a>
+    <h3>Please don't tell that link to anyone</h3>
+  `;
+};
+
+exports.emailBodyForgotPasswordMerchant = (email, token) => {
+  return `
+    <h1>Hallo ${email}<h1>
+    <p>Please don't tell this link to anyone<p>
+    <p>Thank you for order!</p>
+    <a href="http://localhost:3000/update-forgot-password/merchant/${token}">Receipt Link</a>
     <h3>Please don't tell that link to anyone</h3>
   `;
 };

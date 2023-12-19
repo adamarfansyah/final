@@ -1,13 +1,21 @@
 const { Merchants, Users } = require("../database/models");
 const { Op } = require("sequelize");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
-const { GenerateToken, GenerateTokenEmail } = require("../helpers/GenerateToken");
+const {
+  GenerateToken,
+  GenerateTokenEmail,
+  GenerateResetPasswordToken,
+} = require("../helpers/GenerateToken");
 const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { validateRequest } = require("../helpers/ValidateRequest");
 const schemas = require("../config/schemas");
 const GenerateOtp = require("../helpers/GenerateOtp");
-const { emailBodyOTP } = require("../helpers/EmailMessages");
+const {
+  emailBodyOTP,
+  emailBodyForgotPassword,
+  emailBodyForgotPasswordMerchant,
+} = require("../helpers/EmailMessages");
 const sendEmail = require("../helpers/SendEmail");
 const { VerifyEmailToken } = require("../helpers/VerifyToken");
 
@@ -219,6 +227,75 @@ exports.updateImageMerchant = async (req, res) => {
     const updatedImageMerchant = await merchant.update({ image });
 
     return ResponseSuccess(res, 201, "Success Update Image", updatedImageMerchant);
+  } catch (error) {
+    return ResponseError(res, 500, "Internal Server Error", error.message);
+  }
+};
+
+exports.forgotPasswordMerchant = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const errorMessage = validateRequest(req.body, schemas.forgotPasswordSchem);
+
+    if (errorMessage) {
+      return ResponseError(res, 400, "Validation Error", errorMessage);
+    }
+
+    const merchant = await Merchants.findOne({ where: { email } });
+
+    if (!merchant) {
+      return ResponseError(res, 404, "Merchant not found");
+    }
+
+    const token = GenerateResetPasswordToken(email);
+
+    const data = {
+      to: email,
+      text: `Hey ${email}`,
+      subject: "Forgot Password",
+      htm: emailBodyForgotPasswordMerchant(email, token),
+    };
+
+    sendEmail(data);
+
+    await merchant.update({ resetPasswordToken: token });
+
+    return ResponseSuccess(res, 200, "Success Forgot Password", { token });
+  } catch (error) {
+    return ResponseError(res, 500, "Internal Server Error", error.message);
+  }
+};
+
+exports.updateForgotPasswordMerchant = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password, confirmPassword } = req.body;
+    const dcryptPassword = dcryptMessageBody(password);
+    const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
+    const errorMessage = validateRequest(
+      { password: dcryptPassword, confirmPassword: dcryptConfirmPassword },
+      schemas.updateForgotPasswordSchem
+    );
+
+    if (errorMessage) {
+      return ResponseError(res, 400, "Validation Error", errorMessage);
+    }
+
+    const merchant = await Merchants.findOne({ where: { resetPasswordToken: token } });
+
+    if (!merchant) {
+      return ResponseError(res, 404, "User not found");
+    }
+
+    const passwordHashed = await PasswordHashing(dcryptPassword);
+
+    const newMerchantPassword = await merchant.update({
+      password: passwordHashed,
+      resetPasswordToken: null,
+    });
+
+    return ResponseSuccess(res, 201, "Success Update Password", newMerchantPassword);
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }

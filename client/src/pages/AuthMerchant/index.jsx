@@ -6,17 +6,15 @@ import { createStructuredSelector } from 'reselect';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 
+import { Register, RegisterValidateOtp, Login } from '@components/Form';
+
 import { encryptData } from '@utils/encrypt';
 import { selectLoginFailure } from '@containers/Client/selectors';
 import LinkCustom from '@components/LinkCustom';
 import dcryptToken from '@utils/dcryptToken';
 import { selectCategories } from '@pages/Venue/selectors';
 import { getCategories } from '@pages/Venue/actions';
-
 import { selectLocation } from '@containers/App/selectors';
-import Register from '@components/Register';
-import Login from '@components/Login';
-import RegisterValidateOtp from '@components/RegisterValidateOtp';
 import {
   createMerchant,
   deleteEmailValidateMerchant,
@@ -138,6 +136,9 @@ const AuthMerchant = ({ authMerchant, error, categories, location }) => {
           <div className={classes.links}>
             <LinkCustom to="/auth">
               <FormattedMessage id="app_register_user_link" />
+            </LinkCustom>
+            <LinkCustom to="/forgot-password/merchant" className={classes.link}>
+              <FormattedMessage id="app_forgot_password_user_link" />
             </LinkCustom>
           </div>
         </div>

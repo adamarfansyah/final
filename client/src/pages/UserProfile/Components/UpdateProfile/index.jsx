@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
 import { updateUserProfile } from '@pages/UserProfile/actions';
 
@@ -110,7 +111,7 @@ const UpdateProfile = ({ user }) => {
         </div>
         <div className={classes.btnContainer}>
           <Button className={classes.btn} variant="primary">
-            Submit
+            <FormattedMessage id="app_submit" />
           </Button>
         </div>
       </form>

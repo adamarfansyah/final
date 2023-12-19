@@ -2,11 +2,17 @@ const schemas = require("../config/schemas");
 const { Merchants, Venues, Categories } = require("../database/models");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
 const { PasswordHashing } = require("../helpers/HashPassword");
+const { getDataFromCache, setDataInCache, delDataInCache } = require("../helpers/RedisHelpers");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { validateRequest } = require("../helpers/ValidateRequest");
 
 exports.getMerchants = async (_, res) => {
   try {
+    const merchantsCache = await getDataFromCache("merchants");
+    if (merchantsCache) {
+      return ResponseSuccess(res, 200, "Success", merchantsCache);
+    }
+
     const merchants = await Merchants.findAll({
       attributes: {
         exclude: ["password", "accessToken", "resetPasswordToken"],
@@ -18,6 +24,8 @@ exports.getMerchants = async (_, res) => {
         },
       ],
     });
+
+    await setDataInCache("merchants", merchants);
 
     return ResponseSuccess(res, 200, "Success", merchants);
   } catch (error) {
@@ -91,6 +99,8 @@ exports.updateMerchantProfile = async (req, res) => {
     }
 
     await merchant.update(formData);
+    await delDataInCache("merchants");
+
     return ResponseSuccess(res, 201, "Success Update Data", "Success Update Data");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
@@ -118,7 +128,7 @@ exports.updateMerchantPassword = async (req, res) => {
 
     const hashedPassword = await PasswordHashing(dcryptPassword);
     await merchant.update({ password: hashedPassword });
-
+    await delDataInCache("merchants");
     return ResponseSuccess(res, 201, "Update Success", "Update Success");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
@@ -134,6 +144,7 @@ exports.deleteMerchant = async (req, res) => {
     }
 
     await merchant.destroy();
+    await delDataInCache("merchants");
 
     return ResponseSuccess(res, 204, "Success Delete");
   } catch (error) {

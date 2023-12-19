@@ -12,7 +12,7 @@ import VenueDetail from '@pages/Venue/VenueDetail';
 import UserProfile from '@pages/UserProfile';
 import ForgotPassword from '@pages/ForgotPassword';
 import TransactionDetail from '@pages/TransactionDetail';
-import UpdatePasswordUser from '@pages/UpdatePasswordUser';
+import UpdatePasswordPage from '@pages/UpdatePassword';
 
 const routes = [
   {
@@ -30,17 +30,17 @@ const routes = [
     layout: MainLayout,
   },
   {
-    path: '/auth/forgot-password',
-    name: 'Auth Forgot Password',
+    path: '/forgot-password/:role',
+    name: 'Forgot Password',
     protected: false,
     component: ForgotPassword,
     layout: MainLayout,
   },
   {
-    path: '/auth/update-forgot-password/:token',
-    name: 'Auth Update Forgot Password',
+    path: '/update-forgot-password/:role/:token',
+    name: 'Update Forgot Password',
     protected: false,
-    component: UpdatePasswordUser,
+    component: UpdatePasswordPage,
     layout: MainLayout,
   },
   {
@@ -92,12 +92,6 @@ const routes = [
     path: '/transaction/:transactionId',
     protected: true,
     component: TransactionDetail,
-    layout: MainLayout,
-  },
-  {
-    path: '/forgot-password/user',
-    protected: false,
-    component: ForgotPassword,
     layout: MainLayout,
   },
   { path: '*', name: 'Not Found', component: NotFound, layout: MainLayout, protected: false },

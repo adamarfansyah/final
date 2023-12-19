@@ -12,7 +12,11 @@ const { validateRequest } = require("../helpers/ValidateRequest");
 const schemas = require("../config/schemas");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
 const sendEmail = require("../helpers/SendEmail");
-const { emailBodyOTP, emailBodyForgotPassword } = require("../helpers/EmailMessages");
+const {
+  emailBodyOTP,
+  emailBodyForgotPassword,
+  emailBodyForgotPasswordUser,
+} = require("../helpers/EmailMessages");
 const GenerateOtp = require("../helpers/GenerateOtp");
 
 exports.verifyEmailOtpUser = async (req, res) => {
@@ -124,17 +128,17 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
     const user = await Users.findOne({ where: { email } });
 
-    if (!user) {
-      return ResponseError(res, 404, "Email Not Found");
-    }
-
-    const dcryptPassword = dcryptMessageBody(password);
-
     const errorMessage = validateRequest(req.body, schemas.loginUserSchem);
 
     if (errorMessage) {
       return ResponseError(res, 400, "Validation Error", errorMessage);
     }
+
+    if (!user) {
+      return ResponseError(res, 404, "Email Not Found");
+    }
+
+    const dcryptPassword = dcryptMessageBody(password);
 
     const comparedPassword = await PasswordCompare(dcryptPassword, user.password);
 
@@ -183,16 +187,16 @@ exports.forgotPasswordUser = async (req, res) => {
   try {
     const { email } = req.body;
 
-    const user = await Users.findOne({ where: { email } });
-
-    if (!user) {
-      return ResponseError(res, 404, "User not found");
-    }
-
     const errorMessage = validateRequest(req.body, schemas.forgotPasswordSchem);
 
     if (errorMessage) {
       return ResponseError(res, 400, "Validation Error", errorMessage);
+    }
+
+    const user = await Users.findOne({ where: { email } });
+
+    if (!user) {
+      return ResponseError(res, 404, "User not found");
     }
 
     const token = GenerateResetPasswordToken(email);
@@ -201,7 +205,7 @@ exports.forgotPasswordUser = async (req, res) => {
       to: email,
       text: `Hey ${email}`,
       subject: "Forgot Password",
-      htm: emailBodyForgotPassword(email, token),
+      htm: emailBodyForgotPasswordUser(email, token),
     };
 
     sendEmail(data);
@@ -210,6 +214,7 @@ exports.forgotPasswordUser = async (req, res) => {
 
     return ResponseSuccess(res, 200, "Success Forgot Password", { token });
   } catch (error) {
+    console.log({ error });
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };
@@ -217,7 +222,17 @@ exports.forgotPasswordUser = async (req, res) => {
 exports.updateForgotPasswordUser = async (req, res) => {
   try {
     const { token } = req.params;
-    const { password } = req.body;
+    const { password, confirmPassword } = req.body;
+    const dcryptPassword = dcryptMessageBody(password);
+    const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
+    const errorMessage = validateRequest(
+      { password: dcryptPassword, confirmPassword: dcryptConfirmPassword },
+      schemas.updateForgotPasswordSchem
+    );
+
+    if (errorMessage) {
+      return ResponseError(res, 400, "Validation Error", errorMessage);
+    }
 
     const user = await Users.findOne({ where: { resetPasswordToken: token } });
 
@@ -225,14 +240,7 @@ exports.updateForgotPasswordUser = async (req, res) => {
       return ResponseError(res, 404, "User not found");
     }
 
-    const errorMessage = validateRequest(req.body, schemas.updateForgotPasswordSchem);
-
-    if (errorMessage) {
-      return ResponseError(res, 400, "Validation Error", errorMessage);
-    }
-
-    const passwordHashed = await PasswordHashing(password);
-
+    const passwordHashed = await PasswordHashing(dcryptPassword);
     const newUserPassword = await user.update({
       password: passwordHashed,
       resetPasswordToken: null,

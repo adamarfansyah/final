@@ -67,11 +67,7 @@ const VenueDetail = ({ venueSchedule }) => {
       const selectedStart = moment(time.start);
       const selectedEnd = moment(time.end);
 
-      return (
-        (selectedStart.isSameOrAfter(bookedStart) && selectedStart.isBefore(bookedEnd)) ||
-        (selectedEnd.isSameOrAfter(bookedStart) && selectedEnd.isBefore(bookedEnd)) ||
-        (selectedStart.isSameOrBefore(bookedStart) && selectedEnd.isSameOrAfter(bookedEnd))
-      );
+      return selectedStart.isSame(bookedStart) && selectedEnd.isSame(bookedEnd);
     });
 
   return (

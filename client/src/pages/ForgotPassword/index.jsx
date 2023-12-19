@@ -1,55 +1,36 @@
-import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 
-import { forgotPasswordUser } from '@pages/ForgotPassword/actions';
-import forgotPasswordImage from '@static/images/forgot-password.svg';
-import Button from '@components/Button';
-import Input from '@components/Input';
-import classes from './style.module.scss';
+import { forgotPasswordMerchant, forgotPasswordUser } from '@pages/ForgotPassword/actions';
+import ForgotPasswordForm from '@components/Form/ForgotPassword';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const ForgotPassword = () => {
+  const { role } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+
+  useEffect(() => {
+    if (role !== 'user' && role !== 'merchant') {
+      navigate('/');
+    }
+  }, []);
 
   const onSubmit = (data) => {
     dispatch(forgotPasswordUser(data));
   };
 
-  return (
-    <div className={classes.formEmail}>
-      <img className={classes.image} src={forgotPasswordImage} alt="test" />
-      <div className={classes.form}>
-        <div className={classes.title}>
-          <FormattedMessage id="forgot_password" />
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <Input
-              type="text"
-              name="email"
-              label="Email"
-              errors={errors}
-              register={register}
-              placeholder="E-mail"
-              validationSchema={{
-                required: 'Email is required',
-                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email address' },
-              }}
-              required
-            />
-          </div>
-          <Button type="submit" className={classes.btn}>
-            <FormattedMessage id="app_submit" />
-          </Button>
-        </form>
-      </div>
-    </div>
-  );
+  const onSubmitMerchant = (data) => {
+    dispatch(forgotPasswordMerchant(data));
+  };
+
+  if (role === 'merchant') {
+    return <ForgotPasswordForm onSubmit={onSubmitMerchant} />;
+  }
+
+  if (role === 'user') {
+    return <ForgotPasswordForm onSubmit={onSubmit} />;
+  }
 };
 
 export default ForgotPassword;

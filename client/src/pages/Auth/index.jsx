@@ -6,10 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
-import Register from '@components/Register';
-import RegisterValidateOtp from '@components/RegisterValidateOtp';
-import Login from '@components/Login';
-
+import { Register, RegisterValidateOtp, Login } from '@components/Form';
 import bgImage from '@static/images/user-login.jpg';
 import { encryptData } from '@utils/encrypt';
 import { selectToken } from '@containers/Client/selectors';
@@ -129,7 +126,7 @@ const Auth = ({ token, authUser }) => {
             <LinkCustom to="/auth/merchant" className={classes.link}>
               <FormattedMessage id="app_register_merchant_link" />
             </LinkCustom>
-            <LinkCustom to="/auth/forgot-password" className={classes.link}>
+            <LinkCustom to="/forgot-password/user" className={classes.link}>
               <FormattedMessage id="app_forgot_password_user_link" />
             </LinkCustom>
           </div>

@@ -20,7 +20,7 @@ const schemas = {
     username: Joi.string().min(3).max(30).required(),
     firstName: Joi.string().max(50).required(),
     lastName: Joi.string().max(50).required(),
-    image: Joi.string().required(),
+    image: Joi.string(),
     phoneNumber: Joi.string()
       .min(6)
       .max(20)
