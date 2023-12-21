@@ -12,6 +12,7 @@ export default {
   app_register_user_link: 'Apakah anda ingin login sebagai user?',
   app_forgot_password_user_link: 'Lupa kata sandi ?',
   app_login_title: 'Masuk',
+  app_login_title_merchant: 'Masuk sebagai Mitra',
   app_register_title: 'Daftar',
   app_submit: 'Kirim',
 
@@ -33,6 +34,15 @@ export default {
   app_delete: 'Hapus',
   app_update: 'Ubah',
   app_hour: 'Jam',
+  app_booked: 'Sudah Dipesan',
+  app_not_booked: 'Pesan',
+
+  // TABLE TRANSACTION
+  table_venue_name: 'Nama Lapangan',
+  table_order_id: 'ID Pesanan',
+  table_date: 'Tanggal',
+  table_amount: 'Jumlah',
+  table_detail: 'Detail',
 
   // HOME
   welcome_greeting: 'Selamat datang di PlayZonePro',

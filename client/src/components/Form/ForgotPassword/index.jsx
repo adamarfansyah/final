@@ -16,7 +16,7 @@ const ForgotPasswordForm = ({ onSubmit }) => {
 
   return (
     <div className={classes.formEmail}>
-      <img className={classes.image} src={forgotPasswordImage} alt="test" />
+      <img className={classes.image} src={forgotPasswordImage} alt="forgot-password" />
       <div className={classes.form}>
         <div className={classes.title}>
           <FormattedMessage id="forgot_password" />

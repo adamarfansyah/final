@@ -8,7 +8,7 @@ const Button = ({ children, onClick, className, disabled, variant }) => {
   });
 
   return (
-    <button className={buttonClasses} onClick={onClick} type="submit" disabled={disabled}>
+    <button data-testid="btn" className={buttonClasses} onClick={onClick} type="submit" disabled={disabled}>
       {children}
     </button>
   );

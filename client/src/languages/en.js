@@ -12,6 +12,7 @@ export default {
   app_register_user_link: 'Would you like to login as a user?',
   app_forgot_password_user_link: 'Forgot password ?',
   app_login_title: 'Login',
+  app_login_title_merchant: 'Login as Merchant',
   app_register_title: 'Register',
   app_submit: 'Submit',
 
@@ -33,6 +34,15 @@ export default {
   app_delete: 'Delete',
   app_update: 'Update',
   app_hour: 'Hour',
+  app_booked: 'Sudah Dipesan',
+  app_not_booked: 'Pesan',
+
+  // TABLE TRANSACTION
+  table_venue_name: 'Venue Name',
+  table_order_id: 'Order ID',
+  table_date: 'Date',
+  table_amount: 'Amount',
+  table_detail: 'Detail',
 
   // HOME
   welcome_greeting: 'Welcome To PlayZonePro',

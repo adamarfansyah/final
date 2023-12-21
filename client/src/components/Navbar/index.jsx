@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
@@ -98,14 +98,20 @@ const Navbar = ({ locale, user, theme, links, handleTheme }) => {
                     className={location.pathname !== '/profile' ? classes.link : `${classes.link} ${classes.active}`}
                     to="/profile"
                   >
-                    Profile
+                    <FormattedMessage id="navbar_link_merchant_profile" />
                   </Link>
-                  <Button onClick={handleLogout}>Logout</Button>
+                  <Button onClick={handleLogout}>
+                    <FormattedMessage id="navbar_link_merchant_logout" />
+                  </Button>
                 </>
               ) : (
                 <>
-                  <Button onClick={() => goTo('/auth')}>Login</Button>
-                  <Button onClick={() => goTo('/auth/merchant')}>Login Merchant</Button>
+                  <Button onClick={() => goTo('/auth')}>
+                    <FormattedMessage id="app_login_title" />
+                  </Button>
+                  <Button onClick={() => goTo('/auth/merchant')}>
+                    <FormattedMessage id="app_login_title_merchant" />
+                  </Button>
                 </>
               )}
             </div>
@@ -176,4 +182,4 @@ Navbar.propTypes = {
   links: PropTypes.array,
 };
 
-export default Navbar;
+export default injectIntl(Navbar);

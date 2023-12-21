@@ -1,13 +1,17 @@
-import { render } from '@testing-library/react';
+import { render } from '@utils/testHelper';
 
 import Navbar from '@components/Navbar';
 
-jest.mock('react-redux', () => ({
-  useDispatch: jest.fn(),
-}));
+const mockLocation = jest.fn();
+// const mockDispatch = jest.fn();
+
+// jest.mock('react-redux', () => ({
+//   useDispatch: () => mockDispatch,
+// }));
 
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
+  useLocation: () => mockLocation,
 }));
 
 describe('Navbar Component', () => {

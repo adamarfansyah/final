@@ -9,7 +9,7 @@ import Input from '@components/Input';
 import Button from '@components/Button';
 import classes from './style.module.scss';
 
-const Login = ({ onSubmit, error }) => {
+const Login = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -17,7 +17,7 @@ const Login = ({ onSubmit, error }) => {
   } = useForm();
 
   return (
-    <div className={classes.login}>
+    <div className={classes.login} data-testid="login-form">
       <div className={classes.loginContent}>
         <h1 className={classes.title}>
           <FormattedMessage id="app_login_title" />
@@ -29,7 +29,6 @@ const Login = ({ onSubmit, error }) => {
               name="email"
               label="Email"
               errors={errors}
-              errorResponse={error}
               register={register}
               placeholder="E-mail"
               validationSchema={{
@@ -67,7 +66,6 @@ const Login = ({ onSubmit, error }) => {
 
 Login.propTypes = {
   onSubmit: PropTypes.func,
-  error: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({

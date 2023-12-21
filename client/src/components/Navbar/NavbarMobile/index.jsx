@@ -99,19 +99,19 @@ const NavbarMobile = ({
           {Object.keys(user).length > 0 ? (
             <MenuItem>
               <Button className={classes.btn} onClick={() => handleLogout()}>
-                Logout
+                <FormattedMessage id="navbar_link_merchant_logout" />
               </Button>
             </MenuItem>
           ) : (
             <>
               <MenuItem>
                 <Button className={classes.btn} onClick={() => navigate('/auth')}>
-                  Login
+                  <FormattedMessage id="app_login_title" />
                 </Button>
               </MenuItem>
               <MenuItem>
                 <Button className={classes.btn} onClick={() => navigate('/auth/merchant')}>
-                  Login Merchant
+                  <FormattedMessage id="app_login_title_merchant" />
                 </Button>
               </MenuItem>
             </>
