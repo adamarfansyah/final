@@ -18,6 +18,12 @@ const {
   emailBodyForgotPasswordUser,
 } = require("../helpers/EmailMessages");
 const GenerateOtp = require("../helpers/GenerateOtp");
+const {
+  expDataInCache,
+  incrDataInCache,
+  delDataInCache,
+  getDataFromCache,
+} = require("../helpers/RedisHelpers");
 
 exports.verifyEmailOtpUser = async (req, res) => {
   try {
@@ -128,22 +134,32 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
     const user = await Users.findOne({ where: { email } });
 
-    const errorMessage = validateRequest(req.body, schemas.loginUserSchem);
-
-    if (errorMessage) {
-      return ResponseError(res, 400, "Validation Error", errorMessage);
-    }
-
     if (!user) {
       return ResponseError(res, 404, "Email Not Found");
     }
 
-    const dcryptPassword = dcryptMessageBody(password);
+    const errorMessage = validateRequest(req.body, schemas.loginUserSchem);
+    if (errorMessage) {
+      return ResponseError(res, 400, "Validation Error", errorMessage);
+    }
 
-    const comparedPassword = await PasswordCompare(dcryptPassword, user.password);
+    const maxAttempts = 3;
+    const attemptsExpire = 120;
 
-    if (!comparedPassword) {
-      return ResponseError(res, 400, "Password is not same");
+    const attemptsKey = `loginAttempts:${user.email}`;
+    const currentAttempts = await getDataFromCache(attemptsKey);
+
+    if (currentAttempts && parseInt(currentAttempts, 10) >= maxAttempts) {
+      return ResponseError(res, 400, "Please wait 2 minutes before trying again");
+    }
+
+    const decryptedPassword = dcryptMessageBody(password);
+    const isPasswordValid = await PasswordCompare(decryptedPassword, user.password);
+
+    if (!isPasswordValid) {
+      await incrDataInCache(attemptsKey);
+      await expDataInCache(attemptsKey, attemptsExpire);
+      return ResponseError(res, 400, "Password is not correct");
     }
 
     const dataUser = {
@@ -160,13 +176,15 @@ exports.loginUser = async (req, res) => {
 
     await user.update({ accessToken });
 
+    await delDataInCache(`loginAttemps:${user.email}`);
+
     return ResponseSuccess(res, 200, "Success", { accessToken });
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };
 
-exports.logoutUser = async (req, res) => {
+exports.logoutUser = async (_, res) => {
   try {
     const { id } = res.locals;
     const user = await Users.findByPk(id);

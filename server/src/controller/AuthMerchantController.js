@@ -18,6 +18,12 @@ const {
 } = require("../helpers/EmailMessages");
 const sendEmail = require("../helpers/SendEmail");
 const { VerifyEmailToken } = require("../helpers/VerifyToken");
+const {
+  getDataFromCache,
+  incrDataInCache,
+  expDataInCache,
+  delDataInCache,
+} = require("../helpers/RedisHelpers");
 
 exports.verifyEmailOtpMerchant = async (req, res) => {
   try {
@@ -141,11 +147,23 @@ exports.loginMerchant = async (req, res) => {
       return ResponseError(res, 400, "Validation Error", errorMessage);
     }
 
-    const dcryptPassword = dcryptMessageBody(password);
-    const comparedPassword = await PasswordCompare(dcryptPassword, merchant.password);
+    const maxAttempts = 3;
+    const attemptsExpire = 120;
 
-    if (!comparedPassword) {
-      return ResponseError(res, 400, "Password is not same");
+    const attemptsKey = `loginAttempts:${merchant.email}`;
+    const currentAttempts = await getDataFromCache(attemptsKey);
+
+    if (currentAttempts && parseInt(currentAttempts, 10) >= maxAttempts) {
+      return ResponseError(res, 400, "Please wait 2 minutes before trying again");
+    }
+
+    const decryptedPassword = dcryptMessageBody(password);
+    const isPasswordValid = await PasswordCompare(decryptedPassword, merchant.password);
+
+    if (!isPasswordValid) {
+      await incrDataInCache(attemptsKey);
+      await expDataInCache(attemptsKey, attemptsExpire);
+      return ResponseError(res, 400, "Password is not correct");
     }
 
     const dataMerchant = {
@@ -159,6 +177,8 @@ exports.loginMerchant = async (req, res) => {
     const accessToken = GenerateToken(dataMerchant);
 
     await merchant.update({ accessToken });
+
+    await delDataInCache(`loginAttemps:${merchant.email}`);
 
     return ResponseSuccess(res, 200, "Success", { accessToken });
   } catch (error) {

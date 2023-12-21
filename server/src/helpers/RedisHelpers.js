@@ -1,4 +1,17 @@
-const RedisClient = require("./RedisClient");
+const Redis = require("ioredis");
+
+const RedisClient = new Redis({
+  host: "localhost",
+  port: 6379,
+});
+
+RedisClient.on("connect", () => {
+  console.log("Success Connet redis");
+});
+
+RedisClient.on("error", (err) => {
+  console.log("Error Connect Redis", err);
+});
 
 const getDataFromCache = async (key) => {
   const cachedMerchants = await RedisClient.get(key);
@@ -13,4 +26,18 @@ const delDataInCache = async (key) => {
   await RedisClient.del(key);
 };
 
-module.exports = { getDataFromCache, setDataInCache, delDataInCache };
+const incrDataInCache = async (key) => {
+  await RedisClient.incr(key);
+};
+
+const expDataInCache = async (key, time) => {
+  await RedisClient.expire(key, time);
+};
+
+module.exports = {
+  getDataFromCache,
+  setDataInCache,
+  delDataInCache,
+  incrDataInCache,
+  expDataInCache,
+};

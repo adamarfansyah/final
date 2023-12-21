@@ -63,12 +63,12 @@ describe("Auth Merchant Login", () => {
       });
   });
 
-  test("Compared Password with status Password is not same", (done) => {
+  test("Compared Password with status Password is not correct", (done) => {
     request(app)
       .post("/api/auth-merchant/login")
       .send({ email: dummyMerchant[0].email, password: encryptMessageBody("test123") })
       .then(({ body }) => {
-        expect(body.status).toEqual("Password is not same");
+        expect(body.status).toEqual("Password is not correct");
         done();
       })
       .catch((err) => {

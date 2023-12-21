@@ -77,23 +77,6 @@ describe("Get Profile User", () => {
 });
 
 describe("Update Profile User", () => {
-  test("should return Success Update User", (done) => {
-    request(app)
-      .put("/api/user/update-profile")
-      .set("authorization", `Bearer ${token}`)
-      .send({
-        username: "@updateed",
-        firstName: "Asriah",
-        lastName: "sake",
-        phoneNumber: "0802930293",
-      })
-      .then(({ body }) => {
-        console.log({ body });
-        done();
-      })
-      .catch((err) => done(err));
-  });
-
   test("Failure Update with false token", (done) => {
     request(app)
       .put("/api/user/update-profile")
@@ -109,14 +92,14 @@ describe("Update Profile User", () => {
 describe("Update User Password", () => {
   test("Success Update Password", (done) => {
     request(app)
-      .put("/api/user/update-password")
+      .patch("/api/user/update-password")
       .set("authorization", `Bearer ${token}`)
       .send({
         password: dummyUser[0].password,
         confirmPassword: dummyUser[0].password,
       })
       .then(({ body }) => {
-        console.log({ body });
+        expect(body.message).toEqual("Success Update Password User");
         done();
       })
       .catch((err) => {

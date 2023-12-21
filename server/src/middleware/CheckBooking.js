@@ -19,6 +19,10 @@ exports.checkBooking = async (req, res, next) => {
       return ResponseError(res, 404, "User or Venue Not found");
     }
 
+    if (!dcryptedStarTime && !dcryptedEndTime) {
+      return ResponseError(res, 404, "Start Time or End Time is not valid");
+    }
+
     if (dcryptedStarTime >= dcryptedEndTime) {
       return ResponseError(res, 400, "Start is must be less than end time");
     }

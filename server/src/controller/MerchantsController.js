@@ -62,7 +62,7 @@ exports.getMerchantDetail = async (req, res) => {
   }
 };
 
-exports.getMerchantProfile = async (req, res) => {
+exports.getMerchantProfile = async (_, res) => {
   try {
     const { id } = res.locals;
 
@@ -135,7 +135,7 @@ exports.updateMerchantPassword = async (req, res) => {
   }
 };
 
-exports.deleteMerchant = async (req, res) => {
+exports.deleteMerchant = async (_, res) => {
   try {
     const { id } = res.locals;
     const merchant = await Merchants.findByPk(id);

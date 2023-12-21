@@ -23,6 +23,11 @@ exports.createPaymentToken = async (req, res) => {
 
     const venue = await Venues.findByPk(venueId);
     const user = await Users.findByPk(id);
+
+    if (!dcryptedStarTime && !dcryptedEndTime) {
+      return ResponseError(res, 404, "Start Time or End Time is not valid");
+    }
+
     if (!user || !venue) {
       return ResponseError(res, 404, "User or Venue Not found");
     }
@@ -40,7 +45,11 @@ exports.createPaymentToken = async (req, res) => {
       endHour: venue.endHour,
     };
 
-    const isOpHour = isWithinOperationalHours(venueOperationalHour, dcryptedStarTime, endTime);
+    const isOpHour = isWithinOperationalHours(
+      venueOperationalHour,
+      dcryptedStarTime,
+      dcryptedEndTime
+    );
 
     if (isOpHour) {
       return ResponseError(res, 400, "Out of operational hours");
@@ -132,6 +141,7 @@ exports.getPaymentsByMerchant = async (_, res) => {
           },
         },
       ],
+      order: [["createdAt", "DESC"]],
     });
 
     return ResponseSuccess(res, 200, "Successs", paymentMerchants);
@@ -160,6 +170,7 @@ exports.getPaymentsByUser = async (req, res) => {
           },
         },
       ],
+      order: [["createdAt", "DESC"]],
     });
 
     return ResponseSuccess(res, 200, "Successs", paymentUser);
