@@ -1,0 +1,74 @@
+@import '@styles/base';
+
+.merchantProfile {
+  background-color: var(--color-bg);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0.3rem 0.3rem 1rem rgba($color: #000000, $alpha: 0.3);
+  .wrapper {
+    display: flex;
+    margin-bottom: 1.2rem;
+    justify-content: space-between;
+    flex-direction: column;
+    @include apply-at-lg-size {
+      @media (min-width: $screen-lg-limit) {
+        flex-direction: row;
+      }
+    }
+    .wrapperContent {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .delete {
+      height: fit-content;
+    }
+    .logo {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 100%;
+      object-fit: cover;
+      @include apply-at-md-size {
+        @media (min-width: $screen-md-limit) {
+          width: 8rem;
+          height: 8rem;
+        }
+      }
+    }
+    .name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      @include apply-at-md-size {
+        @media (min-width: $screen-md-limit) {
+          font-size: 1.5rem;
+        }
+      }
+    }
+    .about {
+      font-size: 14px;
+      font-style: italic;
+      color: gray;
+    }
+    .box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      margin: 5px;
+      .icon {
+        font-size: 16px;
+      }
+    }
+  }
+  .controller {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+    .control {
+      &.active {
+        color: var(--color-button);
+        border-bottom: 3px solid var(--color-button);
+      }
+    }
+  }
+}

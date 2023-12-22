@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       phoneNumber: DataTypes.STRING,
       latitude: DataTypes.DOUBLE,
       longitude: DataTypes.DOUBLE,
-      about: DataTypes.STRING,
       image: DataTypes.STRING,
       closeDate: DataTypes.STRING,
       accessToken: DataTypes.STRING,

@@ -37,6 +37,13 @@ export default {
   app_booked: 'Sudah Dipesan',
   app_not_booked: 'Pesan',
 
+  // USER PROFILE
+  user_account: 'Account',
+  user_transaction: 'Transaction',
+  user_update_profile: 'Update Profile',
+  user_update_password: 'Update Password',
+  user_dont_have_transaction: "Don't have transactions",
+
   // TABLE TRANSACTION
   table_venue_name: 'Venue Name',
   table_order_id: 'Order ID',

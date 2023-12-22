@@ -1,8 +1,6 @@
 import axios from 'axios';
 import store from '../configureStore';
 
-// import store from '@store';
-
 axios.interceptors.request.use((reqConfig) => {
   const state = store.getState();
   const { token, tokenMerchant } = state.client;

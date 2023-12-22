@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import logo from '@static/images/not-found.png';
+import logo from '@static/images/not-found.svg';
 
 import classes from './style.module.scss';
 

@@ -31,12 +31,12 @@ const TableTransaction = ({ transactions, navigate }) => (
       <tbody>
         {transactions.map((transaction, index) => (
           <tr key={index}>
-            <td className={classes.venueName}>{transaction.BookedVenue.name}</td>
-            <td>{transaction.orderId}</td>
-            <td>{renderDate(transaction.startBook)}</td>
-            <td data-testid="transaction-amount">{formattedNumber(transaction.amount)}</td>
+            <td className={classes.venueName}>{transaction?.BookedVenue?.name}</td>
+            <td>{transaction?.orderId}</td>
+            <td>{renderDate(transaction?.startBook)}</td>
+            <td data-testid="transaction-amount">{formattedNumber(transaction?.amount)}</td>
             <td>
-              <Button onClick={() => navigate(transaction.id)}>
+              <Button onClick={() => navigate(transaction?.id)}>
                 <FormattedMessage id="table_detail" />
               </Button>
             </td>

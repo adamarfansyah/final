@@ -16,6 +16,7 @@ const Input = ({
   placeholder,
   required,
   errorResponse,
+  ...rest
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -40,6 +41,7 @@ const Input = ({
           {...register(name, validationSchema)}
           placeholder={placeholder}
           data-testid="input"
+          {...rest}
         />
         {name === 'password' && (
           <div onClick={togglePasswordVisibility} data-testid="visibility-icon">

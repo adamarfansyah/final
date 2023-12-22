@@ -37,6 +37,13 @@ export default {
   app_booked: 'Sudah Dipesan',
   app_not_booked: 'Pesan',
 
+  // USER PROFILE
+  user_account: 'Akun',
+  user_transaction: 'Transaksi',
+  user_update_profile: 'Ubah Profil',
+  user_update_password: 'Ubah Sandi',
+  user_dont_have_transaction: 'Tidak memiliki transaksi',
+
   // TABLE TRANSACTION
   table_venue_name: 'Nama Lapangan',
   table_order_id: 'ID Pesanan',

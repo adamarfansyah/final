@@ -22,8 +22,6 @@ module.exports = {
           phoneNumber: "0198230981231",
           latitude: -6.2186435,
           longitude: 106.7991978,
-          about:
-            "Stadion Utama Gelora Bung Karno adalah sebuah stadion di Jakarta Pusat, DKI Jakarta, Indonesia, yang merupakan bagian dari kompleks olahraga Gelanggang Olahraga Bung Karno. Stadion ini umumnya digunakan sebagai arena pertandingan sepak bola tingkat internasional",
           image:
             "https://images.unsplash.com/photo-1540293923757-f737135a202f?q=80&w=1854&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         },
@@ -36,7 +34,6 @@ module.exports = {
           phoneNumber: "093102931",
           latitude: -6.2364893,
           longitude: 106.8235982,
-          about: "ABOUUUUUUUUTTTT",
           image:
             "https://images.unsplash.com/photo-1540293923757-f737135a202f?q=80&w=1854&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         },
@@ -50,7 +47,7 @@ module.exports = {
      * Add commands to revert seed here.
      *
      * Example:
-     * await queryInterface.bulkDelete('Merchants', null, {});
      */
+    await queryInterface.bulkDelete("Merchants", null, {});
   },
 };

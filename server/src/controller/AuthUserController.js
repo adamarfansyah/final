@@ -12,11 +12,7 @@ const { validateRequest } = require("../helpers/ValidateRequest");
 const schemas = require("../config/schemas");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
 const sendEmail = require("../helpers/SendEmail");
-const {
-  emailBodyOTP,
-  emailBodyForgotPassword,
-  emailBodyForgotPasswordUser,
-} = require("../helpers/EmailMessages");
+const { emailBodyOTP, emailBodyForgotPasswordUser } = require("../helpers/EmailMessages");
 const GenerateOtp = require("../helpers/GenerateOtp");
 const {
   expDataInCache,

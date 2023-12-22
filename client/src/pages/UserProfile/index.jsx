@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { FormattedMessage } from 'react-intl';
 import { selectToken } from '@containers/Client/selectors';
 
 import { getPaymentByUser } from '@pages/TransactionDetail/actions';
@@ -65,14 +66,14 @@ const UserProfile = ({ token, userProfile, transactions }) => {
             onClick={handleShowNavigateAccount}
           >
             <AccountCircleIcon className={classes.icon} />
-            Account
+            <FormattedMessage id="user_account" />
           </div>
           <div
             className={!isShowNavigateAccount ? `${classes.navigate} ${classes.activeNavigate}` : classes.navigate}
             onClick={handleShowNavigateAccount}
           >
             <PaidIcon className={classes.icon} />
-            Transaction
+            <FormattedMessage id="user_transaction" />
           </div>
         </div>
       </div>
@@ -84,14 +85,14 @@ const UserProfile = ({ token, userProfile, transactions }) => {
                 onClick={handleShowUpdateProfile}
                 className={isShowUpdateProfile ? `${classes.title} ${classes.active}` : classes.title}
               >
-                Update Profile
+                <FormattedMessage id="user_update_profile" />
               </div>
 
               <div
                 onClick={handleShowUpdateProfile}
                 className={!isShowUpdateProfile ? `${classes.title} ${classes.active}` : classes.title}
               >
-                Update Password
+                <FormattedMessage id="user_update_password" />
               </div>
             </div>
             <div className={classes.content}>
@@ -104,9 +105,13 @@ const UserProfile = ({ token, userProfile, transactions }) => {
           </div>
         ) : (
           <div className={classes.transactionUser}>
-            <div className={classes.title}>Transaction</div>
+            <div className={classes.title}>
+              <FormattedMessage id="navbar_link_merchant_transaction" />
+            </div>
             {transactions.length === 0 ? (
-              <p>You dont have any transactions</p>
+              <p>
+                <FormattedMessage id="user_dont_have_transaction" />
+              </p>
             ) : (
               <TableTransaction transactions={transactions} navigate={goToTransactionDetail} />
             )}

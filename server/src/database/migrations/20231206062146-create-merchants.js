@@ -33,9 +33,6 @@ module.exports = {
       longitude: {
         type: Sequelize.DOUBLE,
       },
-      about: {
-        type: Sequelize.STRING,
-      },
       image: {
         type: Sequelize.STRING,
       },

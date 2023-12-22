@@ -11,11 +11,7 @@ const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { validateRequest } = require("../helpers/ValidateRequest");
 const schemas = require("../config/schemas");
 const GenerateOtp = require("../helpers/GenerateOtp");
-const {
-  emailBodyOTP,
-  emailBodyForgotPassword,
-  emailBodyForgotPasswordMerchant,
-} = require("../helpers/EmailMessages");
+const { emailBodyOTP, emailBodyForgotPasswordMerchant } = require("../helpers/EmailMessages");
 const sendEmail = require("../helpers/SendEmail");
 const { VerifyEmailToken } = require("../helpers/VerifyToken");
 const {
