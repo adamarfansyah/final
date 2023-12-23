@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
-import { filter, includes } from 'lodash';
+import { filter, includes, sumBy } from 'lodash';
 import { useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+
+import formattedNumber from '@utils/formattedNumber';
 import TableTransaction from '@components/TableTransaction';
 import Receipts from '@components/Receipts';
 import Input from '@components/Input';
@@ -12,7 +15,7 @@ const MerchantTransaction = ({ transactions, transactionDetail, transactionId, s
     formState: { errors },
     watch,
   } = useForm();
-
+  const totalAmount = sumBy(transactions, 'amount');
   const orderId = watch('orderId', '');
 
   const goToTransactionDetail = (id) => {
@@ -28,6 +31,9 @@ const MerchantTransaction = ({ transactions, transactionDetail, transactionId, s
   return (
     <div className={classes.transactions}>
       <div className={classes.title}>Merchant Transaction</div>
+      <div>
+        <FormattedMessage id="transaction_balance" /> {formattedNumber(totalAmount)}
+      </div>
       {transactionId !== 0 && <Receipts transactionDetail={transactionDetail} />}
       <div className={classes.input}>
         <Input

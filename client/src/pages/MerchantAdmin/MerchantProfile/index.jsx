@@ -7,13 +7,13 @@ import PlaceIcon from '@mui/icons-material/Place';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Button from '@components/Button';
 
+import UpdatePassword from '@components/UpdatePassword';
 import { logoutMerchant } from '@pages/AuthMerchant/actions';
 import { encryptData } from '@utils/encrypt';
 import { deleteMerchant, getMerchantProfile, updateMerchantPassword, updateMerchantProfile } from '../actions';
 import classes from './style.module.scss';
 import UpdateProfile from './UpdateProfile';
 import DeleteProfile from './DeleteProfile';
-import UpdatePassword from './UpdatePassword';
 
 const MerchantProfile = ({ merchantProfile }) => {
   const dispatch = useDispatch();
@@ -29,12 +29,16 @@ const MerchantProfile = ({ merchantProfile }) => {
   };
 
   const onUpdatePassword = (data) => {
+    const encryptedOldPassword = encryptData(data.oldPassword);
     const encryptedPassword = encryptData(data.password);
     const encryptedConfirmPassword = encryptData(data.confirmPassword);
     dispatch(
-      updateMerchantPassword({ password: encryptedPassword, confirmPassword: encryptedConfirmPassword }, () => {
-        dispatch(getMerchantProfile());
-      })
+      updateMerchantPassword(
+        { oldPassword: encryptedOldPassword, password: encryptedPassword, confirmPassword: encryptedConfirmPassword },
+        () => {
+          dispatch(getMerchantProfile());
+        }
+      )
     );
   };
 

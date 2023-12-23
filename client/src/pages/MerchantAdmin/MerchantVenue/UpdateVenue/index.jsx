@@ -47,9 +47,8 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
         <div className={classes.title}>
           <FormattedMessage id="app_update" /> Venue
         </div>
+        <div>{displayImage && <DisplayImage imageUrl={displayImage} />}</div>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-          <div>{displayImage && <DisplayImage imageUrl={displayImage} />}</div>
-
           <div>
             <Input
               type="text"

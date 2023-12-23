@@ -86,7 +86,12 @@ const MerchantVenue = ({ merchant, merchantVenues }) => {
 
   return (
     <div>
-      <h1>MERCHANT VENUE</h1>
+      <div>
+        <h1>MERCHANT VENUE</h1>
+        {/* <div>
+          Saldo {}
+        </div> */}
+      </div>
       <Button onClick={handleModalAdd}>
         <FormattedMessage id="venue_add_venue" />
       </Button>

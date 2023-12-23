@@ -1,5 +1,5 @@
 const { Users } = require("../database/models");
-const { PasswordHashing } = require("../helpers/HashPassword");
+const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { validateRequest } = require("../helpers/ValidateRequest");
 const schemas = require("../config/schemas");
@@ -61,8 +61,9 @@ exports.updateUserPassword = async (req, res) => {
   try {
     const { id } = res.locals;
 
-    const { password, confirmPassword } = req.body;
+    const { oldPassword, password, confirmPassword } = req.body;
 
+    const dcryptedOldPassword = dcryptMessageBody(oldPassword);
     const dcryptedPassword = dcryptMessageBody(password);
     const dcryptedConfirmPassword = dcryptMessageBody(confirmPassword);
     const user = await Users.findByPk(id);
@@ -71,12 +72,22 @@ exports.updateUserPassword = async (req, res) => {
     }
 
     const errorMessage = validateRequest(
-      { password: dcryptedPassword, confirmPassword: dcryptedConfirmPassword },
+      {
+        oldPassword: dcryptedOldPassword,
+        password: dcryptedPassword,
+        confirmPassword: dcryptedConfirmPassword,
+      },
       schemas.updateUserPasswordSchem
     );
 
     if (errorMessage) {
       return ResponseError(res, 400, "Validation Error", errorMessage);
+    }
+
+    const comparePassword = await PasswordCompare(dcryptedOldPassword, user.password);
+
+    if (!comparePassword) {
+      return ResponseError(res, 403, "Old Password is not correct");
     }
 
     const hashedPassword = await PasswordHashing(dcryptedPassword);

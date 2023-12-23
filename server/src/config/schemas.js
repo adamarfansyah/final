@@ -28,6 +28,7 @@ const schemas = {
       .required(),
   }),
   updateUserPasswordSchem: Joi.object().keys({
+    oldPassword: Joi.string().min(6).required(),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
       "any.only": "Passwords do not match",
@@ -59,6 +60,7 @@ const schemas = {
     image: Joi.string().required(),
   }),
   updatePasswordMerchantSchem: Joi.object().keys({
+    oldPassword: Joi.string().min(6).required(),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
       "any.only": "Passwords do not match",

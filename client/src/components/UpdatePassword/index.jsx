@@ -6,7 +6,7 @@ import Input from '@components/Input';
 import Button from '@components/Button';
 import classes from './style.module.scss';
 
-const UpdatePassword = ({ onSubmit }) => {
+const UpdatePassword = ({ onSubmit, forgotPassword = false }) => {
   const {
     register,
     handleSubmit,
@@ -16,6 +16,23 @@ const UpdatePassword = ({ onSubmit }) => {
 
   return (
     <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+      {!forgotPassword && (
+        <div>
+          <Input
+            type="password"
+            name="oldPassword"
+            label="Your Password"
+            errors={errors}
+            validationSchema={{
+              required: 'old Password is required',
+              minLength: { value: 6, message: 'Password must be at least 6 characters' },
+            }}
+            register={register}
+            placeholder="Your Password"
+            required
+          />
+        </div>
+      )}
       <div>
         <Input
           type="password"
@@ -57,6 +74,7 @@ const UpdatePassword = ({ onSubmit }) => {
 
 UpdatePassword.propTypes = {
   onSubmit: PropTypes.func,
+  forgotPassword: PropTypes.bool,
 };
 
 export default UpdatePassword;

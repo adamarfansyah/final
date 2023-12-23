@@ -66,6 +66,7 @@ export default {
   venue_delete_venue_desc: 'Jika kamu menghapus venue ini maka akan terhapus secara permanen',
   merchant_delete_title: 'Apakah kamu yakin ingin menghapus Merchant ini?',
   merchant_delete_desc: 'Jika kamu menghapus merchant ini maka akan terhapus secara permanen',
+  transaction_balance: 'Saldo',
 
   // AUTH USER
   resend_otp: 'Kirim Ulang OTP',

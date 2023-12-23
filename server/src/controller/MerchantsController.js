@@ -1,7 +1,7 @@
 const schemas = require("../config/schemas");
 const { Merchants, Venues, Categories } = require("../database/models");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
-const { PasswordHashing } = require("../helpers/HashPassword");
+const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
 const { getDataFromCache, setDataInCache, delDataInCache } = require("../helpers/RedisHelpers");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { validateRequest } = require("../helpers/ValidateRequest");
@@ -110,18 +110,31 @@ exports.updateMerchantProfile = async (req, res) => {
 exports.updateMerchantPassword = async (req, res) => {
   try {
     const { id } = res.locals;
-    const { password, confirmPassword } = req.body;
+    const { oldPassword, password, confirmPassword } = req.body;
     const merchant = await Merchants.findByPk(id);
 
     if (!merchant) {
       return ResponseError(res, 404, "Merchant Not Found");
     }
+
+    const dcryptedOldPassword = dcryptMessageBody(oldPassword);
     const dcryptPassword = dcryptMessageBody(password);
     const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
     const errorMessage = validateRequest(
-      { password: dcryptPassword, confirmPassword: dcryptConfirmPassword },
+      {
+        oldPassword: dcryptedOldPassword,
+        password: dcryptPassword,
+        confirmPassword: dcryptConfirmPassword,
+      },
       schemas.updatePasswordMerchantSchem
     );
+
+    const comparePassword = await PasswordCompare(dcryptedOldPassword, merchant.password);
+
+    if (!comparePassword) {
+      return ResponseError(res, 403, "Old Password is not correct");
+    }
+
     if (errorMessage) {
       return ResponseError(res, 400, "Validation Error", errorMessage);
     }

@@ -50,7 +50,7 @@ const UpdatePasswordPage = () => {
     return (
       <div className={classes.forgotPassword}>
         <img className={classes.image} src="/error.svg" alt="test" />
-        <UpdatePassword onSubmit={(data) => onSubmitUser(data)} />
+        <UpdatePassword onSubmit={(data) => onSubmitUser(data)} forgotPassword />
       </div>
     );
   }
@@ -59,7 +59,7 @@ const UpdatePasswordPage = () => {
     return (
       <div className={classes.forgotPassword}>
         <img className={classes.image} src="/error.svg" alt="test" />
-        <UpdatePassword onSubmit={(data) => onSubmitMerchant(data)} />
+        <UpdatePassword onSubmit={(data) => onSubmitMerchant(data)} forgotPassword />
       </div>
     );
   }

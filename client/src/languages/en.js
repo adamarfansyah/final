@@ -66,6 +66,7 @@ export default {
   venue_delete_venue_desc: 'if you delete this venue, venue will delete permanent on your merchant',
   merchant_delete_title: 'Are you sure want delete this merchant?',
   merchant_delete_desc: 'if you delete this merchant, merchant will delete permanent on your merchant',
+  transaction_balance: 'Balance',
 
   // AUTH USER
   resend_otp: 'Resend OTP',

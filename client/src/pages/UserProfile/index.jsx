@@ -50,10 +50,17 @@ const UserProfile = ({ token, userProfile, transactions }) => {
   };
 
   const onSubmit = (data) => {
+    const encryptedOldPassword = encryptData(data.oldPassword);
     const encryptedPassword = encryptData(data.password);
     const encryptedConfirmPassword = encryptData(data.confirmPassword);
 
-    dispatch(updateUserPassword({ password: encryptedPassword, confirmPassword: encryptedConfirmPassword }));
+    dispatch(
+      updateUserPassword({
+        oldPassword: encryptedOldPassword,
+        password: encryptedPassword,
+        confirmPassword: encryptedConfirmPassword,
+      })
+    );
   };
 
   return (
