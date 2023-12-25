@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
@@ -182,4 +182,4 @@ Navbar.propTypes = {
   links: PropTypes.array,
 };
 
-export default injectIntl(Navbar);
+export default Navbar;

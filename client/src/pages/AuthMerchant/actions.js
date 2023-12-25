@@ -15,8 +15,9 @@ export const createMerchant = (data, cbSuccess) => ({
   cbSuccess,
 });
 
-export const logoutMerchant = () => ({
+export const logoutMerchant = (cbSuccess) => ({
   type: LOGOUT_MERCHANT,
+  cbSuccess,
 });
 
 export const loginMerchant = (data, cbSuccess) => ({

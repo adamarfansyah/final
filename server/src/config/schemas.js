@@ -42,6 +42,7 @@ const schemas = {
     confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
       "any.only": "Passwords do not match",
     }),
+    status: Joi.boolean().required(),
     categories: Joi.number().required(),
     city: Joi.string().min(3).required(),
     address: Joi.string().min(3).required(),
@@ -72,6 +73,7 @@ const schemas = {
     merchantId: Joi.number().required(),
     startHour: Joi.number().required(),
     endHour: Joi.number().required(),
+    status: Joi.boolean().required(),
     image: Joi.string().required(),
   }),
   updateVenueSchem: Joi.object().keys({

@@ -1,7 +1,6 @@
 import MainLayout from '@layouts/MainLayout';
 
 import Home from '@pages/Home';
-import NotFound from '@pages/NotFound';
 import Auth from '@pages/Auth';
 import Venue from '@pages/Venue';
 import Direction from '@pages/Direction';
@@ -13,6 +12,7 @@ import UserProfile from '@pages/UserProfile';
 import ForgotPassword from '@pages/ForgotPassword';
 import TransactionDetail from '@pages/TransactionDetail';
 import UpdatePasswordPage from '@pages/UpdatePassword';
+import NotFoundPage from '@pages/NotFound';
 
 const routes = [
   {
@@ -94,7 +94,7 @@ const routes = [
     component: TransactionDetail,
     layout: MainLayout,
   },
-  { path: '*', name: 'Not Found', component: NotFound, layout: MainLayout, protected: false },
+  { path: '*', name: 'Not Found', component: NotFoundPage, layout: MainLayout, protected: false },
 ];
 
 export default routes;

@@ -13,8 +13,8 @@ const uploadMiddleware = require("../middleware/UploadMiddleware");
 
 const router = express.Router();
 
-router.post("/register", uploadMiddleware, createMerchants);
 router.post("/login", loginMerchant);
+router.post("/register", uploadMiddleware, createMerchants);
 router.post("/logout", AuthenticatedMerchant, AdminMerchantAuth, logoutMerchant);
 router.post("/verify-email", verifyEmailOtpMerchant);
 router.post("/validate-email", validateEmailOtpMerchant);

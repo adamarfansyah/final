@@ -5,8 +5,10 @@ import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useParams } from 'react-router-dom';
 
+import { isEmpty } from 'lodash';
 import PlaceIcon from '@mui/icons-material/Place';
 import LocalPhone from '@mui/icons-material/LocalPhone';
+import NotFound from '@components/NotFound';
 import { getMerchantDetail } from './actions';
 import { selectMerchantDetail } from './selectors';
 import classes from './style.module.scss';
@@ -19,6 +21,14 @@ const MerchantDetail = ({ merchantDetail }) => {
   useEffect(() => {
     dispatch(getMerchantDetail(merchantId));
   }, [merchantId]);
+
+  if (isEmpty(merchantDetail)) {
+    return (
+      <div className={classes.merchantDetail}>
+        <NotFound />
+      </div>
+    );
+  }
 
   return (
     <div className={classes.merchantDetail}>

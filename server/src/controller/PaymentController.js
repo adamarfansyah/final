@@ -84,7 +84,7 @@ exports.createPayment = async (req, res) => {
   try {
     const { id } = res.locals;
     const { merchantId, venueId, startTime, endTime, ...transaction } = req.body;
-    const merchant = await Merchants.findByPk(merchantId);
+    const merchant = await Merchants.findByPk(merchantId, { where: { status: false } });
 
     if (!merchant) {
       return ResponseError(res, 404, "Merchant Not Found");
@@ -126,7 +126,8 @@ exports.getPaymentsByMerchant = async (_, res) => {
   try {
     const { id } = res.locals;
     const merchant = await Merchants.findByPk(id);
-    if (!merchant) {
+
+    if (!merchant || merchant.status) {
       return ResponseError(res, 404, "Merchant not found");
     }
 

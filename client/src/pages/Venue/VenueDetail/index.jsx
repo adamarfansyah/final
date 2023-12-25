@@ -5,6 +5,8 @@ import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import moment from 'moment';
+import { isEmpty } from 'lodash';
+import NotFound from '@components/NotFound';
 
 import { generateTimeSlots } from '@utils/generateTimeSchedule';
 import { encryptData } from '@utils/encrypt';
@@ -25,6 +27,8 @@ const VenueDetail = ({ venueSchedule }) => {
   useEffect(() => {
     dispatch(getVenueSchedule(venueId));
   }, [venueId]);
+
+  console.log(timeSlot);
 
   useEffect(() => {
     /* 
@@ -69,6 +73,14 @@ const VenueDetail = ({ venueSchedule }) => {
 
       return selectedStart.isSame(bookedStart) && selectedEnd.isSame(bookedEnd);
     });
+
+  if (isEmpty(venueSchedule)) {
+    return (
+      <div className={classes.venueDetail}>
+        <NotFound />
+      </div>
+    );
+  }
 
   return (
     <div className={classes.venueDetail}>

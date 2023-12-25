@@ -16,6 +16,7 @@ const NavbarMerchant = ({ merchant, links, handleTheme, theme, handleParams }) =
     handleParams(href);
     navigate(href);
   };
+
   if (isMobile) {
     return <NavbarMobile merchant={merchant} links={links} handleTheme={handleTheme} handleParams={handleParams} />;
   }

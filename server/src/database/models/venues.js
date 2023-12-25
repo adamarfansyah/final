@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       startHour: DataTypes.INTEGER,
       endHour: DataTypes.INTEGER,
       image: DataTypes.STRING,
+      status: DataTypes.BOOLEAN,
     },
     {
       sequelize,

@@ -41,7 +41,8 @@ const AuthenticatedMerchant = async (req, res, next) => {
     res.locals.id = decoded.id;
 
     const merchant = await Merchants.findByPk(decoded.id);
-    if (merchant) {
+
+    if (merchant && !merchant.status) {
       res.locals.userType = "merchant";
       return next();
     }
@@ -52,7 +53,7 @@ const AuthenticatedMerchant = async (req, res, next) => {
   }
 };
 
-const AdminMerchantAuth = (req, res, next) => {
+const AdminMerchantAuth = (_, res, next) => {
   try {
     const userType = res.locals.userType;
 
@@ -66,7 +67,7 @@ const AdminMerchantAuth = (req, res, next) => {
   }
 };
 
-const RegularUserAuth = (req, res, next) => {
+const RegularUserAuth = (_, res, next) => {
   try {
     const userType = res.locals.userType;
     if (userType !== "user") {

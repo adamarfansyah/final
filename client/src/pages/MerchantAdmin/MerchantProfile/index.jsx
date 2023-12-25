@@ -10,6 +10,7 @@ import Button from '@components/Button';
 import UpdatePassword from '@components/UpdatePassword';
 import { logoutMerchant } from '@pages/AuthMerchant/actions';
 import { encryptData } from '@utils/encrypt';
+import { useNavigate } from 'react-router-dom';
 import { deleteMerchant, getMerchantProfile, updateMerchantPassword, updateMerchantProfile } from '../actions';
 import classes from './style.module.scss';
 import UpdateProfile from './UpdateProfile';
@@ -17,6 +18,7 @@ import DeleteProfile from './DeleteProfile';
 
 const MerchantProfile = ({ merchantProfile }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isUpdateProfile, setIsUpdateProfile] = useState(true);
   const [isDelete, setIsDelete] = useState(false);
 
@@ -45,7 +47,11 @@ const MerchantProfile = ({ merchantProfile }) => {
   const onDelete = () => {
     dispatch(
       deleteMerchant(() => {
-        dispatch(logoutMerchant());
+        dispatch(
+          logoutMerchant(() => {
+            navigate('/');
+          })
+        );
       })
     );
   };

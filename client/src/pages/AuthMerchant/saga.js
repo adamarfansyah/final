@@ -44,12 +44,13 @@ function* doLoginMerchant({ data, cbSuccess }) {
   yield put(setLoading(false));
 }
 
-function* doLogoutMerchant() {
+function* doLogoutMerchant({ cbSuccess }) {
   yield put(setLoading(true));
   try {
     yield call(logoutMerchantApi);
     yield put(setTokenMerchant(null));
     yield put(setLogin(false));
+    cbSuccess && cbSuccess();
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.status));
   }

@@ -36,8 +36,8 @@ module.exports = {
       image: {
         type: Sequelize.STRING,
       },
-      closeDate: {
-        type: Sequelize.STRING,
+      status: {
+        type: Sequelize.BOOLEAN,
       },
       accessToken: {
         type: Sequelize.STRING,

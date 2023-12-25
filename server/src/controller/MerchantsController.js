@@ -14,6 +14,9 @@ exports.getMerchants = async (_, res) => {
     }
 
     const merchants = await Merchants.findAll({
+      where: {
+        status: false,
+      },
       attributes: {
         exclude: ["password", "accessToken", "resetPasswordToken"],
       },
@@ -48,16 +51,20 @@ exports.getMerchantDetail = async (req, res) => {
         {
           model: Venues,
           as: "MerchantVenue",
+          where: {
+            status: false,
+          },
         },
       ],
     });
 
-    if (!merchant) {
+    if (!merchant || merchant.status) {
       return ResponseError(res, 404, "Not Found", "Merchant Not Found");
     }
 
     return ResponseSuccess(res, 200, "Success", merchant);
   } catch (error) {
+    console.log({ error });
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };
@@ -152,11 +159,12 @@ exports.deleteMerchant = async (_, res) => {
   try {
     const { id } = res.locals;
     const merchant = await Merchants.findByPk(id);
-    if (!merchant) {
+
+    if (!merchant || merchant.status) {
       return ResponseError(res, 404, "Merchant Not Found");
     }
 
-    await merchant.destroy();
+    await merchant.update({ status: true });
     await delDataInCache("merchants");
 
     return ResponseSuccess(res, 204, "Success Delete");

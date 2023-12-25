@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       latitude: DataTypes.DOUBLE,
       longitude: DataTypes.DOUBLE,
       image: DataTypes.STRING,
-      closeDate: DataTypes.STRING,
+      status: DataTypes.BOOLEAN,
       accessToken: DataTypes.STRING,
       resetPasswordToken: DataTypes.STRING,
     },
