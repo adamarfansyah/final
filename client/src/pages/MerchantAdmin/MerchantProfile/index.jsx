@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { isEmpty } from 'lodash';
 
 import PlaceIcon from '@mui/icons-material/Place';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
@@ -64,7 +65,7 @@ const MerchantProfile = ({ merchantProfile }) => {
     setIsDelete((state) => !state);
   };
 
-  if (!merchantProfile) {
+  if (isEmpty(merchantProfile)) {
     return <h1>Loading...</h1>;
   }
 

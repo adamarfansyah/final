@@ -26,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       paymentType: DataTypes.STRING,
       startBook: DataTypes.STRING,
       endBook: DataTypes.STRING,
-      status: DataTypes.STRING,
     },
     {
       sequelize,
