@@ -2,10 +2,9 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
-
-import { Box, Modal } from '@mui/material';
 import moment from 'moment';
 
+import ModalCustom from '@components/Modal';
 import DisplayImage from '@components/DisplayImage';
 import Input from '@components/Input';
 import Button from '@components/Button';
@@ -29,10 +28,6 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
     },
   });
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -42,8 +37,8 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Box className={classes.box}>
+    <ModalCustom open={open} setOpen={setOpen}>
+      <div className={classes.update}>
         <div className={classes.title}>
           <FormattedMessage id="app_update" /> Venue
         </div>
@@ -126,8 +121,8 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
             <Button type="submit">Submit</Button>
           </div>
         </form>
-      </Box>
-    </Modal>
+      </div>
+    </ModalCustom>
   );
 };
 

@@ -5,10 +5,13 @@ const { queryInterface } = sequelize;
 const { GenerateToken } = require("../helpers/GenerateToken");
 const { encryptMessageBody } = require("../helpers/Encrypt");
 const { PasswordHashing } = require("../helpers/HashPassword");
+const Redis = require("ioredis");
+const redisClientMock = new Redis();
+jest.mock("ioredis", () => require("ioredis-mock"));
 
 const dummyMerchant = [
   {
-    email: "gelora@gmail.com",
+    email: "gelorabungkarno@gmail.com",
     password: encryptMessageBody("adam123"),
   },
   {
@@ -96,7 +99,7 @@ describe("Get Merchants", () => {
 describe("Get Merchant", () => {
   test("should success get merchant detail ", (done) => {
     request(app)
-      .get("/api/merchant/2")
+      .get("/api/merchant/1")
       .then(({ body }) => {
         expect(body.message).toEqual("Success");
         done();
@@ -125,6 +128,7 @@ describe("Update Password Merchant", () => {
       .patch("/api/merchant/update-password")
       .set("authorization", `Bearer ${token}`)
       .send({
+        oldPassword: encryptMessageBody("adam123"),
         password: encryptMessageBody("adam123"),
         confirmPassword: encryptMessageBody("adam123"),
       })
@@ -139,19 +143,6 @@ describe("Update Password Merchant", () => {
 });
 
 describe("Delete Merchant", () => {
-  // test("should success delete", (done) => {
-  //   request(app)
-  //     .delete("/api/merchant/delete")
-  //     .set("authorization", `Bearer ${token}`)
-  //     .then(({ body }) => {
-  //       console.log({ body }, "<<<< DELETE");
-  //       done();
-  //     })
-  //     .catch((err) => {
-  //       done(err);
-  //     });
-  // });
-
   test("Should failed merchant not found", (done) => {
     request(app)
       .delete("/api/merchant/delete")

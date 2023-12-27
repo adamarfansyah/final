@@ -1,4 +1,6 @@
-const generateTimeSlots = (date, start, end, intervalMinutes) => {
+const moment = require("moment");
+
+const GenerateTimeVenue = (date, start, end, intervalMinutes) => {
   const timeSlots = [];
   const currentTime = moment(start);
 
@@ -13,4 +15,4 @@ const generateTimeSlots = (date, start, end, intervalMinutes) => {
   return timeSlots;
 };
 
-module.exports = generateTimeSlots;
+module.exports = GenerateTimeVenue;

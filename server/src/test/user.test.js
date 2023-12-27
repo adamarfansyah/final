@@ -95,6 +95,7 @@ describe("Update User Password", () => {
       .patch("/api/user/update-password")
       .set("authorization", `Bearer ${token}`)
       .send({
+        oldPassword: dummyUser[0].password,
         password: dummyUser[0].password,
         confirmPassword: dummyUser[0].password,
       })

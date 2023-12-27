@@ -24,7 +24,7 @@ const MerchantAdmin = ({ merchant, merchantPayments, merchantVenues, merchantPro
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!merchant) {
+    if (!merchant || merchant.status) {
       navigate('/');
     }
     dispatch(getPaymentsByMerchant());

@@ -42,7 +42,7 @@ const AuthenticatedMerchant = async (req, res, next) => {
 
     const merchant = await Merchants.findByPk(decoded.id);
 
-    if (merchant && !merchant.status) {
+    if (merchant) {
       res.locals.userType = "merchant";
       return next();
     }

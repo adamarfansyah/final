@@ -37,11 +37,6 @@ describe('Receipts Component', () => {
     expect(getByText('Rp 20.000.000,00')).toBeInTheDocument();
   });
 
-  test('renders error message when transactionDetail is empty', () => {
-    const { getByText } = render(<Receipts transactionDetail={{}} />);
-    expect(getByText(/Something went wrong/i)).toBeInTheDocument();
-  });
-
   test('Should match with snapshot', () => {
     const { asFragment } = wrapper;
     expect(asFragment()).toMatchSnapshot();

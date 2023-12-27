@@ -18,77 +18,9 @@ const dummyUser = [
   },
 ];
 
-// const image = path.join(__dirname, "..", "..", "assets", "bg-homepage.jpg");
-// const image = `${__dirname}/../../assets/bg-homepage.jpg`;
-// const image = path.join(__dirname, "../../assets/bg-homepage.jpg");
-
-// const dummyUser = [
-//   {
-//     email: "adamsake8@gmail.com",
-//     // password: await PasswordHashing("adam123"),
-//     // confirmPassword: await PasswordHashing("adam123"),
-//     firstName: "Adam Sake",
-//     lastName: "Arfansyah",
-//     phoneNumber: "0812329398932",
-//     image: image,
-//   },
-//   {
-//     email: "adamsake13@gmail.com",
-//     // password: await PasswordHashing("adam123"),
-//     // confirmPassword: await PasswordHashing("adam123"),
-//     firstName: "Adam Sake A",
-//     lastName: "Arfansyahh",
-//     phoneNumber: "0812329398032",
-//     image: image,
-//   },
-// ];
-
 const tokenMock = "1209310kdowkpdow12323";
 let token;
 let tokenUpdatePassword;
-
-let testUser;
-
-// beforeAll((done) => {
-//   const dummy = {
-//     username: "@adamarfansyahhh",
-//     email: "adamsake13@gmail.com",
-//     password: encryptMessageBody("adam123"),
-//     confirmPassword: encryptMessageBody("adam123"),
-//     firstName: "adam sake",
-//     lastName: "arfansayahhhh",
-//     phoneNumber: "123209409342",
-//     image: image,
-//   };
-//   request(app)
-//     .post("/api/auth/register")
-//     // , { contentType: "multipart/form-data" }
-//     // .set("content-type", "multipart/form-data")
-//     .field("Content-Type", "multipart/form-data")
-//     .field("username", dummy.username)
-//     .field("email", dummy.email)
-//     .field("password", dummy.password)
-//     .field("confirmPassword", dummy.confirmPassword)
-//     .field("firstName", dummy.firstName)
-//     .field("lastName", dummy.lastName)
-//     .field("phoneNumber", dummy.phoneNumber)
-//     // .attach("image", image)
-//     .attach("jpg", image, { contentType: "application/x-pkcs12", filename: "bg-homepage.jpg" })
-//     .then(({ body }) => {
-//       console.log({ body, image }, "<<<<<<");
-//       done();
-//     })
-//     .catch((err) => {
-//       console.log(err, "<<<<<<<<<<< ERROR");
-//       done(err);
-//     });
-// });
-
-// describe("test", () => {
-//   test("should ", () => {
-//     console.log({ testUser });
-//   });
-// });
 
 describe("Auth User Login", () => {
   test("Success Login User with status Success", (done) => {

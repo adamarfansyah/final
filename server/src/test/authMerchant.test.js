@@ -7,7 +7,7 @@ const { encryptMessageBody } = require("../helpers/Encrypt");
 
 const dummyMerchant = [
   {
-    email: "gelora@gmail.com",
+    email: "gelorabungkarno@gmail.com",
     password: encryptMessageBody("adam123"),
   },
   {

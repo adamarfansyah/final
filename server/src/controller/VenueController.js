@@ -4,7 +4,7 @@ const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { createOperationalDates } = require("../helpers/OperationalHours");
 const moment = require("moment");
 const { validateRequest } = require("../helpers/ValidateRequest");
-const { default: generateTimeSlots } = require("../helpers/GenerateTimeVenue");
+const GenerateTimeVenue = require("../helpers/GenerateTimeVenue");
 
 exports.getVenuesByMerchantLogin = async (_, res) => {
   try {
@@ -12,7 +12,6 @@ exports.getVenuesByMerchantLogin = async (_, res) => {
 
     const venue = await Venues.findAll({ where: { merchantId: id, status: false } });
 
-    console.log({ venue });
     if (!venue) {
       return ResponseError(res, 404, "Venue By Merchant not found");
     }
@@ -68,7 +67,7 @@ exports.getVenueOperationalHours = async (req, res) => {
     operationalDates.map((operationalDate) => {
       const { start, end } = operationalDate;
       const date = moment(start).format("YYYY-MM-DD");
-      const slots = generateTimeSlots(date, start, end, 60);
+      const slots = GenerateTimeVenue(date, start, end, 60);
       newTimeSlots.push(slots);
     });
 
@@ -181,7 +180,7 @@ exports.deleteVenue = async (req, res) => {
       return ResponseError(res, 404, "Merchant not found");
     }
 
-    await venue.destroy();
+    await venue.update({ status: true });
     return ResponseSuccess(res, 204, "Success Delete");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);

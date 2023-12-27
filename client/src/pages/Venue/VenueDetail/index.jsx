@@ -8,7 +8,6 @@ import moment from 'moment';
 import { isEmpty } from 'lodash';
 import NotFound from '@components/NotFound';
 
-import { generateTimeSlots } from '@utils/generateTimeSchedule';
 import { encryptData } from '@utils/encrypt';
 import VenueSchedule from '../components/VenueSchedule';
 import VenueTimeSlot from '../components/VenueTimeSlot';
@@ -22,37 +21,14 @@ const VenueDetail = ({ venueSchedule }) => {
   const { merchantId } = location.state || {};
   const dispatch = useDispatch();
   const [selectedDate, setSelectedDate] = useState(0);
-  const [timeSlot, setTimeSlot] = useState([]);
 
   useEffect(() => {
     dispatch(getVenueSchedule(venueId));
   }, [venueId]);
 
-  console.log(timeSlot);
-
-  useEffect(() => {
-    /* 
-      **NOTES**
-      MEMBAGI JAM OPERASIONAL BOOKING DARI START TO END
-    */
-    if (venueSchedule && venueSchedule.operationalDates && venueSchedule.operationalDates.length > 0) {
-      const newTimeSlots = [];
-
-      venueSchedule.operationalDates.map((operationalDate) => {
-        const { start, end } = operationalDate;
-        const date = moment(start).format('YYYY-MM-DD');
-        const slots = generateTimeSlots(date, start, end, 60);
-        newTimeSlots.push(slots);
-      });
-
-      setTimeSlot(newTimeSlots);
-    }
-  }, [venueSchedule]);
-
   const bookVenue = (scheduleBook) => {
     const encryptedStartTime = encryptData(scheduleBook.start);
     const encryptedEndTime = encryptData(scheduleBook.end);
-
     dispatch(
       createTokenPayment({ venueId, startTime: encryptedStartTime, endTime: encryptedEndTime }, merchantId, (data) => {
         dispatch(
@@ -89,7 +65,11 @@ const VenueDetail = ({ venueSchedule }) => {
         selectedDate={selectedDate}
         onDateClick={setSelectedDate}
       />
-      <VenueTimeSlot timeSlots={timeSlot[selectedDate]} isSlotBooked={isSlotBooked} bookVenue={bookVenue} />
+      <VenueTimeSlot
+        timeSlots={venueSchedule.newTimeSlots[selectedDate]}
+        isSlotBooked={isSlotBooked}
+        bookVenue={bookVenue}
+      />
     </div>
   );
 };

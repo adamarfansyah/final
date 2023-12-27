@@ -6,15 +6,17 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
-import { Register, RegisterValidateOtp, Login } from '@components/Form';
-import bgImage from '@static/images/user-login.jpg';
+import dcryptToken from '@utils/dcryptToken';
 import { encryptData } from '@utils/encrypt';
 import { selectToken } from '@containers/Client/selectors';
-import dcryptToken from '@utils/dcryptToken';
+
+import bgImage from '@static/images/user-login.jpg';
 import LinkCustom from '@components/LinkCustom';
+import { Register, RegisterValidateOtp, Login } from '@components/Form';
+import RegisterData from './Components/RegisterData';
 import { selectAuthUser } from './selectors';
 import { deleteEmailValidateUser, loginUser, registerUser, validateEmailUser, verifyEmailUser } from './actions';
-import RegisterData from './Components/RegisterData';
+
 import classes from './style.module.scss';
 
 const Auth = ({ token, authUser }) => {

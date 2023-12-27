@@ -20,19 +20,19 @@ const dummyUser = [
 const mockBooking = [
   {
     venueId: 1,
-    merchantId: 2,
+    merchantId: 1,
     startTime: encryptMessageBody("2023-12-19T08:00"),
     endTime: encryptMessageBody("2023-12-19T09:00"),
   },
   {
     venueId: 1,
-    merchantId: 2,
+    merchantId: 1,
     startTime: encryptMessageBody("2023-12-19T21:00"),
     endTime: encryptMessageBody("2023-12-19T22:00"),
   },
   {
     venueId: 1,
-    merchantId: 2,
+    merchantId: 1,
     startTime: encryptMessageBody("2023-12-19T10:00"),
     endTime: encryptMessageBody("2023-12-19T11:00"),
   },
@@ -40,7 +40,7 @@ const mockBooking = [
 
 const mockPayment = [
   {
-    merchantId: 2,
+    merchantId: 1,
     venueId: 1,
     amount: 20000000,
     orderId: "Lapangan Testing 1-1702866864-2",
@@ -51,7 +51,7 @@ const mockPayment = [
     endTime: encryptMessageBody("2023-12-19T09:00"),
   },
   {
-    merchantId: 2,
+    merchantId: 1,
     venueId: 1,
     amount: 20000000,
     orderId: "Lapangan Testing 1-1702866864-2",

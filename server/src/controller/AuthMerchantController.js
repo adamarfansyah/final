@@ -125,6 +125,7 @@ exports.createMerchants = async (req, res) => {
     });
 
     await newMerchant.addCategories(categories);
+    await delDataInCache("merchants");
 
     return ResponseSuccess(res, 200, "Success", newMerchant);
   } catch (error) {
@@ -171,6 +172,7 @@ exports.loginMerchant = async (req, res) => {
       name: merchant.name,
       email: merchant.email,
       image: merchant.image,
+      status: merchant.status,
       userType: "merchant",
     };
 
@@ -188,7 +190,7 @@ exports.loginMerchant = async (req, res) => {
 
 exports.logoutMerchant = async (_, res) => {
   try {
-    const id = res.locals.id;
+    const { id } = res.locals;
     const merchant = await Merchants.findByPk(id);
 
     if (!merchant) {
@@ -246,6 +248,7 @@ exports.updateImageMerchant = async (req, res) => {
     }
 
     const updatedImageMerchant = await merchant.update({ image });
+    await delDataInCache("merchants");
 
     return ResponseSuccess(res, 201, "Success Update Image", updatedImageMerchant);
   } catch (error) {

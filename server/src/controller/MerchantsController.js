@@ -51,6 +51,7 @@ exports.getMerchantDetail = async (req, res) => {
         {
           model: Venues,
           as: "MerchantVenue",
+          required: false,
           where: {
             status: false,
           },
@@ -64,7 +65,6 @@ exports.getMerchantDetail = async (req, res) => {
 
     return ResponseSuccess(res, 200, "Success", merchant);
   } catch (error) {
-    console.log({ error });
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };

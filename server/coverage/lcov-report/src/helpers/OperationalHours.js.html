@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.85% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/28</span>
+                <span class='fraction'>28/28</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70.37% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/27</span>
+                <span class='fraction'>27/27</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -116,28 +116,28 @@
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
+<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -171,23 +171,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const moment = require("moment");
 &nbsp;
-exports.createOperationalDates = <span class="fstat-no" title="function not covered" >(v</span>enue, startDate, numberOfDays) =&gt; {
-  const operationalDates = <span class="cstat-no" title="statement not covered" >[];</span>
+exports.createOperationalDates = (venue, startDate, numberOfDays) =&gt; {
+  const operationalDates = [];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; numberOfDays; i++) {</span>
-    const startHour = <span class="cstat-no" title="statement not covered" >venue.startHour;</span>
-    const endHour = <span class="cstat-no" title="statement not covered" >venue.endHour;</span>
+  for (let i = 0; i &lt; numberOfDays; i++) {
+    const startHour = venue.startHour;
+    const endHour = venue.endHour;
 &nbsp;
-    const startTime = <span class="cstat-no" title="statement not covered" >moment(startDate).set({ hour: startHour, minute: 0, second: 0 });</span>
-    const operationalStart = <span class="cstat-no" title="statement not covered" >moment(startTime).add(i, "days");</span>
+    const startTime = moment(startDate).set({ hour: startHour, minute: 0, second: 0 });
+    const operationalStart = moment(startTime).add(i, "days");
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    operationalDates.push({</span>
+    operationalDates.push({
       start: operationalStart.format("YYYY-MM-DDTHH:mm:ss"),
       end: operationalStart.add(endHour - startHour, "hours").format("YYYY-MM-DDTHH:mm:ss"),
     });
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return operationalDates;</span>
+  return operationalDates;
 };
 &nbsp;
 exports.isWithinOperationalHours = (venueOpHour, startTime, endTime) =&gt; {
@@ -229,7 +229,7 @@ exports.isWithinOperationalHours = (venueOpHour, startTime, endTime) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-20T04:11:48.043Z
+                at 2023-12-27T08:15:22.162Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
