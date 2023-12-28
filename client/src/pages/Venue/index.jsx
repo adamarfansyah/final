@@ -110,7 +110,7 @@ const Venue = ({ merchants, categories, location }) => {
                     <div className={classes.nameTooltip}>{data.name}</div>
                     <div className={classes.box}>
                       {data?.categories.map((item) => (
-                        <div>{item.name}</div>
+                        <div key={item.id}>{item.name}</div>
                       ))}
                     </div>
                   </div>

@@ -18,7 +18,6 @@ const UploadImage = async (imageData) => {
     const imageUrl = response.data.data.url;
     return imageUrl;
   } catch (error) {
-    console.error("Gagal mengunggah gambar ke ImgBB:", error.message);
     throw error;
   }
 };

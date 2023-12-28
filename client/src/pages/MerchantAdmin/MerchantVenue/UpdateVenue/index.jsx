@@ -1,26 +1,18 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-
-import { Box, Modal } from '@mui/material';
+import { useState } from 'react';
 import moment from 'moment';
+
+import ModalCustom from '@components/Modal';
+import DisplayImage from '@components/DisplayImage';
 import Input from '@components/Input';
 import Button from '@components/Button';
 import classes from './style.module.scss';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-};
-
 const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
   const { startHour, endHour, ...data } = venue;
+  const [displayImage, setDisplayImage] = useState(venue.image);
 
   const renderTime = (time) => moment(time, 'HH').format('HH:mm');
 
@@ -36,16 +28,21 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
     },
   });
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setDisplayImage(imageUrl);
+    }
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Box sx={style}>
+    <ModalCustom open={open} setOpen={setOpen}>
+      <div className={classes.update}>
         <div className={classes.title}>
           <FormattedMessage id="app_update" /> Venue
         </div>
+        <div>{displayImage && <DisplayImage imageUrl={displayImage} />}</div>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <div>
             <Input
@@ -112,7 +109,7 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
               label="Venue Image"
               errors={errors}
               register={register}
-              onChange={(e) => e.target.files[0]}
+              onChange={handleImageChange}
               validationSchema={{
                 required: 'Venue Image is required',
               }}
@@ -121,11 +118,13 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
             />
           </div>
           <div>
-            <Button type="submit">Submit</Button>
+            <Button type="submit">
+              <FormattedMessage id="app_submit" />
+            </Button>
           </div>
         </form>
-      </Box>
-    </Modal>
+      </div>
+    </ModalCustom>
   );
 };
 

@@ -6,18 +6,17 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
+import dcryptToken from '@utils/dcryptToken';
 import { encryptData } from '@utils/encrypt';
 import { selectToken } from '@containers/Client/selectors';
-import dcryptToken from '@utils/dcryptToken';
+
+import bgImage from '@static/images/user-login.jpg';
 import LinkCustom from '@components/LinkCustom';
+import { Register, RegisterValidateOtp, Login } from '@components/Form';
+import RegisterData from './Components/RegisterData';
 import { selectAuthUser } from './selectors';
 import { deleteEmailValidateUser, loginUser, registerUser, validateEmailUser, verifyEmailUser } from './actions';
 
-import Login from './Components/Login';
-import Register from './Components/Register';
-
-import RegisterValidateOtp from './Components/RegisterValidateOtp';
-import RegisterData from './Components/RegisterData';
 import classes from './style.module.scss';
 
 const Auth = ({ token, authUser }) => {
@@ -97,6 +96,7 @@ const Auth = ({ token, authUser }) => {
           user={decoded}
           time={expToken}
           resendOtp={resendOtp}
+          blockUrl="/auth"
         />
       ),
       3: <RegisterData onSubmit={(data) => onSubmitStep3(data)} user={decoded} />,
@@ -106,32 +106,35 @@ const Auth = ({ token, authUser }) => {
   };
 
   return (
-    <div className={classes.auth}>
-      <div className={classes.authShow}>
-        <div
-          className={classNames(classes.authShowCard, { [classes.active]: isShowLogin })}
-          onClick={() => handleToggleForm(true)}
-        >
-          <FormattedMessage id="app_login_title" />
+    <div className={classes.authPage}>
+      <div className={classes.auth}>
+        <div className={classes.authShow}>
+          <div
+            className={classNames(classes.authShowCard, { [classes.active]: isShowLogin })}
+            onClick={() => handleToggleForm(true)}
+          >
+            <FormattedMessage id="app_login_title" />
+          </div>
+          <div
+            className={classNames(classes.authShowCard, { [classes.active]: !isShowLogin })}
+            onClick={() => handleToggleForm(false)}
+          >
+            <FormattedMessage id="app_register_title" />
+          </div>
         </div>
-        <div
-          className={classNames(classes.authShowCard, { [classes.active]: !isShowLogin })}
-          onClick={() => handleToggleForm(false)}
-        >
-          <FormattedMessage id="app_register_title" />
+        <div className={classes.contents}>
+          {isShowLogin ? <Login onSubmit={(data) => onSubmitLogin(data)} /> : <RegisterVerification />}
+          <div className={classes.links}>
+            <LinkCustom to="/auth/merchant" className={classes.link}>
+              <FormattedMessage id="app_register_merchant_link" />
+            </LinkCustom>
+            <LinkCustom to="/forgot-password/user" className={classes.link}>
+              <FormattedMessage id="app_forgot_password_user_link" />
+            </LinkCustom>
+          </div>
         </div>
       </div>
-      <div className={classes.contents}>
-        {isShowLogin ? <Login onSubmit={(data) => onSubmitLogin(data)} /> : <RegisterVerification />}
-        <div className={classes.links}>
-          <LinkCustom to="/auth/merchant" className={classes.link}>
-            <FormattedMessage id="app_register_merchant_link" />
-          </LinkCustom>
-          <LinkCustom to="/auth/forgot-password" className={classes.link}>
-            <FormattedMessage id="app_forgot_password_user_link" />
-          </LinkCustom>
-        </div>
-      </div>
+      <img className={classes.image} src={bgImage} alt="background" />
     </div>
   );
 };

@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table Transaction Should match with snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="tableContainer"
+    data-testid="TableTransaction"
+  >
+    <table
+      class="table"
+    >
+      <thead>
+        <tr>
+          <th>
+            Nama Lapangan
+          </th>
+          <th>
+            ID Pesanan
+          </th>
+          <th>
+            Tanggal
+          </th>
+          <th>
+            Jumlah
+          </th>
+          <th>
+            Detail
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            class="venueName"
+          >
+            Lapangan gbk 1
+          </td>
+          <td>
+            Lapangan GBK 1-1702866864-2
+          </td>
+          <td>
+            17 December 2023
+          </td>
+          <td
+            data-testid="transaction-amount"
+          >
+            Rp 20.000.000,00
+          </td>
+          <td>
+            <button
+              class="btn"
+              data-testid="btn"
+              type="submit"
+            >
+              Detail
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td
+            class="venueName"
+          >
+            Lapangan gbk 2
+          </td>
+          <td>
+            Lapangan GBK 2-1402866864-2
+          </td>
+          <td>
+            17 December 2023
+          </td>
+          <td
+            data-testid="transaction-amount"
+          >
+            Rp 20.000.000,00
+          </td>
+          <td>
+            <button
+              class="btn"
+              data-testid="btn"
+              type="submit"
+            >
+              Detail
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocumentFragment>
+`;

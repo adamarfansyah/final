@@ -1,19 +1,22 @@
 import PropTypes from 'prop-types';
 
 import formattedNumber from '@utils/formattedNumber';
+import NotFound from '@components/NotFound';
 import { formattedTimeCardSchedule, renderDate } from '@utils/generateTimeSchedule';
 
 import classes from './style.module.scss';
 
 const Receipts = ({ transactionDetail }) => (
-  <div className={classes.transactionDetail}>
+  <div className={classes.transactionDetail} data-testid="Receipts">
     {Object.keys(transactionDetail).length === 0 ? (
-      <div>Something went wrong</div>
+      <NotFound />
     ) : (
       <div className={classes.receipt}>
         <div className={classes.title}>Receipt</div>
         <div className={classes.wrapper}>
-          <div className={classes.orderId}>{transactionDetail.orderId}</div>
+          <div className={classes.orderId} data-testid="ReceiptTitle">
+            {transactionDetail.orderId}
+          </div>
         </div>
         <div className={classes.date}>{renderDate(transactionDetail.createdAt)}</div>
         <div className={classes.contents}>

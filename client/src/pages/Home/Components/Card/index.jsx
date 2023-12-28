@@ -7,7 +7,6 @@ const Card = ({ sport }) => (
       <img src={sport.icon} alt={sport.name} className={classes.icon} />
     </div>
     <div className={classes.name}>{sport.name}</div>
-    <div>{sport.desc}</div>
   </div>
 );
 

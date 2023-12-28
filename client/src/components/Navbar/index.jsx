@@ -77,8 +77,8 @@ const Navbar = ({ locale, user, theme, links, handleTheme }) => {
     >
       <div className={classes.contentWrapper}>
         <div className={classes.logoImage} onClick={() => goTo('/')}>
-          <img src="/vite.svg" alt="logo" className={classes.logo} />
-          <div className={classes.title}>Booking Online</div>
+          <img src="/logoPlayZone.png" alt="logo" className={classes.logo} />
+          <div className={classes.title}>PlayZone Pro</div>
         </div>
         {!isMobile ? (
           <div className={classes.rightContent}>
@@ -98,14 +98,20 @@ const Navbar = ({ locale, user, theme, links, handleTheme }) => {
                     className={location.pathname !== '/profile' ? classes.link : `${classes.link} ${classes.active}`}
                     to="/profile"
                   >
-                    Profile
+                    <FormattedMessage id="navbar_link_merchant_profile" />
                   </Link>
-                  <Button onClick={handleLogout}>Logout</Button>
+                  <Button onClick={handleLogout}>
+                    <FormattedMessage id="navbar_link_merchant_logout" />
+                  </Button>
                 </>
               ) : (
                 <>
-                  <Button onClick={() => goTo('/auth')}>Login</Button>
-                  <Button onClick={() => goTo('/auth/merchant')}>Login Merchant</Button>
+                  <Button onClick={() => goTo('/auth')}>
+                    <FormattedMessage id="app_login_title" />
+                  </Button>
+                  <Button onClick={() => goTo('/auth/merchant')}>
+                    <FormattedMessage id="app_login_title_merchant" />
+                  </Button>
                 </>
               )}
             </div>

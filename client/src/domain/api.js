@@ -11,6 +11,7 @@ const urls = {
   category: 'category',
   venue: 'venue',
   user: 'user',
+  payment: 'transaction',
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -53,12 +54,18 @@ export const loginMerchantApi = (data) => callAPI(`${urls.authMerchant}/login`, 
 export const logoutMerchantApi = () => callAPI(`${urls.authMerchant}/logout`, 'POST', {}, {}, {});
 export const verifyEmailMerchantApi = (data) => callAPI(`${urls.authMerchant}/verify-email`, 'POST', {}, {}, data);
 export const validateEmailMerchantApi = (data) => callAPI(`${urls.authMerchant}/validate-email`, 'POST', {}, {}, data);
+export const forgotPasswordMerchantApi = (email) =>
+  callAPI(`${urls.authMerchant}/forgot-password`, 'POST', {}, {}, email);
+export const updateForgotPasswordMerchantApi = (data, token) =>
+  callAPI(`${urls.authMerchant}/update-forgot-password/${token}`, 'POST', {}, {}, data);
 
 // MERCHANT
 export const getMerchantsApi = () => callAPI(urls.merchant, 'GET');
 export const getMerchantProfileApi = () => callAPI(`${urls.merchant}/merchant-profile`, 'GET');
 export const updateMerchantProfileApi = (data) => callAPI(`${urls.merchant}/update-profile`, 'PATCH', {}, {}, data);
+export const updateMerchantPasswordApi = (data) => callAPI(`${urls.merchant}/update-password`, 'PATCH', {}, {}, data);
 export const getMerchantDetailApi = (id) => callAPI(`${urls.merchant}/${id}`, 'GET');
+export const deleteMerchantApi = () => callAPI(`${urls.merchant}/delete`, 'DELETE');
 
 // CATEGORIES
 export const getCategoriesApi = () => callAPI(urls.category, 'GET');
@@ -72,13 +79,13 @@ export const updateMerchantVenueApi = (id, data) => callAPI(`${urls.venue}/updat
 export const deleteMerchantVenueApi = (id) => callAPI(`${urls.venue}/delete-venue/${id}`, 'DELETE', {}, {}, {});
 
 // PAYMENT
-export const createTokenPaymentApi = (data) => callAPI(`${urls.venue}/payment-token`, 'POST', {}, {}, data);
-export const createPaymentApi = (data) => callAPI(`${urls.venue}/payment`, 'POST', {}, {}, data);
-export const getPaymentsByUserApi = () => callAPI(`${urls.venue}/payment-user`, 'GET');
-export const getPaymentsByMerchantApi = () => callAPI(`${urls.venue}/payment-merchant`, 'GET');
-export const sendEmailAfterPaymentApi = (data) => callAPI(`${urls.venue}/send-email`, 'POST', {}, {}, data);
-export const getPaymentDetailByUserApi = (id) => callAPI(`${urls.venue}/payment-user/${id}`, 'GET');
-export const getPaymentDetailByMerchantApi = (id) => callAPI(`${urls.venue}/payment-merchant/${id}`, 'GET');
+export const createTokenPaymentApi = (data) => callAPI(`${urls.payment}/payment-token`, 'POST', {}, {}, data);
+export const createPaymentApi = (data) => callAPI(`${urls.payment}/payment`, 'POST', {}, {}, data);
+export const getPaymentsByUserApi = () => callAPI(`${urls.payment}/payment-user`, 'GET');
+export const getPaymentsByMerchantApi = () => callAPI(`${urls.payment}/payment-merchant`, 'GET');
+export const sendEmailAfterPaymentApi = (data) => callAPI(`${urls.payment}/send-email`, 'POST', {}, {}, data);
+export const getPaymentDetailByUserApi = (id) => callAPI(`${urls.payment}/payment-user/${id}`, 'GET');
+export const getPaymentDetailByMerchantApi = (id) => callAPI(`${urls.payment}/payment-merchant/${id}`, 'GET');
 
 // USER
 export const getUserProfileApi = () => callAPI(`${urls.user}/profile`, 'GET');

@@ -5,8 +5,10 @@ import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useParams } from 'react-router-dom';
 
+import { isEmpty } from 'lodash';
 import PlaceIcon from '@mui/icons-material/Place';
 import LocalPhone from '@mui/icons-material/LocalPhone';
+import NotFound from '@components/NotFound';
 import { getMerchantDetail } from './actions';
 import { selectMerchantDetail } from './selectors';
 import classes from './style.module.scss';
@@ -20,6 +22,14 @@ const MerchantDetail = ({ merchantDetail }) => {
     dispatch(getMerchantDetail(merchantId));
   }, [merchantId]);
 
+  if (isEmpty(merchantDetail)) {
+    return (
+      <div className={classes.merchantDetail}>
+        <NotFound />
+      </div>
+    );
+  }
+
   return (
     <div className={classes.merchantDetail}>
       <img src={merchantDetail?.image} alt={merchantDetail?.name} className={classes.image} />
@@ -28,7 +38,9 @@ const MerchantDetail = ({ merchantDetail }) => {
           <div className={classes.wrapperName}>{merchantDetail?.name}</div>
           <div className={classes.categories}>
             {merchantDetail?.categories?.map((category) => (
-              <div className={classes.category}>{category.name}</div>
+              <div key={category.id} className={classes.category}>
+                {category.name}
+              </div>
             ))}
           </div>
           <div className={classes.box}>
@@ -46,7 +58,7 @@ const MerchantDetail = ({ merchantDetail }) => {
           </div>
           <div className={classes.fieldCards}>
             {merchantDetail?.MerchantVenue?.map((item) => (
-              <FieldCard field={item} merchantId={merchantId} />
+              <FieldCard key={item.id} field={item} merchantId={merchantId} />
             ))}
           </div>
         </div>

@@ -3,10 +3,10 @@ import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useEffect } from 'react';
 
+import TableTransaction from '@components/TableTransaction';
 import { getPaymentByUser } from '@pages/UserProfile/actions';
 import { selectPaymentByUser } from '@pages/UserProfile/selectors';
 import classes from './style.module.scss';
-import TableTransaction from '../TableTransaction';
 
 const TransactionUser = ({ transactions }) => {
   const dispatch = useDispatch();

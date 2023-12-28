@@ -33,14 +33,11 @@ module.exports = {
       longitude: {
         type: Sequelize.DOUBLE,
       },
-      about: {
-        type: Sequelize.STRING,
-      },
       image: {
         type: Sequelize.STRING,
       },
-      closeDate: {
-        type: Sequelize.STRING,
+      status: {
+        type: Sequelize.BOOLEAN,
       },
       accessToken: {
         type: Sequelize.STRING,

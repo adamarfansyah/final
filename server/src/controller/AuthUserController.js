@@ -1,20 +1,26 @@
 const { Users, Merchants } = require("../database/models");
 const {
   GenerateToken,
-  GenerateRefreshToken,
   GenerateTokenEmail,
   GenerateResetPasswordToken,
 } = require("../helpers/GenerateToken");
 const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { Op } = require("sequelize");
-const { VerifyRefreshToken, VerifyEmailToken } = require("../helpers/VerifyToken");
+const { VerifyEmailToken } = require("../helpers/VerifyToken");
 const { validateRequest } = require("../helpers/ValidateRequest");
 const schemas = require("../config/schemas");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
 const sendEmail = require("../helpers/SendEmail");
-const { emailBodyOTP, emailBodyForgotPassword } = require("../helpers/EmailMessages");
+const { emailBodyOTP, emailBodyForgotPasswordUser } = require("../helpers/EmailMessages");
 const GenerateOtp = require("../helpers/GenerateOtp");
+const {
+  expDataInCache,
+  incrDataInCache,
+  delDataInCache,
+  getDataFromCache,
+} = require("../helpers/RedisHelpers");
+const { string } = require("joi");
 
 exports.verifyEmailOtpUser = async (req, res) => {
   try {
@@ -57,6 +63,11 @@ exports.validateEmailOtpUser = async (req, res) => {
     if (decoded.otp !== parseInt(otp.otp)) {
       return ResponseError(res, 403, "Failed", "OTP is not match");
     }
+
+    if (typeof decoded === "string") {
+      return ResponseError(res, 404, "Failed", decoded);
+    }
+
     return ResponseSuccess(res, 200, "Success", "Success Verify Email");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
@@ -116,7 +127,6 @@ exports.registerUser = async (req, res) => {
 
     return ResponseSuccess(res, 200, "Success", newUser);
   } catch (error) {
-    console.log(error);
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };
@@ -130,18 +140,28 @@ exports.loginUser = async (req, res) => {
       return ResponseError(res, 404, "Email Not Found");
     }
 
-    const dcryptPassword = dcryptMessageBody(password);
-
     const errorMessage = validateRequest(req.body, schemas.loginUserSchem);
-
     if (errorMessage) {
       return ResponseError(res, 400, "Validation Error", errorMessage);
     }
 
-    const comparedPassword = await PasswordCompare(dcryptPassword, user.password);
+    const maxAttempts = 3;
+    const attemptsExpire = 120;
 
-    if (!comparedPassword) {
-      return ResponseError(res, 400, "Password is not same");
+    const attemptsKey = `loginAttempts:${user.email}`;
+    const currentAttempts = await getDataFromCache(attemptsKey);
+
+    if (currentAttempts && parseInt(currentAttempts, 10) >= maxAttempts) {
+      return ResponseError(res, 400, "Please wait 2 minutes before trying again");
+    }
+
+    const decryptedPassword = dcryptMessageBody(password);
+    const isPasswordValid = await PasswordCompare(decryptedPassword, user.password);
+
+    if (!isPasswordValid) {
+      await incrDataInCache(attemptsKey);
+      await expDataInCache(attemptsKey, attemptsExpire);
+      return ResponseError(res, 400, "Password is not correct");
     }
 
     const dataUser = {
@@ -158,13 +178,15 @@ exports.loginUser = async (req, res) => {
 
     await user.update({ accessToken });
 
+    await delDataInCache(`loginAttemps:${user.email}`);
+
     return ResponseSuccess(res, 200, "Success", { accessToken });
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };
 
-exports.logoutUser = async (req, res) => {
+exports.logoutUser = async (_, res) => {
   try {
     const { id } = res.locals;
     const user = await Users.findByPk(id);
@@ -185,16 +207,16 @@ exports.forgotPasswordUser = async (req, res) => {
   try {
     const { email } = req.body;
 
-    const user = await Users.findOne({ where: { email } });
-
-    if (!user) {
-      return ResponseError(res, 404, "User not found");
-    }
-
     const errorMessage = validateRequest(req.body, schemas.forgotPasswordSchem);
 
     if (errorMessage) {
       return ResponseError(res, 400, "Validation Error", errorMessage);
+    }
+
+    const user = await Users.findOne({ where: { email } });
+
+    if (!user) {
+      return ResponseError(res, 404, "User not found");
     }
 
     const token = GenerateResetPasswordToken(email);
@@ -203,7 +225,7 @@ exports.forgotPasswordUser = async (req, res) => {
       to: email,
       text: `Hey ${email}`,
       subject: "Forgot Password",
-      htm: emailBodyForgotPassword(email, token),
+      htm: emailBodyForgotPasswordUser(email, token),
     };
 
     sendEmail(data);
@@ -212,6 +234,7 @@ exports.forgotPasswordUser = async (req, res) => {
 
     return ResponseSuccess(res, 200, "Success Forgot Password", { token });
   } catch (error) {
+    console.log({ error });
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };
@@ -219,7 +242,17 @@ exports.forgotPasswordUser = async (req, res) => {
 exports.updateForgotPasswordUser = async (req, res) => {
   try {
     const { token } = req.params;
-    const { password } = req.body;
+    const { password, confirmPassword } = req.body;
+    const dcryptPassword = dcryptMessageBody(password);
+    const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
+    const errorMessage = validateRequest(
+      { password: dcryptPassword, confirmPassword: dcryptConfirmPassword },
+      schemas.updateForgotPasswordSchem
+    );
+
+    if (errorMessage) {
+      return ResponseError(res, 400, "Validation Error", errorMessage);
+    }
 
     const user = await Users.findOne({ where: { resetPasswordToken: token } });
 
@@ -227,14 +260,7 @@ exports.updateForgotPasswordUser = async (req, res) => {
       return ResponseError(res, 404, "User not found");
     }
 
-    const errorMessage = validateRequest(req.body, schemas.updateForgotPasswordSchem);
-
-    if (errorMessage) {
-      return ResponseError(res, 400, "Validation Error", errorMessage);
-    }
-
-    const passwordHashed = await PasswordHashing(password);
-
+    const passwordHashed = await PasswordHashing(dcryptPassword);
     const newUserPassword = await user.update({
       password: passwordHashed,
       resetPasswordToken: null,

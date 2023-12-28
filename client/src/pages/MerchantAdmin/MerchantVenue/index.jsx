@@ -85,11 +85,13 @@ const MerchantVenue = ({ merchant, merchantVenues }) => {
   };
 
   return (
-    <div>
-      <h1>MERCHANT VENUE</h1>
-      <Button onClick={handleModalAdd}>
-        <FormattedMessage id="venue_add_venue" />
-      </Button>
+    <div className={classes.merchantVenue}>
+      <div className={classes.wrapper}>
+        <div className={classes.title}>MERCHANT VENUE</div>
+        <Button onClick={handleModalAdd}>
+          <FormattedMessage id="venue_add_venue" />
+        </Button>
+      </div>
       {isShowModalAdd && (
         <AddVenue onSubmit={(data) => onAddVenue(data)} open={isShowModalAdd} setOpen={setIsShowModalAdd} />
       )}

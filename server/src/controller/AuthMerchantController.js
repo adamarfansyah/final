@@ -1,15 +1,25 @@
-const { Merchants, Users, MerchantCategories, Categories } = require("../database/models");
+const { Merchants, Users } = require("../database/models");
 const { Op } = require("sequelize");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
-const { GenerateToken, GenerateTokenEmail } = require("../helpers/GenerateToken");
+const {
+  GenerateToken,
+  GenerateTokenEmail,
+  GenerateResetPasswordToken,
+} = require("../helpers/GenerateToken");
 const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
 const { validateRequest } = require("../helpers/ValidateRequest");
 const schemas = require("../config/schemas");
 const GenerateOtp = require("../helpers/GenerateOtp");
-const { emailBodyOTP } = require("../helpers/EmailMessages");
+const { emailBodyOTP, emailBodyForgotPasswordMerchant } = require("../helpers/EmailMessages");
 const sendEmail = require("../helpers/SendEmail");
 const { VerifyEmailToken } = require("../helpers/VerifyToken");
+const {
+  getDataFromCache,
+  incrDataInCache,
+  expDataInCache,
+  delDataInCache,
+} = require("../helpers/RedisHelpers");
 
 exports.verifyEmailOtpMerchant = async (req, res) => {
   try {
@@ -20,12 +30,11 @@ exports.verifyEmailOtpMerchant = async (req, res) => {
       return ResponseError(res, 400, "Failure", "Email is already in use.");
     }
 
-    if (!existingMerchant) {
-      const existingUser = await Users.findOne({ where: { email } });
-      if (existingUser) {
-        return ResponseError(res, 400, "Failure", "Email is already in use.");
-      }
+    const existingUser = await Users.findOne({ where: { email } });
+    if (existingUser) {
+      return ResponseError(res, 400, "Failure", "Email is already in use.");
     }
+
     const otp = GenerateOtp();
     const data = {
       to: email,
@@ -36,7 +45,9 @@ exports.verifyEmailOtpMerchant = async (req, res) => {
     sendEmail(data);
 
     const token = GenerateTokenEmail(otp, email);
-    return ResponseSuccess(res, 201, "Success", { token, exp: Date.now() + 2 * 60 * 1000 });
+    const exp = Date.now() + 2 * 60 * 1000;
+
+    return ResponseSuccess(res, 201, "Success", { token, exp });
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
@@ -48,9 +59,10 @@ exports.validateEmailOtpMerchant = async (req, res) => {
 
     const decoded = VerifyEmailToken(token);
 
-    if (decoded.otp !== parseInt(otp.otp)) {
+    if (parseInt(decoded.otp) !== parseInt(otp.otp)) {
       return ResponseError(res, 403, "Failed", "OTP is not match");
     }
+
     return ResponseSuccess(res, 200, "Success", "Success Verify Email");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
@@ -92,6 +104,7 @@ exports.createMerchants = async (req, res) => {
         password: dcryptPassword,
         confirmPassword: dcryptConfirmPassword,
         categories: parseInt(categories, 10),
+        status: false,
         ...formData,
       },
       schemas.createMerchantSchem
@@ -108,10 +121,12 @@ exports.createMerchants = async (req, res) => {
       email,
       password: hashedPassword,
       image,
+      status: false,
       ...formData,
     });
 
     await newMerchant.addCategories(categories);
+    await delDataInCache("merchants");
 
     return ResponseSuccess(res, 200, "Success", newMerchant);
   } catch (error) {
@@ -123,7 +138,8 @@ exports.loginMerchant = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const merchant = await Merchants.findOne({ where: { email } });
+    const merchant = await Merchants.findOne({ where: { email, status: false } });
+
     if (!merchant) {
       return ResponseError(res, 404, "Merchant Not Found", "Merchant Not Found");
     }
@@ -133,11 +149,23 @@ exports.loginMerchant = async (req, res) => {
       return ResponseError(res, 400, "Validation Error", errorMessage);
     }
 
-    const dcryptPassword = dcryptMessageBody(password);
-    const comparedPassword = await PasswordCompare(dcryptPassword, merchant.password);
+    const maxAttempts = 3;
+    const attemptsExpire = 120;
 
-    if (!comparedPassword) {
-      return ResponseError(res, 400, "Password is not same");
+    const attemptsKey = `emailLogin:${merchant.email}`;
+    const currentAttempts = await getDataFromCache(attemptsKey);
+
+    if (currentAttempts && parseInt(currentAttempts, 10) >= maxAttempts) {
+      return ResponseError(res, 400, "Please wait 2 minutes before trying again");
+    }
+
+    const decryptedPassword = dcryptMessageBody(password);
+    const isPasswordValid = await PasswordCompare(decryptedPassword, merchant.password);
+
+    if (!isPasswordValid) {
+      await incrDataInCache(attemptsKey);
+      await expDataInCache(attemptsKey, attemptsExpire);
+      return ResponseError(res, 400, "Password is not correct");
     }
 
     const dataMerchant = {
@@ -145,12 +173,15 @@ exports.loginMerchant = async (req, res) => {
       name: merchant.name,
       email: merchant.email,
       image: merchant.image,
+      status: merchant.status,
       userType: "merchant",
     };
 
     const accessToken = GenerateToken(dataMerchant);
 
     await merchant.update({ accessToken });
+
+    await delDataInCache(`emailLogin:${merchant.email}`);
 
     return ResponseSuccess(res, 200, "Success", { accessToken });
   } catch (error) {
@@ -160,7 +191,7 @@ exports.loginMerchant = async (req, res) => {
 
 exports.logoutMerchant = async (_, res) => {
   try {
-    const id = res.locals.id;
+    const { id } = res.locals;
     const merchant = await Merchants.findByPk(id);
 
     if (!merchant) {
@@ -175,50 +206,121 @@ exports.logoutMerchant = async (_, res) => {
   }
 };
 
-exports.updatePassword = async (req, res) => {
+// exports.updatePassword = async (req, res) => {
+//   try {
+//     const { id } = res.locals;
+//     const { password, confirmPassword } = req.body;
+
+//     const merchant = await Merchants.findByPk(id);
+//     if (!merchant || merchant.status) {
+//       return ResponseError(res, 404, "Merchant Not Found");
+//     }
+
+//     const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
+//     const dcryptPassword = dcryptMessageBody(password);
+
+//     const errorMessage = validateRequest(
+//       { password: dcryptPassword, confirmPassword: dcryptConfirmPassword },
+//       schemas.updatePasswordMerchantSchem
+//     );
+
+//     if (errorMessage) {
+//       return ResponseError(res, 400, "Validation Error", errorMessage);
+//     }
+
+//     const hashedPassword = await PasswordHashing(dcryptPassword);
+
+//     await merchant.update({ password: hashedPassword });
+
+//     return ResponseSuccess(res, 201, "Success Update Password", "Success");
+//   } catch (error) {
+//     return ResponseError(res, 500, "Internal Server Error", error.message);
+//   }
+// };
+
+// exports.updateImageMerchant = async (req, res) => {
+//   try {
+//     const { id } = res.locals;
+//     const image = req.imageUrl;
+
+//     const merchant = await Merchants.findByPk(id);
+//     if ((!image && !merchant) || merchant.status) {
+//       return ResponseError(res, 404, "Image or Merchant not found");
+//     }
+
+//     const updatedImageMerchant = await merchant.update({ image });
+//     await delDataInCache("merchants");
+
+//     return ResponseSuccess(res, 201, "Success Update Image", updatedImageMerchant);
+//   } catch (error) {
+//     return ResponseError(res, 500, "Internal Server Error", error.message);
+//   }
+// };
+
+exports.forgotPasswordMerchant = async (req, res) => {
   try {
-    const { id } = res.locals;
-    const { password, confirmPassword } = req.body;
+    const { email } = req.body;
 
-    const merchant = await Merchants.findByPk(id);
-    if (!merchant) {
-      return ResponseError(res, 404, "Merchant Not Found");
+    const errorMessage = validateRequest(req.body, schemas.forgotPasswordSchem);
+
+    if (errorMessage) {
+      return ResponseError(res, 400, "Validation Error", errorMessage);
     }
-    const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
-    const dcryptPassword = dcryptMessageBody(password);
 
+    const merchant = await Merchants.findOne({ where: { email } });
+
+    if (!merchant || merchant.status) {
+      return ResponseError(res, 404, "Merchant not found");
+    }
+
+    const token = GenerateResetPasswordToken(email);
+
+    const data = {
+      to: email,
+      text: `Hey ${email}`,
+      subject: "Forgot Password",
+      htm: emailBodyForgotPasswordMerchant(email, token),
+    };
+
+    sendEmail(data);
+
+    await merchant.update({ resetPasswordToken: token });
+
+    return ResponseSuccess(res, 200, "Success Forgot Password", { token });
+  } catch (error) {
+    return ResponseError(res, 500, "Internal Server Error", error.message);
+  }
+};
+
+exports.updateForgotPasswordMerchant = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password, confirmPassword } = req.body;
+    const dcryptPassword = dcryptMessageBody(password);
+    const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
     const errorMessage = validateRequest(
       { password: dcryptPassword, confirmPassword: dcryptConfirmPassword },
-      schemas.updatePasswordMerchantSchem
+      schemas.updateForgotPasswordSchem
     );
 
     if (errorMessage) {
       return ResponseError(res, 400, "Validation Error", errorMessage);
     }
 
-    const hashedPassword = await PasswordHashing(dcryptPassword);
+    const merchant = await Merchants.findOne({ where: { resetPasswordToken: token } });
 
-    await merchant.update({ password: hashedPassword });
-
-    return ResponseSuccess(res, 201, "Success Update Password", "Success");
-  } catch (error) {
-    return ResponseError(res, 500, "Internal Server Error", error.message);
-  }
-};
-
-exports.updateImageMerchant = async (req, res) => {
-  try {
-    const { id } = res.locals;
-    const image = req.imageUrl;
-
-    const merchant = await Merchants.findByPk(id);
-    if (!image && !merchant) {
-      return ResponseError(res, 404, "Image or Merchant not found");
+    if (!merchant || merchant.status) {
+      return ResponseError(res, 404, "User not found");
     }
 
-    const updatedImageMerchant = await merchant.update({ image });
+    const passwordHashed = await PasswordHashing(dcryptPassword);
 
-    return ResponseSuccess(res, 201, "Success Update Image", updatedImageMerchant);
+    const newMerchantPassword = await merchant.update({
+      password: passwordHashed,
+      resetPasswordToken: null,
+    });
+
+    return ResponseSuccess(res, 201, "Success Update Password", newMerchantPassword);
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }

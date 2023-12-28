@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Merchants.hasMany(models.MerchantCategories, {
-      //   as: "MerchantCategory",
-      //   foreignKey: "merchantId",
-      // });
       Merchants.belongsToMany(models.Categories, {
         through: "MerchantCategories",
         as: "categories",
@@ -32,9 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       phoneNumber: DataTypes.STRING,
       latitude: DataTypes.DOUBLE,
       longitude: DataTypes.DOUBLE,
-      about: DataTypes.STRING,
       image: DataTypes.STRING,
-      closeDate: DataTypes.STRING,
+      status: DataTypes.BOOLEAN,
       accessToken: DataTypes.STRING,
       resetPasswordToken: DataTypes.STRING,
     },

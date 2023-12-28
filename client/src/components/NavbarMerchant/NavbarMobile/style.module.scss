@@ -1,0 +1,27 @@
+@import '@styles/base';
+
+.navbar {
+  background-color: var(--color-bg);
+  position: sticky;
+  width: 100%;
+  bottom: 0;
+  box-shadow: 0rem 0rem 1rem rgba($color: #000000, $alpha: 0.5);
+  .profileNavbar {
+    padding: 0.1rem;
+  }
+  .navbarContent {
+    display: flex;
+    justify-content: space-between;
+  }
+  .link {
+    padding: 1rem;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--color-text);
+    &:hover {
+      background-color: var(--color-button);
+      color: white;
+    }
+  }
+}

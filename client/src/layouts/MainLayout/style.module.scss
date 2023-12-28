@@ -2,9 +2,11 @@
 
 .navbarMerchant {
   display: flex;
-  gap: 20px;
-}
-
-.test {
-  height: 200vh;
+  flex-direction: column-reverse;
+  gap: 0.3rem;
+  @include apply-at-md-size {
+    @media (min-width: $screen-md-limit) {
+      flex-direction: row;
+    }
+  }
 }

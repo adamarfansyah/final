@@ -1,20 +1,22 @@
 const schemas = require("../config/schemas");
-const {
-  Merchants,
-  Users,
-  MerchantCategories,
-  Payment,
-  Venues,
-  Categories,
-} = require("../database/models");
+const { Merchants, Venues, Categories } = require("../database/models");
 const { dcryptMessageBody } = require("../helpers/Encrypt");
-const { GenerateToken } = require("../helpers/GenerateToken");
-const { PasswordCompare, PasswordHashing } = require("../helpers/HashPassword");
+const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
+const { getDataFromCache, setDataInCache, delDataInCache } = require("../helpers/RedisHelpers");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
+const { validateRequest } = require("../helpers/ValidateRequest");
 
 exports.getMerchants = async (_, res) => {
   try {
+    const merchantsCache = await getDataFromCache("merchants");
+    if (merchantsCache) {
+      return ResponseSuccess(res, 200, "Success", merchantsCache);
+    }
+
     const merchants = await Merchants.findAll({
+      where: {
+        status: false,
+      },
       attributes: {
         exclude: ["password", "accessToken", "resetPasswordToken"],
       },
@@ -25,6 +27,8 @@ exports.getMerchants = async (_, res) => {
         },
       ],
     });
+
+    await setDataInCache("merchants", merchants);
 
     return ResponseSuccess(res, 200, "Success", merchants);
   } catch (error) {
@@ -47,11 +51,15 @@ exports.getMerchantDetail = async (req, res) => {
         {
           model: Venues,
           as: "MerchantVenue",
+          required: false,
+          where: {
+            status: false,
+          },
         },
       ],
     });
 
-    if (!merchant) {
+    if (!merchant || merchant.status) {
       return ResponseError(res, 404, "Not Found", "Merchant Not Found");
     }
 
@@ -61,7 +69,7 @@ exports.getMerchantDetail = async (req, res) => {
   }
 };
 
-exports.getMerchantProfile = async (req, res) => {
+exports.getMerchantProfile = async (_, res) => {
   try {
     const { id } = res.locals;
 
@@ -98,6 +106,8 @@ exports.updateMerchantProfile = async (req, res) => {
     }
 
     await merchant.update(formData);
+    await delDataInCache("merchants");
+
     return ResponseSuccess(res, 201, "Success Update Data", "Success Update Data");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
@@ -107,23 +117,57 @@ exports.updateMerchantProfile = async (req, res) => {
 exports.updateMerchantPassword = async (req, res) => {
   try {
     const { id } = res.locals;
-    const { password, confirmPassword } = req.body;
+    const { oldPassword, password, confirmPassword } = req.body;
     const merchant = await Merchants.findByPk(id);
+
     if (!merchant) {
       return ResponseError(res, 404, "Merchant Not Found");
     }
 
-    const errorMessage = validateRequest(req.body, schemas.updatePasswordMerchantSchem);
+    const dcryptedOldPassword = dcryptMessageBody(oldPassword);
+    const dcryptPassword = dcryptMessageBody(password);
+    const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
+    const errorMessage = validateRequest(
+      {
+        oldPassword: dcryptedOldPassword,
+        password: dcryptPassword,
+        confirmPassword: dcryptConfirmPassword,
+      },
+      schemas.updatePasswordMerchantSchem
+    );
+
+    const comparePassword = await PasswordCompare(dcryptedOldPassword, merchant.password);
+
+    if (!comparePassword) {
+      return ResponseError(res, 403, "Old Password is not correct");
+    }
+
     if (errorMessage) {
       return ResponseError(res, 400, "Validation Error", errorMessage);
     }
 
-    const dcryptPassword = dcryptMessageBody(password);
     const hashedPassword = await PasswordHashing(dcryptPassword);
-
     await merchant.update({ password: hashedPassword });
-
+    await delDataInCache("merchants");
     return ResponseSuccess(res, 201, "Update Success", "Update Success");
+  } catch (error) {
+    return ResponseError(res, 500, "Internal Server Error", error.message);
+  }
+};
+
+exports.deleteMerchant = async (_, res) => {
+  try {
+    const { id } = res.locals;
+    const merchant = await Merchants.findByPk(id);
+
+    if (!merchant || merchant.status) {
+      return ResponseError(res, 404, "Merchant Not Found");
+    }
+
+    await merchant.update({ status: true });
+    await delDataInCache("merchants");
+
+    return ResponseSuccess(res, 204, "Success Delete");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }

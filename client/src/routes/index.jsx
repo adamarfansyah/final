@@ -1,7 +1,6 @@
 import MainLayout from '@layouts/MainLayout';
 
 import Home from '@pages/Home';
-import NotFound from '@pages/NotFound';
 import Auth from '@pages/Auth';
 import Venue from '@pages/Venue';
 import Direction from '@pages/Direction';
@@ -12,7 +11,8 @@ import VenueDetail from '@pages/Venue/VenueDetail';
 import UserProfile from '@pages/UserProfile';
 import ForgotPassword from '@pages/ForgotPassword';
 import TransactionDetail from '@pages/TransactionDetail';
-import UpdatePasswordUser from '@pages/UpdatePasswordUser';
+import UpdatePasswordPage from '@pages/UpdatePassword';
+import NotFoundPage from '@pages/NotFound';
 
 const routes = [
   {
@@ -30,17 +30,17 @@ const routes = [
     layout: MainLayout,
   },
   {
-    path: '/auth/forgot-password',
-    name: 'Auth Forgot Password',
+    path: '/forgot-password/:role',
+    name: 'Forgot Password',
     protected: false,
     component: ForgotPassword,
     layout: MainLayout,
   },
   {
-    path: '/auth/update-forgot-password/:token',
-    name: 'Auth Update Forgot Password',
+    path: '/update-forgot-password/:role/:token',
+    name: 'Update Forgot Password',
     protected: false,
-    component: UpdatePasswordUser,
+    component: UpdatePasswordPage,
     layout: MainLayout,
   },
   {
@@ -94,13 +94,7 @@ const routes = [
     component: TransactionDetail,
     layout: MainLayout,
   },
-  {
-    path: '/forgot-password/user',
-    protected: false,
-    component: ForgotPassword,
-    layout: MainLayout,
-  },
-  { path: '*', name: 'Not Found', component: NotFound, layout: MainLayout, protected: false },
+  { path: '*', name: 'Not Found', component: NotFoundPage, layout: MainLayout, protected: false },
 ];
 
 export default routes;

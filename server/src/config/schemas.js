@@ -7,6 +7,11 @@ const schemas = {
     lastName: Joi.string().max(50).required(),
     email: Joi.string().email().required(),
     image: Joi.string().required(),
+    phoneNumber: Joi.string()
+      .min(6)
+      .max(20)
+      .pattern(/^[0-9]+$/)
+      .required(),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
       "any.only": "Passwords do not match",
@@ -20,7 +25,7 @@ const schemas = {
     username: Joi.string().min(3).max(30).required(),
     firstName: Joi.string().max(50).required(),
     lastName: Joi.string().max(50).required(),
-    image: Joi.string().required(),
+    image: Joi.string(),
     phoneNumber: Joi.string()
       .min(6)
       .max(20)
@@ -28,6 +33,7 @@ const schemas = {
       .required(),
   }),
   updateUserPasswordSchem: Joi.object().keys({
+    oldPassword: Joi.string().min(6).required(),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
       "any.only": "Passwords do not match",
@@ -41,6 +47,7 @@ const schemas = {
     confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
       "any.only": "Passwords do not match",
     }),
+    status: Joi.boolean().required(),
     categories: Joi.number().required(),
     city: Joi.string().min(3).required(),
     address: Joi.string().min(3).required(),
@@ -59,6 +66,7 @@ const schemas = {
     image: Joi.string().required(),
   }),
   updatePasswordMerchantSchem: Joi.object().keys({
+    oldPassword: Joi.string().min(6).required(),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
       "any.only": "Passwords do not match",
@@ -70,6 +78,7 @@ const schemas = {
     merchantId: Joi.number().required(),
     startHour: Joi.number().required(),
     endHour: Joi.number().required(),
+    status: Joi.boolean().required(),
     image: Joi.string().required(),
   }),
   updateVenueSchem: Joi.object().keys({

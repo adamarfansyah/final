@@ -9,7 +9,7 @@ import merchantDetailSaga from '@pages/MerchantDetail/saga';
 import userProfileSaga from '@pages/UserProfile/saga';
 import transactionSaga from '@pages/TransactionDetail/saga';
 import forgotPasswordSaga from '@pages/ForgotPassword/saga';
-import updatePasswordSaga from '@pages/UpdatePasswordUser/saga';
+import updatePasswordSaga from '@pages/UpdatePassword/saga';
 
 export default function* rootSaga() {
   yield all([

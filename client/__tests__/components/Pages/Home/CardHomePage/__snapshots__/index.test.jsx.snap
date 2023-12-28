@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card Home Page Should match with snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="card"
+  >
+    <div
+      class="icons"
+    >
+      <img
+        alt="Badminton"
+        class="icon"
+      />
+    </div>
+    <div
+      class="name"
+    >
+      Badminton
+    </div>
+  </div>
+</DocumentFragment>
+`;

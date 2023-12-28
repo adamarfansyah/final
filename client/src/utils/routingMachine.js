@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
+import { useMap } from 'react-leaflet';
 import L from 'leaflet';
+import { greenIcon, redIcon } from './iconLeaflet';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import 'leaflet-routing-machine';
-import { useMap } from 'react-leaflet';
-import { greenIcon, redIcon } from './iconLeaflet';
 
 const Routing = ({ start, end }) => {
   const map = useMap();

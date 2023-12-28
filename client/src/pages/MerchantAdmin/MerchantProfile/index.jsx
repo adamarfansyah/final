@@ -2,19 +2,24 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { isEmpty } from 'lodash';
 
 import PlaceIcon from '@mui/icons-material/Place';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Button from '@components/Button';
 
-import { getMerchantProfile, updateMerchantProfile } from '../actions';
+import UpdatePassword from '@components/UpdatePassword';
+import { logoutMerchant } from '@pages/AuthMerchant/actions';
+import { encryptData } from '@utils/encrypt';
+import { useNavigate } from 'react-router-dom';
+import { deleteMerchant, getMerchantProfile, updateMerchantPassword, updateMerchantProfile } from '../actions';
 import classes from './style.module.scss';
 import UpdateProfile from './UpdateProfile';
 import DeleteProfile from './DeleteProfile';
-import UpdatePassword from './UpdatePassword';
 
 const MerchantProfile = ({ merchantProfile }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isUpdateProfile, setIsUpdateProfile] = useState(true);
   const [isDelete, setIsDelete] = useState(false);
 
@@ -27,11 +32,29 @@ const MerchantProfile = ({ merchantProfile }) => {
   };
 
   const onUpdatePassword = (data) => {
-    console.log({ data });
+    const encryptedOldPassword = encryptData(data.oldPassword);
+    const encryptedPassword = encryptData(data.password);
+    const encryptedConfirmPassword = encryptData(data.confirmPassword);
+    dispatch(
+      updateMerchantPassword(
+        { oldPassword: encryptedOldPassword, password: encryptedPassword, confirmPassword: encryptedConfirmPassword },
+        () => {
+          dispatch(getMerchantProfile());
+        }
+      )
+    );
   };
 
   const onDelete = () => {
-    console.log(merchantProfile.id);
+    dispatch(
+      deleteMerchant(() => {
+        dispatch(
+          logoutMerchant(() => {
+            navigate('/');
+          })
+        );
+      })
+    );
   };
 
   const handleUpdateProfile = () => {
@@ -42,7 +65,7 @@ const MerchantProfile = ({ merchantProfile }) => {
     setIsDelete((state) => !state);
   };
 
-  if (!merchantProfile) {
+  if (isEmpty(merchantProfile)) {
     return <h1>Loading...</h1>;
   }
 

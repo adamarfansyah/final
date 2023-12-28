@@ -12,6 +12,7 @@ export default {
   app_register_user_link: 'Would you like to login as a user?',
   app_forgot_password_user_link: 'Forgot password ?',
   app_login_title: 'Login',
+  app_login_title_merchant: 'Login as Merchant',
   app_register_title: 'Register',
   app_submit: 'Submit',
 
@@ -33,6 +34,24 @@ export default {
   app_delete: 'Delete',
   app_update: 'Update',
   app_hour: 'Hour',
+  app_booked: 'Booked',
+  app_not_booked: 'Book',
+  app_direction: 'Direction',
+  app_see_venue: 'See Venue',
+
+  // USER PROFILE
+  user_account: 'Account',
+  user_transaction: 'Transaction',
+  user_update_profile: 'Update Profile',
+  user_update_password: 'Update Password',
+  user_dont_have_transaction: "Don't have transactions",
+
+  // TABLE TRANSACTION
+  table_venue_name: 'Venue Name',
+  table_order_id: 'Order ID',
+  table_date: 'Date',
+  table_amount: 'Amount',
+  table_detail: 'Detail',
 
   // HOME
   welcome_greeting: 'Welcome To PlayZonePro',
@@ -47,6 +66,9 @@ export default {
   venue_add_venue: 'Add Venue',
   venue_delete_venue_title: 'Are you sure want delete this venue?',
   venue_delete_venue_desc: 'if you delete this venue, venue will delete permanent on your merchant',
+  merchant_delete_title: 'Are you sure want delete this merchant?',
+  merchant_delete_desc: 'if you delete this merchant, merchant will delete permanent on your merchant',
+  transaction_balance: 'Balance',
 
   // AUTH USER
   resend_otp: 'Resend OTP',

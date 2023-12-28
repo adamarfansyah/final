@@ -1,16 +1,5 @@
-import { FormattedMessage } from 'react-intl';
+import NotFound from '@components/NotFound';
 
-import logo from '@static/images/not-found.png';
+const NotFoundPage = () => <NotFound />;
 
-import classes from './style.module.scss';
-
-const NotFound = () => (
-  <div className={classes.contentWrapper}>
-    <img className={classes.image} src={logo} alt="Not Found" />
-    <div className={classes.title}>
-      <FormattedMessage id="app_not_found" />
-    </div>
-  </div>
-);
-
-export default NotFound;
+export default NotFoundPage;

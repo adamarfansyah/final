@@ -7,6 +7,14 @@ const upload = multer();
 const uploadMiddleware = async (req, res, next) => {
   try {
     upload.single("image")(req, res, async (err) => {
+      if (
+        req.file.mimetype !== "image/jpeg" &&
+        req.file.mimetype !== "image/jpg" &&
+        req.file.mimetype !== "image/png"
+      ) {
+        return ResponseError(res, 400, "Bad Request", "Image file must jpg/jpeg/png");
+      }
+
       if (err instanceof multer.MulterError) {
         return ResponseError(res, 400, "Internal Server Error", err.message);
       } else if (err) {
@@ -17,7 +25,6 @@ const uploadMiddleware = async (req, res, next) => {
         req.imageUrl = imageUrl;
         next();
       } catch (error) {
-        console.log({ error }, "<<<<<");
         return ResponseError(res, 500, "Internal Server Error", error);
       }
     });

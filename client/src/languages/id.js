@@ -12,6 +12,7 @@ export default {
   app_register_user_link: 'Apakah anda ingin login sebagai user?',
   app_forgot_password_user_link: 'Lupa kata sandi ?',
   app_login_title: 'Masuk',
+  app_login_title_merchant: 'Masuk sebagai Mitra',
   app_register_title: 'Daftar',
   app_submit: 'Kirim',
 
@@ -33,6 +34,24 @@ export default {
   app_delete: 'Hapus',
   app_update: 'Ubah',
   app_hour: 'Jam',
+  app_booked: 'Sudah Dipesan',
+  app_not_booked: 'Pesan',
+  app_direction: 'Rute',
+  app_see_venue: 'Lihat Lapangan',
+
+  // USER PROFILE
+  user_account: 'Akun',
+  user_transaction: 'Transaksi',
+  user_update_profile: 'Ubah Profil',
+  user_update_password: 'Ubah Sandi',
+  user_dont_have_transaction: 'Tidak memiliki transaksi',
+
+  // TABLE TRANSACTION
+  table_venue_name: 'Nama Lapangan',
+  table_order_id: 'ID Pesanan',
+  table_date: 'Tanggal',
+  table_amount: 'Jumlah',
+  table_detail: 'Detail',
 
   // HOME
   welcome_greeting: 'Selamat datang di PlayZonePro',
@@ -45,8 +64,11 @@ export default {
   section_update_profile: 'Ubah Profil',
   section_update_password: 'Ubah Sandi',
   venue_add_venue: 'Tambah Venue',
-  venue_delete_venue_title: 'Apakah kamu yakin ingin mengahapus venue ini?',
+  venue_delete_venue_title: 'Apakah kamu yakin ingin menghapus venue ini?',
   venue_delete_venue_desc: 'Jika kamu menghapus venue ini maka akan terhapus secara permanen',
+  merchant_delete_title: 'Apakah kamu yakin ingin menghapus Merchant ini?',
+  merchant_delete_desc: 'Jika kamu menghapus merchant ini maka akan terhapus secara permanen',
+  transaction_balance: 'Saldo',
 
   // AUTH USER
   resend_otp: 'Kirim Ulang OTP',

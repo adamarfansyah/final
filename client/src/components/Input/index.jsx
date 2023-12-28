@@ -16,6 +16,7 @@ const Input = ({
   placeholder,
   required,
   errorResponse,
+  ...rest
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -26,8 +27,8 @@ const Input = ({
   const hasErrors = Object.keys(errors).length > 0;
 
   return (
-    <div className={classes.input}>
-      <div className={classes.label}>
+    <div className={classes.input} data-testid="input-container">
+      <div className={classes.label} data-testid="input-label">
         {label}
         {required && <span>*</span>}
       </div>
@@ -39,9 +40,11 @@ const Input = ({
           type={isPasswordVisible ? 'text' : type}
           {...register(name, validationSchema)}
           placeholder={placeholder}
+          data-testid="input"
+          {...rest}
         />
         {name === 'password' && (
-          <div onClick={togglePasswordVisibility}>
+          <div onClick={togglePasswordVisibility} data-testid="visibility-icon">
             {isPasswordVisible ? (
               <VisibilityOffIcon className={classes.icon} />
             ) : (
