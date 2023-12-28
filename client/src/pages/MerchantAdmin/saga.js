@@ -53,16 +53,19 @@ function* doCreateMerchantVenue({ data, cbSuccess }) {
     const response = yield call(createMerchantVenueApi, data);
     yield put(createMerchantVenueSuccess(response.data));
     cbSuccess && cbSuccess();
+    yield put(showPopup('Success Create Venue', 'Please Refresh Page for best experience', true));
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.status));
   }
   yield put(setLoading(false));
 }
 
-function* doDeleteMerchantVenue({ id }) {
+function* doDeleteMerchantVenue({ id, cbSuccess }) {
   yield put(setLoading(true));
   try {
     yield call(deleteMerchantVenueApi, id);
+    cbSuccess && cbSuccess();
+    yield put(showPopup('Success Delete Venue', 'Please Refresh Page for best experience', true));
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.status));
   }

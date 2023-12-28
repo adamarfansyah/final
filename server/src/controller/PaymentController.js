@@ -21,8 +21,7 @@ exports.createPaymentToken = async (req, res) => {
     const dcryptedStarTime = dcryptMessageBody(startTime);
     const dcryptedEndTime = dcryptMessageBody(endTime);
 
-    const venue = await Venues.findByPk(venueId);
-    const user = await Users.findByPk(id);
+    const [venue, user] = await Promise.all([Venues.findByPk(venueId), Users.findByPk(id)]);
 
     if (!dcryptedStarTime && !dcryptedEndTime) {
       return ResponseError(res, 404, "Start Time or End Time is not valid");
@@ -62,7 +61,7 @@ exports.createPaymentToken = async (req, res) => {
         quantity: bookingDurationInHours,
       },
       transaction_details: {
-        order_id: `${venue.name}-${Math.floor(Date.now() / 1000)}-${id}`,
+        order_id: `${venue.name}-${new Date().getTime()}-${id}`,
         gross_amount: bookingAmount,
       },
       customer_details: {

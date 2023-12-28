@@ -40,6 +40,19 @@ module.exports = {
           image:
             "https://lh3.googleusercontent.com/p/AF1QipPMs6FLN01nz65VyGW8EHNYGEBd-6Ct2f5BmhPI=s1360-w1360-h1020",
         },
+        {
+          name: "Hall Badminton / Bulu Tangkis Santa E-Sport",
+          email: "santa@mail.com",
+          password: await PasswordHashing("adam123"),
+          address: "Jl. Blumbang No.87 RT.4, RT.4/RW.7, Kuningan, Karet Kuningan, Setiabudi",
+          phoneNumber: "092382934",
+          latitude: -6.2206807,
+          longitude: 106.8247817,
+          city: "Jakarta Selatan",
+          status: false,
+          image:
+            "https://lh3.googleusercontent.com/p/AF1QipPWlbwm78WbENm45_KLfBGE6lGgG7y-PJ0tqNpD=s1360-w1360-h1020",
+        },
       ],
       {}
     );

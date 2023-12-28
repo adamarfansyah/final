@@ -34,6 +34,7 @@ const VenueDetail = ({ venueSchedule }) => {
         dispatch(
           createPayment(data, (orderId) => {
             dispatch(sendEmailPayment({ orderId }));
+            dispatch(getVenueSchedule(venueId));
           })
         );
       })
@@ -75,7 +76,7 @@ const VenueDetail = ({ venueSchedule }) => {
 };
 
 VenueDetail.propTypes = {
-  venueSchedule: PropTypes.array,
+  venueSchedule: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

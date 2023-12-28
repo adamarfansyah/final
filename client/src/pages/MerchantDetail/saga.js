@@ -11,7 +11,6 @@ function* doGetMerchantDetail({ id }) {
   try {
     const response = yield call(getMerchantDetailApi, id);
     yield put(getMerchantDetailSuccess(response.data));
-    console.log({ response });
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.status));
   }

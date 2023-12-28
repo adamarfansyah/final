@@ -25,7 +25,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest --coverage=true --forceExit"
+    "test": "jest --coverage=true --forceExit --runInBand"
   },
   "keywords": [],
   "author": "",

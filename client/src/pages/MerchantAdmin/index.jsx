@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { createStructuredSelector } from 'reselect';
-import { useNavigate, useParams } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
+
 import { connect, useDispatch } from 'react-redux';
 
 import { getPaymentDetailByMerchant, getPaymentsByMerchant } from '@pages/TransactionDetail/actions';
@@ -51,13 +51,7 @@ const MerchantAdmin = ({ merchant, merchantPayments, merchantVenues, merchantPro
         />
       ),
       logout: <MerchantLogout merchant={merchant} />,
-      default: (
-        <div>
-          <h1>
-            <FormattedMessage id="app_popup_error_title" />
-          </h1>
-        </div>
-      ),
+      default: <Navigate to="/merchant/profile" />,
     };
 
     return component[params] || component.default;

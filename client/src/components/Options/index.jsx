@@ -16,7 +16,7 @@ const Options = ({ label, name, children, value, onChange }) => {
           defaultValue={value}
           onChange={handleSelectChange}
           inputProps={{
-            name: { name },
+            name,
           }}
         >
           {children}

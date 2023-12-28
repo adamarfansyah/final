@@ -36,6 +36,8 @@ export default {
   app_hour: 'Jam',
   app_booked: 'Sudah Dipesan',
   app_not_booked: 'Pesan',
+  app_direction: 'Rute',
+  app_see_venue: 'Lihat Lapangan',
 
   // USER PROFILE
   user_account: 'Akun',

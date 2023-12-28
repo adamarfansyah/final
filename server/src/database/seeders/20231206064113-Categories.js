@@ -12,12 +12,15 @@ module.exports = {
       "Categories",
       [
         {
+          id: 1,
           name: "Sepak Bola",
         },
         {
+          id: 2,
           name: "Mini Soccer",
         },
         {
+          id: 3,
           name: "Bulu Tangkis",
         },
       ],

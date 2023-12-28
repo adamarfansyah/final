@@ -118,7 +118,9 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
             />
           </div>
           <div>
-            <Button type="submit">Submit</Button>
+            <Button type="submit">
+              <FormattedMessage id="app_submit" />
+            </Button>
           </div>
         </form>
       </div>

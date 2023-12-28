@@ -2,9 +2,7 @@ const request = require("supertest");
 const app = require("../index");
 const { sequelize } = require("../database/models/index");
 const { queryInterface } = sequelize;
-const { GenerateToken } = require("../helpers/GenerateToken");
 const { encryptMessageBody } = require("../helpers/Encrypt");
-const { PasswordHashing } = require("../helpers/HashPassword");
 
 const dummyUser = [
   {
@@ -80,8 +78,6 @@ beforeAll((done) => {
     .catch((err) => {
       done(err);
     });
-
-  queryInterface.bulkInsert("Payments", mockPayment, {});
 });
 
 afterAll((done) => {

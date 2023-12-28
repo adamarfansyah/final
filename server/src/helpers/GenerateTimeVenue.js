@@ -3,7 +3,6 @@ const moment = require("moment");
 const GenerateTimeVenue = (date, start, end, intervalMinutes) => {
   const timeSlots = [];
   const currentTime = moment(start);
-
   while (currentTime.isBefore(end)) {
     const startTime = currentTime.format("HH:mm");
     currentTime.add(intervalMinutes, "minutes");

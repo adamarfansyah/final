@@ -5,7 +5,7 @@ const VerifyEmailToken = (token) => {
     const decoded = jwt.verify(token, process.env.JWT_VERIFY_EMAIL);
     return decoded;
   } catch (error) {
-    return null;
+    return error.message;
   }
 };
 

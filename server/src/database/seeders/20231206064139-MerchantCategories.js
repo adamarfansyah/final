@@ -19,6 +19,10 @@ module.exports = {
           merchantId: 2,
           categoryId: 2,
         },
+        {
+          merchantId: 3,
+          categoryId: 3,
+        },
       ],
       {}
     );

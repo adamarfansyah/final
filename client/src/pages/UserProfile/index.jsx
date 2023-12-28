@@ -5,6 +5,7 @@ import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import { selectToken } from '@containers/Client/selectors';
+import { isEmpty } from 'lodash';
 
 import { getPaymentByUser } from '@pages/TransactionDetail/actions';
 import { selectPaymentByUser } from '@pages/TransactionDetail/selectors';
@@ -62,6 +63,10 @@ const UserProfile = ({ token, userProfile, transactions }) => {
       })
     );
   };
+
+  if (isEmpty(userProfile) && isEmpty(transactions)) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={classes.userProfile}>

@@ -49,7 +49,7 @@ const AddVenue = ({ open, onSubmit, setOpen }) => {
           <Input
             type="number"
             name="price"
-            label="Price"
+            label="Price /hour"
             errors={errors}
             register={register}
             validationSchema={{

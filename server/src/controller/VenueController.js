@@ -60,7 +60,6 @@ exports.getVenueOperationalHours = async (req, res) => {
     const responseData = {
       operationalDates,
       newTimeSlots,
-      closeDate: venue.MerchantVenue.closeDate,
       bookedVenue: venue.BookedVenue,
     };
 

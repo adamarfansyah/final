@@ -34,8 +34,10 @@ export default {
   app_delete: 'Delete',
   app_update: 'Update',
   app_hour: 'Hour',
-  app_booked: 'Sudah Dipesan',
-  app_not_booked: 'Pesan',
+  app_booked: 'Booked',
+  app_not_booked: 'Book',
+  app_direction: 'Direction',
+  app_see_venue: 'See Venue',
 
   // USER PROFILE
   user_account: 'Account',

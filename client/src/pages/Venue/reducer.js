@@ -6,7 +6,7 @@ export const initialState = {
   merchants: [],
   categories: [],
   venueDetail: {},
-  venueSchedule: [],
+  venueSchedule: {},
 };
 
 const venueReducer = (state = initialState, action) =>

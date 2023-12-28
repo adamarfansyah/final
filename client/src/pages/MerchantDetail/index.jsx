@@ -38,7 +38,9 @@ const MerchantDetail = ({ merchantDetail }) => {
           <div className={classes.wrapperName}>{merchantDetail?.name}</div>
           <div className={classes.categories}>
             {merchantDetail?.categories?.map((category) => (
-              <div className={classes.category}>{category.name}</div>
+              <div key={category.id} className={classes.category}>
+                {category.name}
+              </div>
             ))}
           </div>
           <div className={classes.box}>
@@ -56,7 +58,7 @@ const MerchantDetail = ({ merchantDetail }) => {
           </div>
           <div className={classes.fieldCards}>
             {merchantDetail?.MerchantVenue?.map((item) => (
-              <FieldCard field={item} merchantId={merchantId} />
+              <FieldCard key={item.id} field={item} merchantId={merchantId} />
             ))}
           </div>
         </div>

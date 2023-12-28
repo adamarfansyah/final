@@ -13,14 +13,14 @@ exports.checkBooking = async (req, res, next) => {
     const dcryptedStarTime = dcryptMessageBody(startTime);
     const dcryptedEndTime = dcryptMessageBody(endTime);
 
+    if (!dcryptedStarTime && !dcryptedEndTime) {
+      return ResponseError(res, 404, "Start Time or End Time is not valid");
+    }
+
     const venue = await Venues.findByPk(venueId);
     const user = await Users.findByPk(id);
     if (!user || !venue) {
       return ResponseError(res, 404, "User or Venue Not found");
-    }
-
-    if (!dcryptedStarTime && !dcryptedEndTime) {
-      return ResponseError(res, 404, "Start Time or End Time is not valid");
     }
 
     if (dcryptedStarTime >= dcryptedEndTime) {

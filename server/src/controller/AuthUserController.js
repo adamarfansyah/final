@@ -20,6 +20,7 @@ const {
   delDataInCache,
   getDataFromCache,
 } = require("../helpers/RedisHelpers");
+const { string } = require("joi");
 
 exports.verifyEmailOtpUser = async (req, res) => {
   try {
@@ -62,6 +63,11 @@ exports.validateEmailOtpUser = async (req, res) => {
     if (decoded.otp !== parseInt(otp.otp)) {
       return ResponseError(res, 403, "Failed", "OTP is not match");
     }
+
+    if (typeof decoded === "string") {
+      return ResponseError(res, 404, "Failed", decoded);
+    }
+
     return ResponseSuccess(res, 200, "Success", "Success Verify Email");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);

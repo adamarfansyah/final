@@ -7,6 +7,11 @@ const schemas = {
     lastName: Joi.string().max(50).required(),
     email: Joi.string().email().required(),
     image: Joi.string().required(),
+    phoneNumber: Joi.string()
+      .min(6)
+      .max(20)
+      .pattern(/^[0-9]+$/)
+      .required(),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
       "any.only": "Passwords do not match",

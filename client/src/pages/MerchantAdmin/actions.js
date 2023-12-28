@@ -76,7 +76,8 @@ export const deleteMerchant = (cbSuccess) => ({
   cbSuccess,
 });
 
-export const deleteMerchantVenue = (id) => ({
+export const deleteMerchantVenue = (id, cbSuccess) => ({
   type: DELETE_MERCHANT_VENUE,
   id,
+  cbSuccess,
 });
