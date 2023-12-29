@@ -59,6 +59,8 @@ const Auth = ({ token, authUser }) => {
     );
   };
 
+  console.log(authUser.token);
+
   const onSubmitStep3 = (data) => {
     const { password, confirmPassword } = data;
 

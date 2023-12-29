@@ -16,6 +16,7 @@ const schemas = {
     confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
       "any.only": "Passwords do not match",
     }),
+    token: Joi.string().required(),
   }),
   loginUserSchem: Joi.object().keys({
     email: Joi.string().email().required(),

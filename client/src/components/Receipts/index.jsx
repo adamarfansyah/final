@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { useReactToPrint } from 'react-to-print';
 import { forwardRef, useRef } from 'react';
 
+import PrintIcon from '@mui/icons-material/Print';
+import Button from '@components/Button';
 import formattedNumber from '@utils/formattedNumber';
 import NotFound from '@components/NotFound';
 import { formattedTimeCardSchedule, renderDate } from '@utils/generateTimeSchedule';
@@ -15,7 +17,7 @@ const Receipts = forwardRef(({ transactionDetail }) => {
   });
 
   return (
-    <div>
+    <div className={classes.receiptContainer}>
       <div className={classes.transactionDetail} data-testid="Receipts" ref={componentRef}>
         {Object.keys(transactionDetail).length === 0 ? (
           <NotFound />
@@ -60,11 +62,10 @@ const Receipts = forwardRef(({ transactionDetail }) => {
             </div>
           </div>
         )}
-        ;
       </div>
-      <button type="button" onClick={handlePrint}>
-        Print this out!
-      </button>
+      <Button className={classes.btnReceipt} onClick={handlePrint}>
+        <PrintIcon />
+      </Button>
     </div>
   );
 });

@@ -95,10 +95,10 @@ exports.registerUser = async (req, res) => {
     const image = req.imageUrl;
 
     const decoded = VerifyEmailToken(token);
-
-    if (decoded.email !== email) {
-      return ResponseError(res, 400, "Token is failure");
-    }
+    console.log({ formData });
+    // if (decoded.email !== email) {
+    //   return ResponseError(res, 400, "Token is failure");
+    // }
 
     const existingUser = await Users.findOne({
       where: {
@@ -120,6 +120,7 @@ exports.registerUser = async (req, res) => {
         password: dcryptPassword,
         confirmPassword: dcryptConfirmPassword,
         image,
+        token,
         ...formData,
       },
       schemas.registerUserSchem
