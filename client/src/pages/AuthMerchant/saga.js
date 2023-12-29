@@ -17,7 +17,7 @@ import {
   VALIDATE_EMAIL_MERCHANT,
   VERIFY_EMAIL_MERCHANT,
 } from './constants';
-import { verifyEmailMerchantSuccess } from './actions';
+import { validateEmailMerchantSuccess, verifyEmailMerchantSuccess } from './actions';
 
 function* doCreateMerchant({ data, cbSuccess }) {
   yield put(setLoading(true));
@@ -72,8 +72,9 @@ function* doVerifyEmailMerchant({ email, cbSuccess }) {
 function* doValidateEmailMerchant({ data, cbSuccess }) {
   yield put(setLoading(true));
   try {
-    yield call(validateEmailMerchantApi, data);
+    const response = yield call(validateEmailMerchantApi, data);
     cbSuccess && cbSuccess();
+    yield put(validateEmailMerchantSuccess(response.data));
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.status));
   }

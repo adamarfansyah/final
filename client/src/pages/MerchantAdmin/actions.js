@@ -3,10 +3,13 @@ import {
   CREATE_MERCHANT_VENUE_SUCCESS,
   DELETE_MERCHANT,
   DELETE_MERCHANT_VENUE,
+  DELETE_VENUE_OPERATIONAL,
   GET_MERCHANT_PROFILE,
   GET_MERCHANT_PROFILE_SUCCESS,
   GET_MERCHANT_VENUES,
   GET_MERCHANT_VENUES_SUCCESS,
+  GET_MERCHANT_VENUE_OPERATIONAL,
+  GET_MERCHANT_VENUE_OPERATIONAL_SUCCESS,
   UPDATE_MERCHANT_PASSWORD,
   UPDATE_MERCHANT_PROFILE,
   UPDATE_MERCHANT_PROFILE_SUCCESS,
@@ -48,10 +51,11 @@ export const updateMerchantPassword = (data) => ({
   data,
 });
 
-export const createMerchantVenue = (data, cbSuccess) => ({
+export const createMerchantVenue = (data, cbSuccess, cbFailure) => ({
   type: CREATE_MERCHANT_VENUE,
   data,
   cbSuccess,
+  cbFailure,
 });
 
 export const createMerchantVenueSuccess = (data) => ({
@@ -80,4 +84,19 @@ export const deleteMerchantVenue = (id, cbSuccess) => ({
   type: DELETE_MERCHANT_VENUE,
   id,
   cbSuccess,
+});
+
+export const getMerchantVenueOperational = (id) => ({
+  type: GET_MERCHANT_VENUE_OPERATIONAL,
+  id,
+});
+
+export const getMerchantVenueOperationalSuccess = (data) => ({
+  type: GET_MERCHANT_VENUE_OPERATIONAL_SUCCESS,
+  data,
+});
+
+export const deleteVenueOperational = (venueId) => ({
+  type: DELETE_VENUE_OPERATIONAL,
+  venueId,
 });

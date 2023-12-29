@@ -9,7 +9,7 @@ import formattedNumber from '@utils/formattedNumber';
 import Button from '@components/Button';
 import classes from './style.module.scss';
 
-const CardVenue = ({ venue, handleModalDelete, handleModalUpdate }) => {
+const CardVenue = ({ venue, handleModalDelete, handleModalUpdate, setVenueId }) => {
   const renderHours = (startHour, endHour) => {
     const formattedStartHour = moment({ hour: startHour }).format('HH:mm');
     const formattedEndHour = moment({ hour: endHour }).format('HH:mm');
@@ -40,6 +40,9 @@ const CardVenue = ({ venue, handleModalDelete, handleModalUpdate }) => {
           <Button variant="secondary" onClick={() => handleModalDelete(venue)}>
             <FormattedMessage id="app_delete" />
           </Button>
+          <Button variant="secondary" onClick={() => setVenueId(venue.id)}>
+            Detail
+          </Button>
         </div>
       </div>
     </div>
@@ -50,6 +53,7 @@ CardVenue.propTypes = {
   venue: PropTypes.object,
   handleModalDelete: PropTypes.func,
   handleModalUpdate: PropTypes.func,
+  setVenueId: PropTypes.func,
 };
 
 export default CardVenue;

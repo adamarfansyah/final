@@ -31,6 +31,7 @@ const authMerchantReducer = (state = initialState, action) =>
         break;
       case VALIDATE_EMAIL_MERCHANT_SUCCESS:
         draft.isLoading = false;
+        draft.data = action.data;
         break;
       case DELETE_EMAIL_VALIDATE_MERCHANT:
         draft.data = {};

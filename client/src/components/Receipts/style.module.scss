@@ -1,5 +1,6 @@
 @import '@styles/base';
 
+// position: relative;
 .transactionDetail {
   display: flex;
   justify-content: center;
@@ -59,5 +60,13 @@
       font-weight: bold;
       font-size: 0.9rem;
     }
+  }
+}
+.receiptContainer {
+  position: relative;
+  .btnReceipt {
+    position: absolute;
+    top: 20%;
+    right: 23%;
   }
 }

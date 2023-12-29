@@ -2,17 +2,25 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { isEmpty } from 'lodash';
 
 import Button from '@components/Button';
 import { encryptData } from '@utils/encrypt';
-import { createMerchantVenue, deleteMerchantVenue, getMerchantVenues, updateMerchantVenue } from '../actions';
+import {
+  createMerchantVenue,
+  deleteMerchantVenue,
+  deleteVenueOperational,
+  getMerchantVenues,
+  updateMerchantVenue,
+} from '../actions';
 import AddVenue from './AddVenue';
 import CardVenue from './CardVenue';
 import classes from './style.module.scss';
 import DeleteVenue from './DeleteVenue';
 import UpdateVenue from './UpdateVenue';
+import DetailVenue from './DetailVenue';
 
-const MerchantVenue = ({ merchant, merchantVenues }) => {
+const MerchantVenue = ({ merchant, merchantVenues, setVenueId, venueId, venueOps }) => {
   const dispatch = useDispatch();
   const [isShowModalAdd, setIsShowModalAdd] = useState(false);
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
@@ -84,14 +92,23 @@ const MerchantVenue = ({ merchant, merchantVenues }) => {
     setIsShowModalUpdate(true);
   };
 
+  const handleCloseBookedVenue = () => {
+    dispatch(deleteVenueOperational(venueId));
+    setVenueId(0);
+  };
+
   return (
     <div className={classes.merchantVenue}>
       <div className={classes.wrapper}>
         <div className={classes.title}>MERCHANT VENUE</div>
-        <Button onClick={handleModalAdd}>
-          <FormattedMessage id="venue_add_venue" />
-        </Button>
+        <div className={classes.buttons}>
+          <Button onClick={handleModalAdd}>
+            <FormattedMessage id="venue_add_venue" />
+          </Button>
+          {venueId !== 0 && <Button onClick={handleCloseBookedVenue}>Close</Button>}
+        </div>
       </div>
+      {!isEmpty(venueOps) && <DetailVenue venueSchedule={venueOps} />}
       {isShowModalAdd && (
         <AddVenue onSubmit={(data) => onAddVenue(data)} open={isShowModalAdd} setOpen={setIsShowModalAdd} />
       )}
@@ -113,6 +130,7 @@ const MerchantVenue = ({ merchant, merchantVenues }) => {
             venue={venue}
             handleModalDelete={handleModalDelete}
             handleModalUpdate={handleModalUpdate}
+            setVenueId={setVenueId}
           />
         ))}
       </div>
@@ -123,6 +141,9 @@ const MerchantVenue = ({ merchant, merchantVenues }) => {
 MerchantVenue.propTypes = {
   merchant: PropTypes.object,
   merchantVenues: PropTypes.array,
+  setVenueId: PropTypes.func,
+  venueId: PropTypes.number,
+  venueOps: PropTypes.object,
 };
 
 export default MerchantVenue;

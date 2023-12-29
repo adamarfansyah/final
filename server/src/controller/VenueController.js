@@ -185,3 +185,66 @@ exports.deleteVenue = async (req, res) => {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };
+
+exports.getVenueOperationalHoursByMerchant = async (req, res) => {
+  try {
+    const { id: merchantId } = res.locals;
+    const { id } = req.params;
+
+    const merchant = await Merchants.findByPk(merchantId);
+
+    if (!merchant) {
+      return ResponseError(res, 404, "Merchant Not found");
+    }
+
+    const venue = await Venues.findByPk(id, {
+      include: [
+        {
+          model: Merchants,
+          as: "MerchantVenue",
+          where: {
+            id: merchant.id,
+            status: false,
+          },
+        },
+        {
+          model: Payment,
+          as: "BookedVenue",
+          attributes: ["startBook", "endBook"],
+        },
+      ],
+    });
+
+    if (!venue || venue.status) {
+      return ResponseError(res, 404, "Venue Not Found", "Venue Not Found");
+    }
+
+    const venueOperationalHour = {
+      startHour: venue.startHour,
+      endHour: venue.endHour,
+    };
+
+    const startDate = new Date();
+    const numberOfDays = 5;
+
+    const operationalDates = createOperationalDates(venueOperationalHour, startDate, numberOfDays);
+    let newTimeSlots = [];
+
+    const responseData = {
+      operationalDates,
+      newTimeSlots,
+      bookedVenue: venue.BookedVenue,
+    };
+
+    operationalDates.map((operationalDate) => {
+      const { start, end } = operationalDate;
+      const date = moment(start).format("YYYY-MM-DD");
+      const slots = GenerateTimeVenue(date, start, end, 60);
+      newTimeSlots.push(slots);
+    });
+
+    return ResponseSuccess(res, 200, "Success", responseData);
+  } catch (error) {
+    return ResponseError(res, 500, "Internal Server Error", error.message);
+  }
+};

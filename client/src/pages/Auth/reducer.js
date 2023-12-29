@@ -31,9 +31,10 @@ const authUserReducer = (state = initialState, action) =>
         break;
       case VALIDATE_EMAIL_USER_SUCCESS:
         draft.isLoading = false;
+        draft.data = action.data;
         break;
       case DELETE_EMAIL_VALIDATE_USER:
-        draft.data = {};
+        draft.data = '';
         break;
     }
   });

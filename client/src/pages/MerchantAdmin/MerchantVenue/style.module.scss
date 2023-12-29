@@ -18,6 +18,10 @@
       font-weight: bold;
     }
   }
+  .buttons {
+    display: flex;
+    gap: 1rem;
+  }
 }
 .venuesList {
   display: grid;

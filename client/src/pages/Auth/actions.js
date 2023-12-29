@@ -41,8 +41,9 @@ export const validateEmailUser = (data, cbSuccess) => ({
   cbSuccess,
 });
 
-export const setValidateEmailUserSuccess = () => ({
+export const setValidateEmailUserSuccess = (data) => ({
   type: VALIDATE_EMAIL_USER_SUCCESS,
+  data,
 });
 
 export const deleteEmailValidateUser = () => ({

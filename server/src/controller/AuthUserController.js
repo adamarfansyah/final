@@ -3,6 +3,7 @@ const {
   GenerateToken,
   GenerateTokenEmail,
   GenerateResetPasswordToken,
+  GenerateTokenEmailNoExp,
 } = require("../helpers/GenerateToken");
 const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
@@ -58,17 +59,23 @@ exports.validateEmailOtpUser = async (req, res) => {
   try {
     const { token, otp } = req.body;
 
-    const decoded = VerifyEmailToken(token);
+    const decoded = VerifyEmailToken(token.token);
 
     if (decoded.otp !== parseInt(otp.otp)) {
       return ResponseError(res, 403, "Failed", "OTP is not match");
     }
 
-    if (typeof decoded === "string") {
+    if (decoded === "jwt expired") {
       return ResponseError(res, 404, "Failed", decoded);
     }
 
-    return ResponseSuccess(res, 200, "Success", "Success Verify Email");
+    const tokenStepCreateUser = GenerateTokenEmailNoExp(decoded?.email);
+
+    return ResponseSuccess(res, 200, "Success", {
+      message: "Success Verify Email",
+      token: tokenStepCreateUser,
+      exp: 0,
+    });
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
@@ -82,9 +89,16 @@ exports.registerUser = async (req, res) => {
       password,
       confirmPassword,
       image: unUsedImage,
+      token,
       ...formData
     } = req.body;
     const image = req.imageUrl;
+
+    const decoded = VerifyEmailToken(token);
+    console.log({ formData });
+    // if (decoded.email !== email) {
+    //   return ResponseError(res, 400, "Token is failure");
+    // }
 
     const existingUser = await Users.findOne({
       where: {
@@ -106,6 +120,7 @@ exports.registerUser = async (req, res) => {
         password: dcryptPassword,
         confirmPassword: dcryptConfirmPassword,
         image,
+        token,
         ...formData,
       },
       schemas.registerUserSchem

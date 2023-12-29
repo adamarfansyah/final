@@ -98,3 +98,8 @@ exports.updateUserPassword = async (req, res) => {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
 };
+
+exports.updateUserImage = (req, res) => {
+  try {
+  } catch (error) {}
+};

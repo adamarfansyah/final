@@ -14,6 +14,13 @@ const GenerateTokenEmail = (otp, email) => {
   return jwt.sign({ otp, email }, process.env.JWT_VERIFY_EMAIL, { expiresIn: "2m" });
 };
 
+const GenerateTokenEmailNoExp = (email) => {
+  if (!email) {
+    return "Email is required";
+  }
+  return jwt.sign({ email }, process.env.JWT_VERIFY_EMAIL);
+};
+
 const GenerateResetPasswordToken = (email) => {
   const token = CryptoJS.SHA256(email, process.env.TOKEN_FORGOT_PASSWORD_CRYPTO).toString();
   return token;
@@ -23,4 +30,5 @@ module.exports = {
   GenerateToken,
   GenerateTokenEmail,
   GenerateResetPasswordToken,
+  GenerateTokenEmailNoExp,
 };

@@ -43,7 +43,7 @@ const Input = ({
           data-testid="input"
           {...rest}
         />
-        {name === 'password' && (
+        {(name === 'password' || name === 'confirmPassword') && (
           <div onClick={togglePasswordVisibility} data-testid="visibility-icon">
             {isPasswordVisible ? (
               <VisibilityOffIcon className={classes.icon} />

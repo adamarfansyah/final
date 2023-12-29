@@ -5,7 +5,7 @@ import { loginApi, logoutApi, registerUserApi, validateEmailUserApi, verifyEmail
 import { setLogin, setLoginFailure, setToken } from '@containers/Client/actions';
 import { setLoading, showPopup } from '@containers/App/actions';
 import { LOGIN_USER, LOGOUT_USER, REGISTER_USER, VALIDATE_EMAIL_USER, VERIFY_EMAIL_USER } from './constants';
-import { verifyEmailUserSuccess } from './actions';
+import { setValidateEmailUserSuccess, verifyEmailUserSuccess } from './actions';
 
 function* doLoginUser({ data }) {
   yield put(setLoading(true));
@@ -58,7 +58,8 @@ function* doVerifyEmailUser({ email, cbSuccess }) {
 function* doValidateEmailUser({ data, cbSuccess }) {
   yield put(setLoading(true));
   try {
-    yield call(validateEmailUserApi, data);
+    const response = yield call(validateEmailUserApi, data);
+    yield put(setValidateEmailUserSuccess(response.data));
     cbSuccess && cbSuccess();
   } catch (error) {
     yield put(showPopup('Sorry :(', error.response.data.message));

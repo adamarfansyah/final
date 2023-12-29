@@ -5,6 +5,7 @@ const {
   GenerateToken,
   GenerateTokenEmail,
   GenerateResetPasswordToken,
+  GenerateTokenEmailNoExp,
 } = require("../helpers/GenerateToken");
 const { PasswordHashing, PasswordCompare } = require("../helpers/HashPassword");
 const { ResponseError, ResponseSuccess } = require("../helpers/ResponseData");
@@ -63,7 +64,17 @@ exports.validateEmailOtpMerchant = async (req, res) => {
       return ResponseError(res, 403, "Failed", "OTP is not match");
     }
 
-    return ResponseSuccess(res, 200, "Success", "Success Verify Email");
+    if (decoded === "jwt expired") {
+      return ResponseError(res, 404, "Failed", decoded);
+    }
+
+    const tokenStepCreateMerchant = GenerateTokenEmailNoExp(decoded?.email);
+
+    return ResponseSuccess(res, 200, "Success", {
+      message: "Success Verify Email",
+      token: tokenStepCreateMerchant,
+      exp: 0,
+    });
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }
@@ -78,9 +89,16 @@ exports.createMerchants = async (req, res) => {
       confirmPassword,
       categories,
       image: unUsedImage,
+      token,
       ...formData
     } = req.body;
     const image = req.imageUrl;
+
+    const decoded = VerifyEmailToken(token);
+    console.log({ decoded, email, token });
+    if (decoded.email !== email) {
+      return ResponseError(res, 400, "Token is failure");
+    }
 
     const existingUser = await Users.findOne({ where: { email } });
     const existingMerchant = await Merchants.findOne({

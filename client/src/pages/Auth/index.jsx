@@ -51,7 +51,7 @@ const Auth = ({ token, authUser }) => {
   };
 
   const onSubmitStep2 = (data) => {
-    const response = { token: authUser.token, otp: data };
+    const response = { token: authUser, otp: data };
     dispatch(
       validateEmailUser(response, () => {
         setRegisterStep(3);
@@ -59,8 +59,11 @@ const Auth = ({ token, authUser }) => {
     );
   };
 
+  console.log(authUser.token);
+
   const onSubmitStep3 = (data) => {
     const { password, confirmPassword } = data;
+
     const formData = new FormData();
     const encryptedPassword = encryptData(password);
     const encryptedConfirmPassword = encryptData(confirmPassword);
@@ -69,6 +72,7 @@ const Auth = ({ token, authUser }) => {
     formData.append('password', encryptedPassword);
     formData.append('confirmPassword', encryptedConfirmPassword);
     formData.append('email', decoded.email);
+    formData.append('token', authUser.token);
 
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value);
