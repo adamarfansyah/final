@@ -35,6 +35,7 @@ const MerchantTransaction = ({ transactions, transactionDetail, transactionId, s
         <FormattedMessage id="transaction_balance" /> {formattedNumber(totalAmount)}
       </div>
       {transactionId !== 0 && <Receipts transactionDetail={transactionDetail} />}
+
       <div className={classes.input}>
         <Input
           type="text"

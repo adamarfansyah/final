@@ -28,10 +28,10 @@ const Routing = ({ start, end }) => {
         };
 
         if (i === 0) {
-          return L.marker(waypoint.latLng, { ...markerOptions, icon: redIcon });
+          return L.marker(waypoint.latLng, { ...markerOptions, icon: greenIcon });
         }
         if (i === n - 1) {
-          return L.marker(waypoint.latLng, { ...markerOptions, icon: greenIcon });
+          return L.marker(waypoint.latLng, { ...markerOptions, icon: redIcon });
         }
         return L.marker(waypoint.latLng, markerOptions);
       },

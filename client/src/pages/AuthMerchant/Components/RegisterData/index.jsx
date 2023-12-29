@@ -162,6 +162,7 @@ const RegisterData = ({ onSubmit, categories, location }) => {
                 required: 'Latitude is required',
                 pattern: { value: 3, message: 'Latitude must be at least 3 characters' },
               }}
+              disabled
               required
             />
           </div>
@@ -178,6 +179,7 @@ const RegisterData = ({ onSubmit, categories, location }) => {
                 required: 'Longitude is required',
                 pattern: { value: 3, message: 'Longitude must be at least 3 characters' },
               }}
+              disabled
               required
             />
           </div>

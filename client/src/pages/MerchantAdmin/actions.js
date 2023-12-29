@@ -48,10 +48,11 @@ export const updateMerchantPassword = (data) => ({
   data,
 });
 
-export const createMerchantVenue = (data, cbSuccess) => ({
+export const createMerchantVenue = (data, cbSuccess, cbFailure) => ({
   type: CREATE_MERCHANT_VENUE,
   data,
   cbSuccess,
+  cbFailure,
 });
 
 export const createMerchantVenueSuccess = (data) => ({
