@@ -77,6 +77,7 @@ export const createBookingApi = (data) => callAPI(`${urls.venue}/booking`, 'POST
 export const createMerchantVenueApi = (data) => callAPI(`${urls.venue}/create-venue`, 'POST', {}, {}, data);
 export const updateMerchantVenueApi = (id, data) => callAPI(`${urls.venue}/update-venue/${id}`, 'PUT', {}, {}, data);
 export const deleteMerchantVenueApi = (id) => callAPI(`${urls.venue}/delete-venue/${id}`, 'DELETE', {}, {}, {});
+export const getMerchantVenueOperationalApi = (id) => callAPI(`${urls.venue}/venue/${id}`, 'GET');
 
 // PAYMENT
 export const createTokenPaymentApi = (data) => callAPI(`${urls.payment}/payment-token`, 'POST', {}, {}, data);

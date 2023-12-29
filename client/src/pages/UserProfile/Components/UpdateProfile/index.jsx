@@ -94,8 +94,10 @@ const UpdateProfile = ({ user }) => {
             required
           />
         </div>
-        <div>
+        {/* <div>
+          <label htmlFor="test">Test</label>
           <Input
+            id="test"
             type="file"
             name="image"
             label="Profile Image"
@@ -108,7 +110,7 @@ const UpdateProfile = ({ user }) => {
             placeholder="Profile Image"
             required
           />
-        </div>
+        </div> */}
         <div className={classes.btnContainer}>
           <Button className={classes.btn} variant="primary">
             <FormattedMessage id="app_submit" />

@@ -7,7 +7,7 @@ import { connect, useDispatch } from 'react-redux';
 
 import { getPaymentDetailByMerchant, getPaymentsByMerchant } from '@pages/TransactionDetail/actions';
 import { selectPaymentDetailByMerchant, selectPaymentsByMerchant } from '@pages/TransactionDetail/selectors';
-import { getMerchantProfile, getMerchantVenues } from './actions';
+import { getMerchantProfile, getMerchantVenueOperational, getMerchantVenues } from './actions';
 
 import MerchantProfile from './MerchantProfile';
 import MerchantVenue from './MerchantVenue';
@@ -15,11 +15,19 @@ import MerchantTransaction from './MerchantTransaction';
 import MerchantLogout from './MerchantLogout';
 
 import classes from './style.module.scss';
-import { selectMerchantProfile, selectMerchantVenues } from './selectors';
+import { selectMerchantProfile, selectMerchantVenueOps, selectMerchantVenues } from './selectors';
 
-const MerchantAdmin = ({ merchant, merchantPayments, merchantVenues, merchantProfile, merchantTransactionDetail }) => {
+const MerchantAdmin = ({
+  merchant,
+  merchantPayments,
+  merchantVenues,
+  merchantProfile,
+  venueOperational,
+  merchantTransactionDetail,
+}) => {
   const { params } = useParams();
   const [transactionId, setTransactionId] = useState(0);
+  const [venueId, setVenueId] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -33,6 +41,12 @@ const MerchantAdmin = ({ merchant, merchantPayments, merchantVenues, merchantPro
   }, []);
 
   useEffect(() => {
+    if (venueId !== 0) {
+      dispatch(getMerchantVenueOperational(venueId));
+    }
+  }, [venueId]);
+
+  useEffect(() => {
     if (transactionId !== 0) {
       dispatch(getPaymentDetailByMerchant(transactionId));
     }
@@ -41,7 +55,15 @@ const MerchantAdmin = ({ merchant, merchantPayments, merchantVenues, merchantPro
   const Merchants = () => {
     const component = {
       profile: <MerchantProfile merchantProfile={merchantProfile} />,
-      venue: <MerchantVenue merchant={merchant} merchantVenues={merchantVenues} />,
+      venue: (
+        <MerchantVenue
+          merchant={merchant}
+          venueId={venueId}
+          setVenueId={setVenueId}
+          venueOps={venueOperational}
+          merchantVenues={merchantVenues}
+        />
+      ),
       transaction: (
         <MerchantTransaction
           transactions={merchantPayments}
@@ -56,7 +78,6 @@ const MerchantAdmin = ({ merchant, merchantPayments, merchantVenues, merchantPro
 
     return component[params] || component.default;
   };
-
   return (
     <div className={classes.merchant}>
       <Merchants />
@@ -70,6 +91,7 @@ MerchantAdmin.propTypes = {
   merchantVenues: PropTypes.array,
   merchantProfile: PropTypes.object,
   merchantTransactionDetail: PropTypes.object,
+  venueOperational: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -77,6 +99,7 @@ const mapStateToProps = createStructuredSelector({
   merchantVenues: selectMerchantVenues,
   merchantProfile: selectMerchantProfile,
   merchantTransactionDetail: selectPaymentDetailByMerchant,
+  venueOperational: selectMerchantVenueOps,
 });
 
 export default connect(mapStateToProps)(MerchantAdmin);

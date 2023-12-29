@@ -7,6 +7,7 @@ const {
   updateVenue,
   deleteVenue,
   getVenuesByMerchantLogin,
+  getVenueOperationalHoursByMerchant,
 } = require("../controller/VenueController");
 const uploadMiddleware = require("../middleware/UploadMiddleware");
 const router = express.Router();
@@ -27,6 +28,12 @@ router.put(
 );
 router.delete("/delete-venue/:id", AuthenticatedMerchant, AdminMerchantAuth, deleteVenue);
 router.get("/operational/:id", getVenueOperationalHours);
+router.get(
+  "/venue/:id",
+  AuthenticatedMerchant,
+  AdminMerchantAuth,
+  getVenueOperationalHoursByMerchant
+);
 router.get("/merchant-venue", AuthenticatedMerchant, AdminMerchantAuth, getVenuesByMerchantLogin);
 
 module.exports = router;

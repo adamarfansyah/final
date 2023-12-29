@@ -1,10 +1,16 @@
 import { produce } from 'immer';
 
-import { GET_MERCHANT_PROFILE_SUCCESS, GET_MERCHANT_VENUES_SUCCESS } from './constants';
+import {
+  DELETE_VENUE_OPERATIONAL,
+  GET_MERCHANT_PROFILE_SUCCESS,
+  GET_MERCHANT_VENUES_SUCCESS,
+  GET_MERCHANT_VENUE_OPERATIONAL_SUCCESS,
+} from './constants';
 
 export const initialState = {
   merchant: {},
   merchantVenues: [],
+  venueOperational: {},
   isLoading: false,
   error: '',
 };
@@ -21,6 +27,13 @@ const merchantReducer = (state = initialState, action) =>
       case GET_MERCHANT_VENUES_SUCCESS:
         draft.isLoading = false;
         draft.merchantVenues = action.venues;
+        break;
+      case GET_MERCHANT_VENUE_OPERATIONAL_SUCCESS:
+        draft.isLoading = false;
+        draft.venueOperational = action.data;
+        break;
+      case DELETE_VENUE_OPERATIONAL:
+        draft.venueOperational = {};
         break;
     }
   });
