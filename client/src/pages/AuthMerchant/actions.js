@@ -43,8 +43,9 @@ export const validateEmailMerchant = (data, cbSuccess) => ({
   cbSuccess,
 });
 
-export const validateEmailMerchantSuccess = () => ({
+export const validateEmailMerchantSuccess = (data) => ({
   type: VALIDATE_EMAIL_MERCHANT_SUCCESS,
+  data,
 });
 
 export const deleteEmailValidateMerchant = () => ({

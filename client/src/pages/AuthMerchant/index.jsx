@@ -78,6 +78,7 @@ const AuthMerchant = ({ authMerchant, error, categories, location }) => {
     formData.append('password', encryptedPassword);
     formData.append('confirmPassword', encryptedConfirmPassword);
     formData.append('email', decoded.email);
+    formData.append('token', authMerchant.token);
 
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value);
