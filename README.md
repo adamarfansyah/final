@@ -28,6 +28,24 @@ This project is no longer being worked on. This branch repo only serves to provi
 
 ##
 
+### Feature Direction Route Merchant
+
+![Direction](./media/direction.png)
+
+##
+
+### Venue Page
+
+![Venue Page](./media/venue.png)
+
+##
+
+### Auth Merchant Page
+
+![Auth Merchant Page](./media/authmerchant.png)
+
+##
+
 ### Back-end
 
 Back-end program flow as a microservice
