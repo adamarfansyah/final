@@ -48,7 +48,7 @@ This project is no longer being worked on. This branch repo only serves to provi
 
 ### Back-end
 
-Back-end program flow as a microservice
+Back-end program flow
 :
 ![Flow BE](./media/flow_be.png)
 
