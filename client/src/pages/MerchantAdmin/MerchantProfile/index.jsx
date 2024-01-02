@@ -14,7 +14,13 @@ import UpdatePassword from '@components/UpdatePassword';
 import { logoutMerchant } from '@pages/AuthMerchant/actions';
 import { encryptData } from '@utils/encrypt';
 import ButtonEditImage from '@components/ButtonEditImage';
-import { deleteMerchant, getMerchantProfile, updateMerchantPassword, updateMerchantProfile } from '../actions';
+import {
+  deleteMerchant,
+  getMerchantProfile,
+  updateMerchantImage,
+  updateMerchantPassword,
+  updateMerchantProfile,
+} from '../actions';
 import UpdateProfile from './UpdateProfile';
 import DeleteProfile from './DeleteProfile';
 import classes from './style.module.scss';
@@ -66,14 +72,13 @@ const MerchantProfile = ({ merchantProfile }) => {
   const onUpdateImage = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
-
     if (image) {
       formData.append('image', image);
-      // dispatch(
-      //   updateUserImage(formData, () => {
-      //     dispatch(getUserProfile());
-      //   })
-      // );
+      dispatch(
+        updateMerchantImage(formData, () => {
+          dispatch(getMerchantProfile());
+        })
+      );
     }
   };
 
@@ -103,7 +108,6 @@ const MerchantProfile = ({ merchantProfile }) => {
               onChange={(e) => onUpdateImage(e)}
               imgSrc={merchantProfile.image}
             />
-            {/* <img className={classes.logo} src={merchantProfile.image} alt={merchantProfile.name} /> */}
             <div>
               <div className={classes.name}>{merchantProfile.name}</div>
               <div className={classes.box}>

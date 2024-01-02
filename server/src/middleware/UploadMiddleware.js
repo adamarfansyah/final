@@ -14,7 +14,6 @@ const uploadMiddleware = async (req, res, next) => {
       ) {
         return ResponseError(res, 400, "Bad Request", "Image file must jpg/jpeg/png");
       }
-
       if (err instanceof multer.MulterError) {
         return ResponseError(res, 400, "Internal Server Error", err.message);
       } else if (err) {

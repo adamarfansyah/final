@@ -10,10 +10,12 @@ import {
   GET_MERCHANT_VENUES_SUCCESS,
   GET_MERCHANT_VENUE_OPERATIONAL,
   GET_MERCHANT_VENUE_OPERATIONAL_SUCCESS,
+  UPDATE_MERCHANT_IMAGE,
   UPDATE_MERCHANT_PASSWORD,
   UPDATE_MERCHANT_PROFILE,
   UPDATE_MERCHANT_PROFILE_SUCCESS,
   UPDATE_MERCHANT_VENUE,
+  UPDATE_MERCHANT_VENUE_IMAGE,
   UPDATE_MERCHANT_VENUE_SUCCESS,
 } from './constants';
 
@@ -51,11 +53,10 @@ export const updateMerchantPassword = (data) => ({
   data,
 });
 
-export const createMerchantVenue = (data, cbSuccess, cbFailure) => ({
+export const createMerchantVenue = (data, cbSuccess) => ({
   type: CREATE_MERCHANT_VENUE,
   data,
   cbSuccess,
-  cbFailure,
 });
 
 export const createMerchantVenueSuccess = (data) => ({
@@ -65,7 +66,6 @@ export const createMerchantVenueSuccess = (data) => ({
 
 export const updateMerchantVenue = (id, data, cbSuccess) => ({
   type: UPDATE_MERCHANT_VENUE,
-  id,
   data,
   cbSuccess,
 });
@@ -73,6 +73,19 @@ export const updateMerchantVenue = (id, data, cbSuccess) => ({
 export const updateMerchantVenueSuccess = (data) => ({
   type: UPDATE_MERCHANT_VENUE_SUCCESS,
   data,
+});
+
+export const updateMerchantImage = (image, cbSuccess) => ({
+  type: UPDATE_MERCHANT_IMAGE,
+  image,
+  cbSuccess,
+});
+
+export const updateMerchantVenueImage = (id, image, cbSuccess) => ({
+  type: UPDATE_MERCHANT_VENUE_IMAGE,
+  id,
+  image,
+  cbSuccess,
 });
 
 export const deleteMerchant = (cbSuccess) => ({

@@ -88,7 +88,6 @@ const schemas = {
     merchantId: Joi.number().required(),
     startHour: Joi.number().required(),
     endHour: Joi.number().required(),
-    image: Joi.string().required(),
   }),
   updateVenueImageSchem: Joi.object().keys({
     image: Joi.string().required(),

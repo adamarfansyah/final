@@ -12,6 +12,7 @@ import {
   deleteVenueOperational,
   getMerchantVenues,
   updateMerchantVenue,
+  updateMerchantVenueImage,
 } from '../actions';
 import AddVenue from './AddVenue';
 import CardVenue from './CardVenue';
@@ -19,12 +20,14 @@ import classes from './style.module.scss';
 import DeleteVenue from './DeleteVenue';
 import UpdateVenue from './UpdateVenue';
 import DetailVenue from './DetailVenue';
+import UpdateImage from './UpdateImage';
 
 const MerchantVenue = ({ merchant, merchantVenues, setVenueId, venueId, venueOps }) => {
   const dispatch = useDispatch();
   const [isShowModalAdd, setIsShowModalAdd] = useState(false);
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [isShowModalUpdate, setIsShowModalUpdate] = useState(false);
+  const [isShowModalUpdateImage, setIsShowModalUpdateImage] = useState(false);
   const [selectedVenue, setSelectedVenue] = useState(null);
 
   const onDeleteVenue = () => {
@@ -37,23 +40,23 @@ const MerchantVenue = ({ merchant, merchantVenues, setVenueId, venueId, venueOps
   };
 
   const onUpdateVenue = (data) => {
+    dispatch(
+      updateMerchantVenue(data.id, data, () => {
+        setIsShowModalAdd(false);
+        dispatch(getMerchantVenues());
+      })
+    );
+  };
+
+  const onUpdateImage = (image) => {
     const formData = new FormData();
-
-    if (data.image && data.price) {
-      formData.append('image', data.image[0]);
-      formData.append('merchantId', merchant.id);
-
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-
-      dispatch(
-        updateMerchantVenue(data.id, formData, () => {
-          setIsShowModalAdd(false);
-          dispatch(getMerchantVenues());
-        })
-      );
-    }
+    formData.append('image', image);
+    dispatch(
+      updateMerchantVenueImage(selectedVenue.id, formData, () => {
+        setIsShowModalUpdateImage(false);
+        dispatch(getMerchantVenues());
+      })
+    );
   };
 
   const onAddVenue = (data) => {
@@ -92,6 +95,11 @@ const MerchantVenue = ({ merchant, merchantVenues, setVenueId, venueId, venueOps
     setIsShowModalUpdate(true);
   };
 
+  const handleModalUpdateImage = (venue) => {
+    setSelectedVenue(venue);
+    setIsShowModalUpdateImage(true);
+  };
+
   const handleCloseBookedVenue = () => {
     dispatch(deleteVenueOperational(venueId));
     setVenueId(0);
@@ -109,6 +117,14 @@ const MerchantVenue = ({ merchant, merchantVenues, setVenueId, venueId, venueOps
         </div>
       </div>
       {!isEmpty(venueOps) && <DetailVenue venueSchedule={venueOps} />}
+      {isShowModalUpdateImage && (
+        <UpdateImage
+          onSubmit={(data) => onUpdateImage(data)}
+          open={isShowModalUpdateImage}
+          setOpen={setIsShowModalUpdateImage}
+          venue={selectedVenue}
+        />
+      )}
       {isShowModalAdd && (
         <AddVenue onSubmit={(data) => onAddVenue(data)} open={isShowModalAdd} setOpen={setIsShowModalAdd} />
       )}
@@ -130,6 +146,7 @@ const MerchantVenue = ({ merchant, merchantVenues, setVenueId, venueId, venueOps
             venue={venue}
             handleModalDelete={handleModalDelete}
             handleModalUpdate={handleModalUpdate}
+            handleModalUpdateImage={handleModalUpdateImage}
             setVenueId={setVenueId}
           />
         ))}

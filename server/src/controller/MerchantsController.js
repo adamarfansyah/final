@@ -161,7 +161,7 @@ exports.updateMerchantImage = async (req, res) => {
     const image = req.imageUrl;
 
     const merchant = await Merchants.findByPk(id);
-    if ((!image && !merchant) || merchant.status) {
+    if (!merchant || merchant.status) {
       return ResponseError(res, 404, "Image or Merchant not found");
     }
 

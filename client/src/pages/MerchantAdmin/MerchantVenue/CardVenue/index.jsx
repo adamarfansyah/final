@@ -9,7 +9,7 @@ import formattedNumber from '@utils/formattedNumber';
 import Button from '@components/Button';
 import classes from './style.module.scss';
 
-const CardVenue = ({ venue, handleModalDelete, handleModalUpdate, setVenueId }) => {
+const CardVenue = ({ venue, handleModalDelete, handleModalUpdate, handleModalUpdateImage, setVenueId }) => {
   const renderHours = (startHour, endHour) => {
     const formattedStartHour = moment({ hour: startHour }).format('HH:mm');
     const formattedEndHour = moment({ hour: endHour }).format('HH:mm');
@@ -21,7 +21,9 @@ const CardVenue = ({ venue, handleModalDelete, handleModalUpdate, setVenueId }) 
 
   return (
     <div className={classes.cardVenue}>
-      <img src={venue.image} alt={venue.name} className={classes.img} />
+      <div onClick={() => handleModalUpdateImage(venue)}>
+        <img src={venue.image} alt={venue.name} className={classes.img} />
+      </div>
       <div className={classes.content}>
         <div className={classes.name}>{venue.name}</div>
         <div className={classes.box}>
@@ -53,6 +55,7 @@ CardVenue.propTypes = {
   venue: PropTypes.object,
   handleModalDelete: PropTypes.func,
   handleModalUpdate: PropTypes.func,
+  handleModalUpdateImage: PropTypes.func,
   setVenueId: PropTypes.func,
 };
 

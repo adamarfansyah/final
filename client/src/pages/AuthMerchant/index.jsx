@@ -28,7 +28,7 @@ import { selectAuthMerchant } from './selectors';
 
 const AuthMerchant = ({ authMerchant, error, categories, location }) => {
   const [isShowLogin, setIsShowLogin] = useState(true);
-  const [registerStep, setRegisterStep] = useState(3);
+  const [registerStep, setRegisterStep] = useState(1);
   const decoded = authMerchant && typeof authMerchant.token === 'string' ? dcryptToken(authMerchant.token) : null;
   const expToken = authMerchant && typeof authMerchant.exp === 'number' ? authMerchant.exp : null;
   const dispatch = useDispatch();
