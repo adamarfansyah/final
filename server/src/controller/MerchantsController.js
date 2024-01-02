@@ -155,6 +155,25 @@ exports.updateMerchantPassword = async (req, res) => {
   }
 };
 
+exports.updateMerchantImage = async (req, res) => {
+  try {
+    const { id } = res.locals;
+    const image = req.imageUrl;
+
+    const merchant = await Merchants.findByPk(id);
+    if ((!image && !merchant) || merchant.status) {
+      return ResponseError(res, 404, "Image or Merchant not found");
+    }
+
+    await merchant.update({ image });
+    await delDataInCache("merchants");
+
+    return ResponseSuccess(res, 201, "Success Update Image", "Success Update Image");
+  } catch (error) {
+    return ResponseError(res, 500, "Internal Server Error", error.message);
+  }
+};
+
 exports.deleteMerchant = async (_, res) => {
   try {
     const { id } = res.locals;

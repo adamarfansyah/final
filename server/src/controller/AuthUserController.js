@@ -21,7 +21,6 @@ const {
   delDataInCache,
   getDataFromCache,
 } = require("../helpers/RedisHelpers");
-const { string } = require("joi");
 
 exports.verifyEmailOtpUser = async (req, res) => {
   try {
@@ -83,22 +82,13 @@ exports.validateEmailOtpUser = async (req, res) => {
 
 exports.registerUser = async (req, res) => {
   try {
-    const {
-      username,
-      email,
-      password,
-      confirmPassword,
-      image: unUsedImage,
-      token,
-      ...formData
-    } = req.body;
-    const image = req.imageUrl;
-
+    const { username, email, password, confirmPassword, token, ...formData } = req.body;
+    const image = "https://i.ibb.co/1Z7Z60B/icons8-user-96.png";
     const decoded = VerifyEmailToken(token);
-    console.log({ formData });
-    // if (decoded.email !== email) {
-    //   return ResponseError(res, 400, "Token is failure");
-    // }
+
+    if (decoded.email !== email) {
+      return ResponseError(res, 400, "Token is failure");
+    }
 
     const existingUser = await Users.findOne({
       where: {
@@ -110,8 +100,8 @@ exports.registerUser = async (req, res) => {
       return ResponseError(res, 400, "Username or email is already in use.");
     }
 
-    const dcryptPassword = dcryptMessageBody(password[0]);
-    const dcryptConfirmPassword = dcryptMessageBody(confirmPassword[0]);
+    const dcryptPassword = dcryptMessageBody(password);
+    const dcryptConfirmPassword = dcryptMessageBody(confirmPassword);
 
     const errorMessage = validateRequest(
       {

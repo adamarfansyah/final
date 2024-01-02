@@ -92,3 +92,4 @@ export const getPaymentDetailByMerchantApi = (id) => callAPI(`${urls.payment}/pa
 export const getUserProfileApi = () => callAPI(`${urls.user}/profile`, 'GET');
 export const updateUserProfileApi = (data) => callAPI(`${urls.user}/update-profile`, 'PUT', {}, {}, data);
 export const updateUserPasswordApi = (data) => callAPI(`${urls.user}/update-password`, 'PATCH', {}, {}, data);
+export const updateUserImageApi = (image) => callAPI(`${urls.user}/update-image`, 'PATCH', {}, {}, image);

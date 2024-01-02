@@ -18,7 +18,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import CardUser from './Components/CardUser';
 import UpdateProfile from './Components/UpdateProfile';
 import classes from './style.module.scss';
-import { getUserProfile, updateUserPassword } from './actions';
+import { getUserProfile, updateUserImage, updateUserPassword } from './actions';
 import { selectUserProfile } from './selectors';
 
 const UserProfile = ({ token, userProfile, transactions }) => {
@@ -64,6 +64,20 @@ const UserProfile = ({ token, userProfile, transactions }) => {
     );
   };
 
+  const onUpload = (event) => {
+    const image = event.target.files[0];
+    const formData = new FormData();
+
+    if (image) {
+      formData.append('image', image);
+      dispatch(
+        updateUserImage(formData, () => {
+          dispatch(getUserProfile());
+        })
+      );
+    }
+  };
+
   if (isEmpty(userProfile) && isEmpty(transactions)) {
     return <div>Loading...</div>;
   }
@@ -71,7 +85,7 @@ const UserProfile = ({ token, userProfile, transactions }) => {
   return (
     <div className={classes.userProfile}>
       <div className={classes.userProfileLeft}>
-        <CardUser user={userProfile} />
+        <CardUser user={userProfile} handleSubmit={onUpload} />
         <div className={classes.navigation}>
           <div
             className={isShowNavigateAccount ? `${classes.navigate} ${classes.activeNavigate}` : classes.navigate}

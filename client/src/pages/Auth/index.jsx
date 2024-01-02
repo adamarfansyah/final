@@ -59,27 +59,23 @@ const Auth = ({ token, authUser }) => {
     );
   };
 
-  console.log(authUser.token);
-
   const onSubmitStep3 = (data) => {
-    const { password, confirmPassword } = data;
-
-    const formData = new FormData();
+    const { password, confirmPassword, ...rest } = data;
+    const { token: tokenStep } = authUser;
+    const { email } = decoded;
     const encryptedPassword = encryptData(password);
     const encryptedConfirmPassword = encryptData(confirmPassword);
 
-    formData.append('image', data.image[0]);
-    formData.append('password', encryptedPassword);
-    formData.append('confirmPassword', encryptedConfirmPassword);
-    formData.append('email', decoded.email);
-    formData.append('token', authUser.token);
-
-    Object.entries(data).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
+    const response = {
+      password: encryptedPassword,
+      confirmPassword: encryptedConfirmPassword,
+      token: tokenStep,
+      email,
+      ...rest,
+    };
 
     dispatch(
-      registerUser(formData, () => {
+      registerUser(response, () => {
         dispatch(deleteEmailValidateUser());
         setIsShowLogin(true);
         setRegisterStep(1);

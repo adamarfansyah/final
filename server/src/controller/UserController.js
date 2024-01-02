@@ -99,7 +99,23 @@ exports.updateUserPassword = async (req, res) => {
   }
 };
 
-exports.updateUserImage = (req, res) => {
+exports.updateUserImage = async (req, res) => {
   try {
-  } catch (error) {}
+    const { id } = res.locals;
+    const image = req.imageUrl;
+
+    const user = await Users.findByPk(id);
+
+    if (!user) {
+      return ResponseError(res, 404, "Not Found", "User Not Found");
+    }
+
+    await user.update({
+      image,
+    });
+
+    return ResponseSuccess(res, 201, "Update", "User Succcess Update Image");
+  } catch (error) {
+    return ResponseError(res, 500, "Internal Server Error", error.message);
+  }
 };

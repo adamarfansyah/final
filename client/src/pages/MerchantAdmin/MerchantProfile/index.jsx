@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 
 import PlaceIcon from '@mui/icons-material/Place';
@@ -11,15 +13,19 @@ import Button from '@components/Button';
 import UpdatePassword from '@components/UpdatePassword';
 import { logoutMerchant } from '@pages/AuthMerchant/actions';
 import { encryptData } from '@utils/encrypt';
-import { useNavigate } from 'react-router-dom';
+import ButtonEditImage from '@components/ButtonEditImage';
 import { deleteMerchant, getMerchantProfile, updateMerchantPassword, updateMerchantProfile } from '../actions';
-import classes from './style.module.scss';
 import UpdateProfile from './UpdateProfile';
 import DeleteProfile from './DeleteProfile';
+import classes from './style.module.scss';
 
 const MerchantProfile = ({ merchantProfile }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {
+    register,
+    formState: { errors },
+  } = useForm();
   const [isUpdateProfile, setIsUpdateProfile] = useState(true);
   const [isDelete, setIsDelete] = useState(false);
 
@@ -57,6 +63,20 @@ const MerchantProfile = ({ merchantProfile }) => {
     );
   };
 
+  const onUpdateImage = (event) => {
+    const image = event.target.files[0];
+    const formData = new FormData();
+
+    if (image) {
+      formData.append('image', image);
+      // dispatch(
+      //   updateUserImage(formData, () => {
+      //     dispatch(getUserProfile());
+      //   })
+      // );
+    }
+  };
+
   const handleUpdateProfile = () => {
     setIsUpdateProfile((state) => !state);
   };
@@ -75,7 +95,15 @@ const MerchantProfile = ({ merchantProfile }) => {
       <div className={classes.merchantProfile}>
         <div className={classes.wrapper}>
           <div className={classes.wrapperContent}>
-            <img className={classes.logo} src={merchantProfile.image} alt={merchantProfile.name} />
+            <ButtonEditImage
+              id="image-user"
+              name="image"
+              errors={errors}
+              register={register}
+              onChange={(e) => onUpdateImage(e)}
+              imgSrc={merchantProfile.image}
+            />
+            {/* <img className={classes.logo} src={merchantProfile.image} alt={merchantProfile.name} /> */}
             <div>
               <div className={classes.name}>{merchantProfile.name}</div>
               <div className={classes.box}>
