@@ -9,11 +9,10 @@ const {
   updateForgotPasswordUser,
 } = require("../controller/AuthUserController");
 const { Authenticated, RegularUserAuth } = require("../helpers/Authorization");
-const uploadMiddleware = require("../middleware/UploadMiddleware");
 
 const router = express.Router();
 
-router.post("/register", uploadMiddleware, registerUser);
+router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", Authenticated, RegularUserAuth, logoutUser);
 router.post("/verify-email", verifyEmailOtpUser);

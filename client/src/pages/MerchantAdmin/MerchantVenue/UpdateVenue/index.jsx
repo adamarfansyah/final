@@ -1,18 +1,15 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { useState } from 'react';
 import moment from 'moment';
 
 import ModalCustom from '@components/Modal';
-import DisplayImage from '@components/DisplayImage';
 import Input from '@components/Input';
 import Button from '@components/Button';
 import classes from './style.module.scss';
 
 const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
   const { startHour, endHour, ...data } = venue;
-  const [displayImage, setDisplayImage] = useState(venue.image);
 
   const renderTime = (time) => moment(time, 'HH').format('HH:mm');
 
@@ -28,21 +25,12 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
     },
   });
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setDisplayImage(imageUrl);
-    }
-  };
-
   return (
     <ModalCustom open={open} setOpen={setOpen}>
       <div className={classes.update}>
         <div className={classes.title}>
           <FormattedMessage id="app_update" /> Venue
         </div>
-        <div>{displayImage && <DisplayImage imageUrl={displayImage} />}</div>
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <div>
             <Input
@@ -99,21 +87,6 @@ const UpdateVenue = ({ venue, open, setOpen, onSubmit }) => {
                 minLength: { value: 3, message: 'End Operational must be at least 3 characters' },
               }}
               placeholder="End Operational"
-              required
-            />
-          </div>
-          <div>
-            <Input
-              type="file"
-              name="image"
-              label="Venue Image"
-              errors={errors}
-              register={register}
-              onChange={handleImageChange}
-              validationSchema={{
-                required: 'Venue Image is required',
-              }}
-              placeholder="Venue Image"
               required
             />
           </div>

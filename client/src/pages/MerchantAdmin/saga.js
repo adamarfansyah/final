@@ -7,9 +7,11 @@ import {
   getMerchantProfileApi,
   getMerchantVenueOperationalApi,
   getMerchantVenuesApi,
+  updateMerchantImageApi,
   updateMerchantPasswordApi,
   updateMerchantProfileApi,
   updateMerchantVenueApi,
+  updateMerchantVenueImageApi,
 } from '@domain/api';
 
 import { setLoading, showPopup } from '@containers/App/actions';
@@ -21,9 +23,11 @@ import {
   GET_MERCHANT_PROFILE,
   GET_MERCHANT_VENUES,
   GET_MERCHANT_VENUE_OPERATIONAL,
+  UPDATE_MERCHANT_IMAGE,
   UPDATE_MERCHANT_PASSWORD,
   UPDATE_MERCHANT_PROFILE,
   UPDATE_MERCHANT_VENUE,
+  UPDATE_MERCHANT_VENUE_IMAGE,
 } from './constants';
 import {
   createMerchantVenueSuccess,
@@ -65,7 +69,7 @@ function* doGetMerchantVenues() {
   yield put(setLoading(false));
 }
 
-function* doCreateMerchantVenue({ data, cbSuccess, cbFailure }) {
+function* doCreateMerchantVenue({ data, cbSuccess }) {
   yield put(setLoading(true));
   try {
     const response = yield call(createMerchantVenueApi, data);
@@ -73,7 +77,6 @@ function* doCreateMerchantVenue({ data, cbSuccess, cbFailure }) {
     cbSuccess && cbSuccess();
     yield put(showPopup('Success Create Venue', 'Please Refresh Page for best experience', true));
   } catch (error) {
-    cbFailure && cbFailure();
     yield put(showPopup('Sorry :(', error.response.data.message));
   }
   yield put(setLoading(false));
@@ -115,6 +118,30 @@ function* doUpdateMerchantPassword({ data, cbSuccess }) {
   yield put(setLoading(false));
 }
 
+function* doUpdateMerchantImage({ image, cbSuccess }) {
+  yield put(setLoading(true));
+  try {
+    yield call(updateMerchantImageApi, image);
+    yield put(showPopup('Success Update Image', 'Please Refresh your page for best experience', true));
+    cbSuccess && cbSuccess();
+  } catch (error) {
+    yield put(showPopup('Sorry :(', error.response.data.message));
+  }
+  yield put(setLoading(false));
+}
+
+function* doUpdateMerchantVenueImage({ id, image, cbSuccess }) {
+  yield put(setLoading(true));
+  try {
+    yield call(updateMerchantVenueImageApi, id, image);
+    yield put(showPopup('Success Update Image', 'Please Refresh your page for best experience', true));
+    cbSuccess && cbSuccess();
+  } catch (error) {
+    yield put(showPopup('Sorry :(', error.response.data.message));
+  }
+  yield put(setLoading(false));
+}
+
 function* doUpdateMerchantVenue({ id, data, cbSuccess }) {
   yield put(setLoading(true));
   try {
@@ -144,6 +171,8 @@ export default function* merchantSaga() {
   yield takeLatest(DELETE_MERCHANT_VENUE, doDeleteMerchantVenue);
   yield takeLatest(UPDATE_MERCHANT_PROFILE, doUpdateMerchantProfile);
   yield takeLatest(UPDATE_MERCHANT_PASSWORD, doUpdateMerchantPassword);
+  yield takeLatest(UPDATE_MERCHANT_IMAGE, doUpdateMerchantImage);
+  yield takeLatest(UPDATE_MERCHANT_VENUE_IMAGE, doUpdateMerchantVenueImage);
   yield takeLatest(UPDATE_MERCHANT_VENUE, doUpdateMerchantVenue);
   yield takeLatest(CREATE_MERCHANT_VENUE, doCreateMerchantVenue);
   yield takeLatest(DELETE_MERCHANT, doDeleteMerchant);

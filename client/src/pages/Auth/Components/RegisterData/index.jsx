@@ -5,6 +5,7 @@ import { selectToken } from '@containers/Client/selectors';
 import { FormattedMessage } from 'react-intl';
 import { useForm } from 'react-hook-form';
 
+// import ButtonEditImage from '@components/ButtonEditImage';
 import Input from '@components/Input';
 import Button from '@components/Button';
 import classes from './style.module.scss';
@@ -114,7 +115,7 @@ const RegisterData = ({ onSubmit }) => {
               required
             />
           </div>
-          <div>
+          {/* <div>
             <Input
               type="file"
               name="image"
@@ -128,7 +129,7 @@ const RegisterData = ({ onSubmit }) => {
               placeholder="Profile Image"
               required
             />
-          </div>
+          </div> */}
           <div className={classes.btnContainer}>
             <Button className={classes.btn} variant="primary">
               <FormattedMessage id="app_register_title" />

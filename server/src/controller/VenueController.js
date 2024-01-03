@@ -126,7 +126,6 @@ exports.updateVenue = async (req, res) => {
   try {
     const { id } = res.locals;
     const { id: venueId, name, startHour, endHour, price } = req.body;
-    const image = req.imageUrl;
 
     const venue = await Venues.findByPk(venueId);
     const merchant = await Merchants.findByPk(id);
@@ -147,7 +146,6 @@ exports.updateVenue = async (req, res) => {
       merchantId: merchant.id,
       startHour: startHourNumber,
       endHour: endHourNumber,
-      image,
     };
 
     const errorValidate = validateRequest(newVenue, schemas.updateVenueSchem);
@@ -158,6 +156,32 @@ exports.updateVenue = async (req, res) => {
     await venue.update(newVenue);
 
     return ResponseSuccess(res, 200, "Success", "Success Update");
+  } catch (error) {
+    return ResponseError(res, 500, "Internal Server Error", error.message);
+  }
+};
+
+exports.updateVenueImage = async (req, res) => {
+  try {
+    const { id } = res.locals;
+    const { id: venueId } = req.params;
+    const image = req.imageUrl;
+
+    const errorValidate = validateRequest({ image }, schemas.updateVenueImageSchem);
+
+    if (errorValidate) {
+      return ResponseError(res, 400, "Validation Error", errorValidate);
+    }
+
+    const merchant = await Merchants.findByPk(id);
+    const venue = await Venues.findByPk(venueId);
+
+    if ((!venue && !merchant) || merchant.status) {
+      return ResponseError(res, 404, "Image or Merchant not found");
+    }
+
+    await venue.update({ image });
+    return ResponseSuccess(res, 201, "Success Update Image", "Success Update Image");
   } catch (error) {
     return ResponseError(res, 500, "Internal Server Error", error.message);
   }

@@ -95,7 +95,7 @@ exports.createMerchants = async (req, res) => {
     const image = req.imageUrl;
 
     const decoded = VerifyEmailToken(token);
-    console.log({ decoded, email, token });
+
     if (decoded.email !== email) {
       return ResponseError(res, 400, "Token is failure");
     }

@@ -18,22 +18,12 @@ const UpdateProfile = ({ user }) => {
   } = useForm({ defaultValues: user });
 
   const onSubmit = (data) => {
-    const formData = new FormData();
-
-    if (data.image) {
-      formData.append('image', data.image[0]);
-
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-
-      dispatch(updateUserProfile(formData));
-    }
+    dispatch(updateUserProfile(data));
   };
 
   return (
     <div className={classes.updateProfile}>
-      <form className={classes.form} onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Input
             type="text"
@@ -94,23 +84,6 @@ const UpdateProfile = ({ user }) => {
             required
           />
         </div>
-        {/* <div>
-          <label htmlFor="test">Test</label>
-          <Input
-            id="test"
-            type="file"
-            name="image"
-            label="Profile Image"
-            errors={errors}
-            validationSchema={{
-              required: 'Profile Image is required',
-              pattern: { value: 3, message: 'Profile Image must be at least 3 characters' },
-            }}
-            register={register}
-            placeholder="Profile Image"
-            required
-          />
-        </div> */}
         <div className={classes.btnContainer}>
           <Button className={classes.btn} variant="primary">
             <FormattedMessage id="app_submit" />

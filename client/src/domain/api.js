@@ -64,6 +64,7 @@ export const getMerchantsApi = () => callAPI(urls.merchant, 'GET');
 export const getMerchantProfileApi = () => callAPI(`${urls.merchant}/merchant-profile`, 'GET');
 export const updateMerchantProfileApi = (data) => callAPI(`${urls.merchant}/update-profile`, 'PATCH', {}, {}, data);
 export const updateMerchantPasswordApi = (data) => callAPI(`${urls.merchant}/update-password`, 'PATCH', {}, {}, data);
+export const updateMerchantImageApi = (image) => callAPI(`${urls.merchant}/update-image`, 'PATCH', {}, {}, image);
 export const getMerchantDetailApi = (id) => callAPI(`${urls.merchant}/${id}`, 'GET');
 export const deleteMerchantApi = () => callAPI(`${urls.merchant}/delete`, 'DELETE');
 
@@ -76,6 +77,8 @@ export const getOperationalVenueApi = (id) => callAPI(`${urls.venue}/operational
 export const createBookingApi = (data) => callAPI(`${urls.venue}/booking`, 'POST', {}, {}, data);
 export const createMerchantVenueApi = (data) => callAPI(`${urls.venue}/create-venue`, 'POST', {}, {}, data);
 export const updateMerchantVenueApi = (id, data) => callAPI(`${urls.venue}/update-venue/${id}`, 'PUT', {}, {}, data);
+export const updateMerchantVenueImageApi = (id, image) =>
+  callAPI(`${urls.venue}/update-venue-image/${id}`, 'PATCH', {}, {}, image);
 export const deleteMerchantVenueApi = (id) => callAPI(`${urls.venue}/delete-venue/${id}`, 'DELETE', {}, {}, {});
 export const getMerchantVenueOperationalApi = (id) => callAPI(`${urls.venue}/venue/${id}`, 'GET');
 
@@ -92,3 +95,4 @@ export const getPaymentDetailByMerchantApi = (id) => callAPI(`${urls.payment}/pa
 export const getUserProfileApi = () => callAPI(`${urls.user}/profile`, 'GET');
 export const updateUserProfileApi = (data) => callAPI(`${urls.user}/update-profile`, 'PUT', {}, {}, data);
 export const updateUserPasswordApi = (data) => callAPI(`${urls.user}/update-password`, 'PATCH', {}, {}, data);
+export const updateUserImageApi = (image) => callAPI(`${urls.user}/update-image`, 'PATCH', {}, {}, image);

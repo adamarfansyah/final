@@ -1,23 +1,46 @@
 @import '@styles/base';
 
 .btn {
-  background-color: white;
-  width: fit-content;
+  position: relative;
+  background-color: $color-green-md;
+  margin-bottom: 1rem;
+  padding: 0.4rem;
   border-radius: 1rem;
-  padding: 0.3rem 0.8rem;
-  &:hover {
-    background-color: $color-green-md;
-  }
-
-  label {
-    cursor: pointer;
-    color: var(--color-bg);
-    font-weight: bold;
-    .icon {
-      font-size: 1rem;
+  .btnEdit {
+    .label {
+      border-radius: 1rem;
+      background-color: rgba($color: $color-green-md, $alpha: 1);
+      padding: 0.2rem;
+      top: 0;
+      right: 0.3rem;
+      position: absolute;
+      cursor: pointer;
+      color: var(--color-bg);
+      font-weight: bold;
+      font-size: 0.5rem;
+      display: flex;
+      color: white;
+      .icon {
+        font-size: 0.5rem;
+      }
+    }
+    input {
+      display: none;
     }
   }
-  input {
-    display: none;
+  .childImage {
+    height: 8rem;
+    .image {
+      border-radius: 1rem;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      @include apply-at-md-size {
+        @media (min-width: $screen-md-limit) {
+          width: 100%;
+          height: 8rem;
+        }
+      }
+    }
   }
 }
